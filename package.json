@@ -11,7 +11,7 @@
     "prettier": "^3.2.5",
     "turbo": "^2.7.5"
   },
-  "name": "with-vite-react",
+  "name": "all-in-one-app",
   "packageManager": "yarn@1.22.22",
   "workspaces": [
     "apps/*",
