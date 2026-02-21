@@ -61,4 +61,5 @@ pnpm-debug.log*
 .DS_Store
 *.pem
 
-**/generated/prisma
+
+tsconfig.build.tsbuildinfo

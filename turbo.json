@@ -15,24 +15,6 @@
     "dev": {
       "cache": false,
       "persistent": true
-    },
-
-    "db:migrate:dev": {
-      "cache": false,
-      "persistent": true
-    },
-    "db:migrate:deploy": {
-      "cache": false
-    },
-    "db:push": {
-      "cache": false
-    },
-    "db:seed": {
-      "cache": false
-    },
-    "db:generate": {
-      "dependsOn": ["^db:generate"],
-      "cache": false
     }
   }
 }
