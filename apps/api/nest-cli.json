@@ -4,5 +4,7 @@
   "sourceRoot": "src",
   "compilerOptions": {
     "deleteOutDir": true
-  }
+  },
+  "exec": "node --experimental-strip-types",
+  "entryFile": "main"
 }

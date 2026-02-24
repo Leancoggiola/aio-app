@@ -5,15 +5,13 @@
     "allowSyntheticDefaultImports": true,
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true,
-    "forceConsistentCasingInFileNames": false,
-    "incremental": true,
+    "forceConsistentCasingInFileNames": true,
+    "incremental": false,
+    "lib": ["es2022"],
     "module": "commonjs",
     "moduleResolution": "Node10",
-    "noFallthroughCasesInSwitch": false,
-    "noImplicitAny": false,
+    "noFallthroughCasesInSwitch": true,
     "removeComments": true,
-    "sourceMap": true,
-    "strictNullChecks": false,
-    "strictBindCallApply": false
+    "sourceMap": true
   }
 }

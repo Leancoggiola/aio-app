@@ -62,4 +62,4 @@ pnpm-debug.log*
 *.pem
 
 
-tsconfig.build.tsbuildinfo
+postman-collection.json
