@@ -1,64 +1,48 @@
-import { Injectable } from '@nestjs/common';
-import { ConfigService } from '@nestjs/config';
-import { HttpService } from '@nestjs/axios';
-import { firstValueFrom } from 'rxjs';
+import { config } from '../config';
 import type {
   TmdbSearchResponse,
   TmdbMediaResult,
   TmdbMovieDetail,
   TmdbTvDetail,
-} from '@aio-app/shared/types/media';
+} from '@aio-app/shared/media';
 
 export type { TmdbSearchResponse, TmdbMediaResult, TmdbMovieDetail, TmdbTvDetail };
 
-@Injectable()
-export class TmdbService {
-  private readonly apiKey: string;
-  private readonly baseUrl: string;
-
-  constructor(
-    private readonly config: ConfigService,
-    private readonly http: HttpService,
-  ) {
-    this.apiKey = this.config.getOrThrow<string>('TMDB_API_KEY');
-    this.baseUrl =
-      this.config.get<string>('TMDB_BASE_URL') ||
-      'https://api.themoviedb.org/3';
+async function get<T>(path: string, params: Record<string, string | number> = {}): Promise<T> {
+  const url = new URL(`${config.tmdb.baseUrl}${path}`);
+  url.searchParams.set('api_key', config.tmdb.apiKey);
+  url.searchParams.set('language', 'es-ES');
+  for (const [key, value] of Object.entries(params)) {
+    url.searchParams.set(key, String(value));
   }
 
-  private async get<T>(path: string, params: Record<string, string | number> = {}): Promise<T> {
-    const url = `${this.baseUrl}${path}`;
-    const { data } = await firstValueFrom(
-      this.http.get<T>(url, {
-        params: { api_key: this.apiKey, language: 'es-ES', ...params },
-      }),
-    );
-    return data;
+  const res = await fetch(url.toString());
+  if (!res.ok) {
+    throw { status: res.status, message: `TMDB API error: ${res.statusText}` };
   }
+  return res.json() as Promise<T>;
+}
 
-  async searchMulti(query: string, page = 1): Promise<TmdbSearchResponse> {
-    const result = await this.get<TmdbSearchResponse>('/search/multi', { query, page });
-    // Filter out people results — only keep movie and tv
-    result.results = result.results.filter(
-      (r) => r.media_type === 'movie' || r.media_type === 'tv',
-    );
-    return result;
-  }
+export async function searchMulti(query: string, page = 1): Promise<TmdbSearchResponse> {
+  const result = await get<TmdbSearchResponse>('/search/multi', { query, page });
+  result.results = result.results.filter(
+    (r: TmdbMediaResult) => r.media_type === 'movie' || r.media_type === 'tv',
+  );
+  return result;
+}
 
-  async searchMovies(query: string, page = 1): Promise<TmdbSearchResponse> {
-    return this.get<TmdbSearchResponse>('/search/movie', { query, page });
-  }
+export async function searchMovies(query: string, page = 1): Promise<TmdbSearchResponse> {
+  return get<TmdbSearchResponse>('/search/movie', { query, page });
+}
 
-  async searchTv(query: string, page = 1): Promise<TmdbSearchResponse> {
-    return this.get<TmdbSearchResponse>('/search/tv', { query, page });
-  }
+export async function searchTv(query: string, page = 1): Promise<TmdbSearchResponse> {
+  return get<TmdbSearchResponse>('/search/tv', { query, page });
+}
 
-  async getMovieDetail(tmdbId: number): Promise<TmdbMovieDetail> {
-    return this.get<TmdbMovieDetail>(`/movie/${tmdbId}`);
-  }
+export async function getMovieDetail(tmdbId: number): Promise<TmdbMovieDetail> {
+  return get<TmdbMovieDetail>(`/movie/${tmdbId}`);
+}
 
-  async getTvDetail(tmdbId: number): Promise<TmdbTvDetail> {
-    return this.get<TmdbTvDetail>(`/tv/${tmdbId}`);
-  }
-
+export async function getTvDetail(tmdbId: number): Promise<TmdbTvDetail> {
+  return get<TmdbTvDetail>(`/tv/${tmdbId}`);
 }

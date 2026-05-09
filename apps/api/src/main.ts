@@ -1,28 +1,42 @@
-import { NestFactory } from '@nestjs/core';
-import { AppModule } from './app.module';
-import { ValidationPipe } from '@nestjs/common';
+import { config } from './config';
+import express from 'express';
+import cors from 'cors';
 import cookieParser from 'cookie-parser';
+import passport from 'passport';
+
+// Register passport strategies (side-effect imports)
+import './auth/strategies/local.strategy';
+import './auth/strategies/jwt.strategy';
+import './auth/strategies/jwt-refresh.strategy';
+
+import router from './router';
+import { errorHandler } from './middleware/error-handler';
+import { prisma } from './lib/prisma';
 
 async function bootstrap() {
-  const app = await NestFactory.create(AppModule);
+  await prisma.$connect();
+  console.log('Connected to PostgreSQL');
 
-  app.use(cookieParser());
+  const app = express();
 
-  app.useGlobalPipes(
-    new ValidationPipe({
-      whitelist: true,
-      forbidNonWhitelisted: true,
-      transform: true,
-    }),
-  );
-
-  app.enableCors({
-    origin: process.env.CORS_ORIGIN ?? true,
+  app.use(cors({
+    origin: config.corsOrigin,
     credentials: true,
+  }));
+  app.use(express.json());
+  app.use(cookieParser());
+  app.use(passport.initialize());
+
+  app.use('/api', router);
+
+  app.use(errorHandler);
+
+  app.listen(config.port, () => {
+    console.log(`API running on http://localhost:${config.port}`);
   });
-
-  app.setGlobalPrefix('api');
-
-  await app.listen(process.env.PORT ?? 3000);
 }
-bootstrap();
+
+bootstrap().catch((err) => {
+  console.error('Failed to start:', err);
+  process.exit(1);
+});

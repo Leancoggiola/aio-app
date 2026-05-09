@@ -1,24 +1,19 @@
-import { Injectable } from '@nestjs/common';
-import { InjectModel } from '@nestjs/mongoose';
-import { Model } from 'mongoose';
-import { User, UserDocument } from './schemas/user.schema';
-import { CreateUserDto } from './dto/create-user.dto';
+import type { User } from '@prisma/client';
+import type { RegisterPayload } from '@aio-app/shared/auth';
+import { prisma } from '../lib/prisma';
 
-@Injectable()
-export class UsersService {
-  constructor(
-    @InjectModel(User.name) private readonly userModel: Model<UserDocument>,
-  ) {}
+export async function create(dto: RegisterPayload): Promise<User> {
+  return prisma.user.create({ data: dto });
+}
 
-  async create(dto: CreateUserDto): Promise<UserDocument> {
-    return this.userModel.create(dto);
-  }
+/** Returns user WITH password (for auth validation). */
+export async function findByEmail(email: string): Promise<User | null> {
+  return prisma.user.findUnique({ where: { email } });
+}
 
-  async findByEmail(email: string): Promise<UserDocument | null> {
-    return this.userModel.findOne({ email }).select('+password').exec();
-  }
-
-  async findById(id: string): Promise<UserDocument | null> {
-    return this.userModel.findById(id).exec();
-  }
+export async function findById(id: string): Promise<Omit<User, 'password'> | null> {
+  return prisma.user.findUnique({
+    where: { id },
+    omit: { password: true },
+  });
 }

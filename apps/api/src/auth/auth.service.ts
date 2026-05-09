@@ -1,253 +1,169 @@
-import {
-  ConflictException,
-  Injectable,
-  UnauthorizedException,
-} from '@nestjs/common';
-import { ConfigService } from '@nestjs/config';
-import { JwtService } from '@nestjs/jwt';
-import { InjectModel } from '@nestjs/mongoose';
+import jwt from 'jsonwebtoken';
 import * as bcrypt from 'bcrypt';
-import { Model, Types } from 'mongoose';
 import { Response } from 'express';
-import { StringValue } from 'ms';
 
-import { UsersService } from '../users/users.service';
-import {
-  RefreshToken,
-  RefreshTokenDocument,
-} from './schemas/refresh-token.schema';
-import { RegisterDto } from './dto/register.dto';
+import { config } from '../config';
+import * as usersService from '../users/users.service';
+import { prisma } from '../lib/prisma';
+import type { RegisterPayload } from '@aio-app/shared/auth';
 
 const BCRYPT_ROUNDS = 12;
 
-@Injectable()
-export class AuthService {
-  private readonly accessSecret: string;
-  private readonly refreshSecret: string;
-  private readonly accessExpiresIn: string;
-  private readonly refreshExpiresIn: string;
-  private readonly cookieMaxAge: number; // milliseconds
-  private readonly isProduction: boolean;
+// ─── Register ───────────────────────────────────────────────
 
-  constructor(
-    private readonly usersService: UsersService,
-    private readonly jwtService: JwtService,
-    private readonly configService: ConfigService,
-    @InjectModel(RefreshToken.name)
-    private readonly refreshTokenModel: Model<RefreshTokenDocument>,
-  ) {
-    this.accessSecret = this.configService.getOrThrow('JWT_ACCESS_SECRET');
-    this.refreshSecret = this.configService.getOrThrow('JWT_REFRESH_SECRET');
-    this.accessExpiresIn =
-      this.configService.get('JWT_ACCESS_EXPIRES_IN') ?? '15m';
-    this.refreshExpiresIn =
-      this.configService.get('JWT_REFRESH_EXPIRES_IN') ?? '7d';
-    this.cookieMaxAge =
-      (parseInt(this.configService.get('COOKIE_REFRESH_MAX_AGE') ?? '604800', 10)) * 1000;
-    this.isProduction =
-      this.configService.get('NODE_ENV') === 'production';
+export async function register(dto: RegisterPayload, res: Response) {
+  const existing = await usersService.findByEmail(dto.email);
+  if (existing) {
+    throw { status: 409, message: 'Email already registered' };
   }
 
-  // ─── Register ───────────────────────────────────────────────
+  const hashedPassword = await bcrypt.hash(dto.password, BCRYPT_ROUNDS);
+  const user = await usersService.create({
+    ...dto,
+    password: hashedPassword,
+  });
 
-  async register(dto: RegisterDto, res: Response) {
-    const existing = await this.usersService.findByEmail(dto.email);
-    if (existing) {
-      throw new ConflictException('Email already registered');
+  await issueTokens({ sub: user.id, email: user.email }, res);
+
+  return { user: sanitizeUser(user) };
+}
+
+// ─── Validate (for LocalStrategy) ──────────────────────────
+
+export async function validateUser(email: string, password: string) {
+  const user = await usersService.findByEmail(email);
+  if (!user) return null;
+
+  const isMatch = await bcrypt.compare(password, user.password);
+  if (!isMatch) return null;
+
+  return sanitizeUser(user);
+}
+
+// ─── Login ─────────────────────────────────────────────────
+
+export async function login(user: { id: string; email: string }, res: Response) {
+  await issueTokens({ sub: user.id, email: user.email }, res);
+  return { user };
+}
+
+// ─── Refresh ───────────────────────────────────────────────
+
+export async function refresh(userId: string, rawRefreshToken: string, res: Response) {
+  const storedTokens = await prisma.refreshToken.findMany({ where: { userId } });
+
+  let matchedToken: (typeof storedTokens)[number] | null = null;
+  for (const token of storedTokens) {
+    const isMatch = await bcrypt.compare(rawRefreshToken, token.tokenHash);
+    if (isMatch) {
+      matchedToken = token;
+      break;
     }
-
-    const hashedPassword = await bcrypt.hash(dto.password, BCRYPT_ROUNDS);
-    const user = await this.usersService.create({
-      ...dto,
-      password: hashedPassword,
-    });
-
-    await this.issueTokens(
-      { sub: user._id.toString(), email: user.email },
-      res,
-    );
-
-    return {
-      user: this.sanitizeUser(user),
-    };
   }
 
-  // ─── Validate (for LocalStrategy) ──────────────────────────
-
-  async validateUser(email: string, password: string) {
-    const user = await this.usersService.findByEmail(email);
-    if (!user) return null;
-
-    const isMatch = await bcrypt.compare(password, user.password);
-    if (!isMatch) return null;
-
-    return this.sanitizeUser(user);
+  if (!matchedToken) {
+    await prisma.refreshToken.deleteMany({ where: { userId } });
+    clearCookies(res);
+    throw { status: 401, message: 'Refresh token not recognized. All sessions revoked.' };
   }
 
-  // ─── Login ─────────────────────────────────────────────────
+  await prisma.refreshToken.delete({ where: { id: matchedToken.id } });
 
-  async login(user: { _id: string; email: string }, res: Response) {
-    await this.issueTokens(
-      { sub: user._id.toString(), email: user.email },
-      res,
-    );
-
-    return { user };
+  const user = await usersService.findById(userId);
+  if (!user) {
+    throw { status: 401, message: 'User not found' };
   }
 
-  // ─── Refresh ───────────────────────────────────────────────
+  await issueTokens({ sub: userId, email: user.email }, res);
 
-  async refresh(userId: string, rawRefreshToken: string, res: Response) {
-    // Find all refresh tokens for this user
-    const storedTokens = await this.refreshTokenModel
-      .find({ userId: new Types.ObjectId(userId) })
-      .exec();
+  return { user };
+}
 
-    // Find the matching token by comparing hashes
-    let matchedToken: RefreshTokenDocument | null = null;
-    for (const token of storedTokens) {
-      const isMatch = await bcrypt.compare(rawRefreshToken, token.tokenHash);
-      if (isMatch) {
-        matchedToken = token;
-        break;
-      }
+// ─── Logout ────────────────────────────────────────────────
+
+export async function logout(userId: string, rawRefreshToken: string, res: Response) {
+  const storedTokens = await prisma.refreshToken.findMany({ where: { userId } });
+
+  for (const token of storedTokens) {
+    const isMatch = await bcrypt.compare(rawRefreshToken, token.tokenHash);
+    if (isMatch) {
+      await prisma.refreshToken.delete({ where: { id: token.id } });
+      break;
     }
-
-    if (!matchedToken) {
-      // Possible token theft: revoke ALL sessions for this user
-      await this.refreshTokenModel.deleteMany({
-        userId: new Types.ObjectId(userId),
-      });
-      this.clearCookies(res);
-      throw new UnauthorizedException(
-        'Refresh token not recognized. All sessions revoked.',
-      );
-    }
-
-    // Delete the used token (rotation)
-    await this.refreshTokenModel.findByIdAndDelete(matchedToken._id);
-
-    // Get user data
-    const user = await this.usersService.findById(userId);
-    if (!user) {
-      throw new UnauthorizedException('User not found');
-    }
-
-    // Issue new tokens
-    await this.issueTokens({ sub: userId, email: user.email }, res);
-
-    return {
-      user: this.sanitizeUser(user),
-    };
   }
 
-  // ─── Logout ────────────────────────────────────────────────
+  clearCookies(res);
 
-  async logout(userId: string, rawRefreshToken: string, res: Response) {
-    // Find and delete the specific refresh token
-    const storedTokens = await this.refreshTokenModel
-      .find({ userId: new Types.ObjectId(userId) })
-      .exec();
+  return { message: 'Logged out successfully' };
+}
 
-    for (const token of storedTokens) {
-      const isMatch = await bcrypt.compare(rawRefreshToken, token.tokenHash);
-      if (isMatch) {
-        await this.refreshTokenModel.findByIdAndDelete(token._id);
-        break;
-      }
-    }
+// ─── Profile ───────────────────────────────────────────────
 
-    this.clearCookies(res);
-
-    return { message: 'Logged out successfully' };
+export async function getProfile(userId: string) {
+  const user = await usersService.findById(userId);
+  if (!user) {
+    throw { status: 401, message: 'User not found' };
   }
+  return { user };
+}
 
-  // ─── Profile ───────────────────────────────────────────────
+// ─── Private helpers ──────────────────────────────────────
 
-  async getProfile(userId: string) {
-    const user = await this.usersService.findById(userId);
-    if (!user) {
-      throw new UnauthorizedException('User not found');
-    }
-    return { user: this.sanitizeUser(user) };
-  }
+async function issueTokens(payload: { sub: string; email: string }, res: Response) {
+  const accessToken = jwt.sign(payload, config.jwt.accessSecret, {
+    expiresIn: config.jwt.accessExpiresIn as string & jwt.SignOptions['expiresIn'],
+  });
+  const refreshToken = jwt.sign({ sub: payload.sub }, config.jwt.refreshSecret, {
+    expiresIn: config.jwt.refreshExpiresIn as string & jwt.SignOptions['expiresIn'],
+  });
 
-  // ─── Private helpers ──────────────────────────────────────
+  const tokenHash = await bcrypt.hash(refreshToken, BCRYPT_ROUNDS);
+  const expiresAt = new Date(Date.now() + config.cookie.refreshMaxAge);
 
-  private async issueTokens(
-    payload: { sub: string; email: string },
-    res: Response,
-  ) {
-    const [accessToken, refreshToken] = await Promise.all([
-      this.jwtService.signAsync(payload, {
-        secret: this.accessSecret,
-        expiresIn: this.accessExpiresIn as StringValue,
-      }),
-      this.jwtService.signAsync(
-        { sub: payload.sub },
-        {
-          secret: this.refreshSecret,
-          expiresIn: this.refreshExpiresIn as StringValue,
-        },
-      ),
-    ]);
+  await prisma.refreshToken.create({
+    data: { userId: payload.sub, tokenHash, expiresAt },
+  });
 
-    // Hash the refresh token before storing in DB
-    const tokenHash = await bcrypt.hash(refreshToken, BCRYPT_ROUNDS);
+  setAccessCookie(res, accessToken);
+  setRefreshCookie(res, refreshToken);
+}
 
-    // Calculate expiration date
-    const expiresAt = new Date(Date.now() + this.cookieMaxAge);
+function setAccessCookie(res: Response, token: string) {
+  res.cookie('access_token', token, {
+    httpOnly: true,
+    secure: config.isProduction,
+    sameSite: 'strict',
+    path: '/api',
+    maxAge: 15 * 60 * 1000,
+  });
+}
 
-    await this.refreshTokenModel.create({
-      userId: new Types.ObjectId(payload.sub),
-      tokenHash,
-      expiresAt,
-    });
+function setRefreshCookie(res: Response, token: string) {
+  res.cookie('refresh_token', token, {
+    httpOnly: true,
+    secure: config.isProduction,
+    sameSite: 'strict',
+    path: '/api/auth/refresh',
+    maxAge: config.cookie.refreshMaxAge,
+  });
+}
 
-    // Set cookies
-    this.setAccessCookie(res, accessToken);
-    this.setRefreshCookie(res, refreshToken);
-  }
+function clearCookies(res: Response) {
+  res.clearCookie('access_token', {
+    httpOnly: true,
+    secure: config.isProduction,
+    sameSite: 'strict',
+    path: '/api',
+  });
+  res.clearCookie('refresh_token', {
+    httpOnly: true,
+    secure: config.isProduction,
+    sameSite: 'strict',
+    path: '/api/auth/refresh',
+  });
+}
 
-  private setAccessCookie(res: Response, token: string) {
-    res.cookie('access_token', token, {
-      httpOnly: true,
-      secure: this.isProduction,
-      sameSite: 'strict',
-      path: '/api',
-      maxAge: 15 * 60 * 1000, // 15 minutes in ms
-    });
-  }
-
-  private setRefreshCookie(res: Response, token: string) {
-    res.cookie('refresh_token', token, {
-      httpOnly: true,
-      secure: this.isProduction,
-      sameSite: 'strict',
-      path: '/api/auth/refresh',
-      maxAge: this.cookieMaxAge,
-    });
-  }
-
-  private clearCookies(res: Response) {
-    res.clearCookie('access_token', {
-      httpOnly: true,
-      secure: this.isProduction,
-      sameSite: 'strict',
-      path: '/api',
-    });
-    res.clearCookie('refresh_token', {
-      httpOnly: true,
-      secure: this.isProduction,
-      sameSite: 'strict',
-      path: '/api/auth/refresh',
-    });
-  }
-
-  private sanitizeUser(user: any) {
-    const obj = user.toObject ? user.toObject() : { ...user };
-    delete obj.password;
-    delete obj.__v;
-    return obj;
-  }
+function sanitizeUser(user: any) {
+  const { password, ...rest } = user;
+  return rest;
 }

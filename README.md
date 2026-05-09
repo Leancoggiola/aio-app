@@ -1,32 +1,95 @@
-# `Turborepo` Vite starter
+# AIO App (All-In-One)
 
-This is a community-maintained example. If you experience a problem, please submit a pull request with a fix. GitHub Issues will be closed.
+Monorepo con Turborepo que contiene una API REST (Express + Prisma + PostgreSQL) y un frontend web (React + Vite + Mantine).
 
-## Using this example
+## Estructura
 
-Run the following command:
-
-```sh
-npx create-turbo@latest -e with-vite-react
+```
+apps/
+  api/          → API REST (Express, TypeScript, Prisma)
+  web/          → Frontend (React, Vite, Mantine, SWR)
+packages/
+  shared/       → Schemas Zod, tipos y constantes compartidas
+  ui/           → Componentes UI reutilizables
+  eslint-config/
+  typescript-config/
 ```
 
-## What's inside?
+## Requisitos previos
 
-This Turborepo includes the following packages and apps:
+- **Node.js** ≥ 18
+- **Yarn** 1.x (`npm install -g yarn`)
+- **Docker** (para PostgreSQL local)
 
-### Apps and Packages
+## Setup inicial
 
-- `web`: react [vite](https://vitejs.dev) ts app
-- `@repo/ui`: a stub component library shared by `web` application
-- `@repo/eslint-config`: shared `eslint` configurations
-- `@repo/typescript-config`: `tsconfig.json`s used throughout the monorepo
+```bash
+# 1. Instalar dependencias
+yarn install
 
-Each package and app is 100% [TypeScript](https://www.typescriptlang.org/).
+# 2. Levantar PostgreSQL con Docker
+cd apps/api
+docker compose up -d
 
-### Utilities
+# 3. Copiar variables de entorno
+cp .env.example .env
+# Editar .env con tus valores (JWT secrets, TMDB API key, etc.)
 
-This Turborepo has some additional tools already setup for you:
+# 4. Sincronizar base de datos (crear tablas)
+yarn db:migrate
+# o para dev rápido sin migraciones:
+yarn db:push
 
-- [TypeScript](https://www.typescriptlang.org/) for static type checking
-- [ESLint](https://eslint.org/) for code linting
-- [Prettier](https://prettier.io) for code formatting
+# 5. (Opcional) Abrir Prisma Studio para ver la DB
+yarn db:studio
+```
+
+## Levantar el proyecto
+
+```bash
+# Desde la raíz — levanta API y Web en paralelo
+yarn dev
+
+# O individualmente:
+yarn dev:api       # Solo API (http://localhost:3000)
+cd apps/web && yarn dev   # Solo Web (http://localhost:5173)
+```
+
+## Scripts principales
+
+| Comando       | Descripción                               |
+| ------------- | ----------------------------------------- |
+| `yarn dev`    | Levanta API + Web en paralelo (Turborepo) |
+| `yarn build`  | Build de producción de todos los packages |
+| `yarn lint`   | Lint de todo el monorepo                  |
+| `yarn format` | Formateo con Prettier                     |
+
+## Base de datos
+
+La API usa **PostgreSQL** con **Prisma ORM**. El schema se define en `apps/api/prisma/schema.prisma`.
+
+### Comandos de DB (desde `apps/api/`)
+
+| Comando            | Descripción                                      |
+| ------------------ | ------------------------------------------------ |
+| `yarn db:migrate`  | Crea/aplica migraciones (dev)                    |
+| `yarn db:push`     | Pushea el schema directo a la DB (sin migración) |
+| `yarn db:studio`   | Abre Prisma Studio en el navegador               |
+| `yarn db:generate` | Regenera el Prisma Client                        |
+
+### Flujo de cambios en la DB
+
+1. Editar `prisma/schema.prisma`
+2. `yarn db:migrate` → crea una migración y la aplica
+3. El Prisma Client se regenera automáticamente
+
+## Variables de entorno
+
+Ver `apps/api/.env.example` para la lista completa. Valores mínimos:
+
+```env
+DATABASE_URL=postgresql://aio:aio_dev@localhost:5432/aio_app
+JWT_ACCESS_SECRET=tu_secret_access
+JWT_REFRESH_SECRET=tu_secret_refresh
+TMDB_API_KEY=tu_api_key
+```

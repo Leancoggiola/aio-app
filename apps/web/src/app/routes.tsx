@@ -1,7 +1,6 @@
-import { homeRoute } from "./Home";
-import { loginRoute } from "./Login";
-import { mediaTrackerRoute } from "./MediaTracker";
-import { registerRoute } from "./Register";
+import { loginRoute, registerRoute } from "./features/auth";
+import { homeRoute } from "./features/home";
+import { mediaTrackerRoute } from "./features/mediaTracker";
 
 export const protectedRoutes = [homeRoute, mediaTrackerRoute];
 export const guestRoutes = [loginRoute, registerRoute];
