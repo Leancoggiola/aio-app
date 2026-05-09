@@ -50,6 +50,9 @@ export async function login(user: { id: string; email: string }, res: Response) 
 // ─── Refresh ───────────────────────────────────────────────
 
 export async function refresh(userId: string, rawRefreshToken: string, res: Response) {
+  // Clean up expired tokens for this user
+  await prisma.refreshToken.deleteMany({ where: { userId, expiresAt: { lt: new Date() } } });
+
   const storedTokens = await prisma.refreshToken.findMany({ where: { userId } });
 
   let matchedToken: (typeof storedTokens)[number] | null = null;
@@ -81,15 +84,19 @@ export async function refresh(userId: string, rawRefreshToken: string, res: Resp
 
 // ─── Logout ────────────────────────────────────────────────
 
-export async function logout(userId: string, rawRefreshToken: string, res: Response) {
-  const storedTokens = await prisma.refreshToken.findMany({ where: { userId } });
+export async function logout(userId: string, rawRefreshToken: string | undefined, res: Response) {
+  if (rawRefreshToken) {
+    const storedTokens = await prisma.refreshToken.findMany({ where: { userId } });
 
-  for (const token of storedTokens) {
-    const isMatch = await bcrypt.compare(rawRefreshToken, token.tokenHash);
-    if (isMatch) {
-      await prisma.refreshToken.delete({ where: { id: token.id } });
-      break;
+    for (const token of storedTokens) {
+      const isMatch = await bcrypt.compare(rawRefreshToken, token.tokenHash);
+      if (isMatch) {
+        await prisma.refreshToken.delete({ where: { id: token.id } });
+        break;
+      }
     }
+  } else {
+    await prisma.refreshToken.deleteMany({ where: { userId } });
   }
 
   clearCookies(res);

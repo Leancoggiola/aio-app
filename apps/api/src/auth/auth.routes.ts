@@ -1,14 +1,28 @@
 import { Router } from 'express';
 import type { Request, Response, NextFunction } from 'express';
+import rateLimit from 'express-rate-limit';
 import * as authService from './auth.service';
 import { registerSchema } from '@aio-app/shared/auth';
 import { validate } from '../middleware/validate';
 import { authenticateLocal, authenticateJwt, authenticateJwtRefresh } from './middleware/auth.middleware';
 
+const authLimiter = rateLimit({
+  windowMs: 15 * 60 * 1000,
+  max: 10,
+  message: { statusCode: 429, message: 'Too many attempts, try again later' },
+});
+
+const refreshLimiter = rateLimit({
+  windowMs: 15 * 60 * 1000,
+  max: 20,
+  message: { statusCode: 429, message: 'Too many attempts, try again later' },
+});
+
 const router = Router();
 
 router.post(
   '/register',
+  authLimiter,
   validate(registerSchema),
   async (req: Request, res: Response, next: NextFunction) => {
     try {
@@ -22,6 +36,7 @@ router.post(
 
 router.post(
   '/login',
+  authLimiter,
   authenticateLocal,
   async (req: Request, res: Response, next: NextFunction) => {
     try {
@@ -35,6 +50,7 @@ router.post(
 
 router.post(
   '/refresh',
+  refreshLimiter,
   authenticateJwtRefresh,
   async (req: Request, res: Response, next: NextFunction) => {
     try {

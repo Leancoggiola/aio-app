@@ -1,6 +1,7 @@
 import { config } from './config';
 import express from 'express';
 import cors from 'cors';
+import helmet from 'helmet';
 import cookieParser from 'cookie-parser';
 import passport from 'passport';
 
@@ -19,6 +20,7 @@ async function bootstrap() {
 
   const app = express();
 
+  app.use(helmet());
   app.use(cors({
     origin: config.corsOrigin,
     credentials: true,

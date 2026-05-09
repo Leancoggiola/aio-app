@@ -19,7 +19,7 @@ packages/
 
 - **Node.js** ≥ 18
 - **Yarn** 1.x (`npm install -g yarn`)
-- **Docker** (para PostgreSQL local)
+- **Supabase** account (PostgreSQL hosting) — [supabase.com](https://supabase.com)
 
 ## Setup inicial
 
@@ -27,20 +27,17 @@ packages/
 # 1. Instalar dependencias
 yarn install
 
-# 2. Levantar PostgreSQL con Docker
+# 2. Copiar variables de entorno
 cd apps/api
-docker compose up -d
-
-# 3. Copiar variables de entorno
 cp .env.example .env
-# Editar .env con tus valores (JWT secrets, TMDB API key, etc.)
+# Editar .env con tus valores (Supabase URLs, JWT secrets, TMDB API key, etc.)
 
-# 4. Sincronizar base de datos (crear tablas)
+# 3. Sincronizar base de datos (crear tablas)
 yarn db:migrate
 # o para dev rápido sin migraciones:
 yarn db:push
 
-# 5. (Opcional) Abrir Prisma Studio para ver la DB
+# 4. (Opcional) Abrir Prisma Studio para ver la DB
 yarn db:studio
 ```
 

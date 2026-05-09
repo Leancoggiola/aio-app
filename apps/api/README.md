@@ -37,7 +37,6 @@ apps/api/
 │   │   └── tmdb.service.ts  # Integración con TMDB API
 │   └── users/
 │       └── users.service.ts # Queries de usuario (create, findByEmail, findById)
-├── docker-compose.yml        # PostgreSQL local
 ├── tsup.config.ts            # Config de build
 └── .env.example              # Variables de entorno ejemplo
 ```
@@ -98,16 +97,13 @@ yarn db:studio
 ## Levantar
 
 ```bash
-# 1. Levantar PostgreSQL
-docker compose up -d
-
-# 2. Configurar env
+# 1. Configurar env (usar connection strings de Supabase)
 cp .env.example .env
 
-# 3. Aplicar schema a la DB
+# 2. Aplicar schema a la DB
 yarn db:migrate
 
-# 4. Dev mode (hot reload)
+# 3. Dev mode (hot reload)
 yarn dev
 ```
 
