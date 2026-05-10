@@ -171,6 +171,6 @@ function clearCookies(res: Response) {
 }
 
 function sanitizeUser(user: any) {
-  const { password, ...rest } = user;
+  const { password: _password, ...rest } = user;
   return rest;
 }

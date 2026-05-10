@@ -8,6 +8,7 @@ import { router } from "./app/router";
 import { THEME } from "./theme/config";
 
 import "@mantine/core/styles.css";
+import "@mantine/notifications/styles.css";
 
 createRoot(document.getElementById("app")!).render(
   <StrictMode>

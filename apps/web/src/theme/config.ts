@@ -1,4 +1,5 @@
-import { createTheme, Paper, PasswordInput, TextInput } from "@mantine/core";
+import { createTheme } from "@mantine/core";
+import { ComponentsOverride } from "./components";
 
 export const THEME = createTheme({
   fontFamily: "'Open Sans', sans-serif",
@@ -27,28 +28,28 @@ export const THEME = createTheme({
 
   defaultRadius: "md",
   radius: {
-    none: "0px",
-    xs: "2px",
-    sm: "4px",
-    md: "8px",
-    lg: "16px",
-    xl: "24px",
-    "2xl": "32px",
-    full: "960px",
+    none: "0",
+    xs: "0.125rem",
+    sm: "0.25rem",
+    md: "0.5rem",
+    lg: "1rem",
+    xl: "1.5rem",
+    "2xl": "2rem",
+    full: "60rem",
   },
 
   spacing: {
-    none: "0px",
-    "3xs": "2px",
-    "2xs": "4px",
-    xs: "8px",
-    sm: "12px",
-    md: "16px",
-    lg: "20px",
-    xl: "24px",
-    "2xl": "32px",
-    "3xl": "48px",
-    "4xl": "64px",
+    none: "0",
+    "3xs": "0.125rem",
+    "2xs": "0.25rem",
+    xs: "0.5rem",
+    sm: "0.75rem",
+    md: "1rem",
+    lg: "1.25rem",
+    xl: "1.5rem",
+    "2xl": "2rem",
+    "3xl": "3rem",
+    "4xl": "4rem",
   },
   breakpoints: {
     xs: "30em",
@@ -65,9 +66,5 @@ export const THEME = createTheme({
     lg: "0px 8px 10px 0px rgba(0, 0, 0, 0.08), 0px 8px 30px 0px rgba(0, 0, 0, 0.12)",
     xl: "0px 8px 10px 0px rgba(0, 0, 0, 0.08), 0px 8px 30px 0px rgba(0, 0, 0, 0.12)",
   },
-  components: {
-    Paper: Paper.extend({ defaultProps: { p: "md", shadow: "sm" } }),
-    PasswordInput: PasswordInput.extend({ defaultProps: { size: "md" } }),
-    TextInput: TextInput.extend({ defaultProps: { size: "md" } }),
-  },
+  components: ComponentsOverride,
 });

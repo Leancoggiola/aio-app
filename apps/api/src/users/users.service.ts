@@ -1,4 +1,4 @@
-import type { User } from '@prisma/client';
+import type { User } from '../generated/prisma/client';
 import type { RegisterPayload } from '@aio-app/shared/auth';
 import type { UpdateProfilePayload, UpdatePreferencesPayload } from '@aio-app/shared/users';
 import * as bcrypt from 'bcrypt';

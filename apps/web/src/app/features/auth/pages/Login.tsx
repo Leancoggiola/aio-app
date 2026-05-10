@@ -1,5 +1,5 @@
 import { Alert, Button, PasswordInput, Stack, TextInput } from "@mantine/core";
-import { hasLength, isEmail, useForm } from "@mantine/form";
+import { schemaResolver, useForm } from "@mantine/form";
 import { useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 
@@ -7,6 +7,7 @@ import { useAuth } from "../../../core/auth";
 import { AuthCard } from "../components/AuthCard";
 
 import type { FC } from "react";
+import { loginSchema } from "@aio-app/shared/auth";
 import type { LoginPayload } from "@aio-app/shared/auth";
 
 export const Login: FC = () => {
@@ -22,13 +23,7 @@ export const Login: FC = () => {
       email: "",
       password: "",
     },
-    validate: {
-      email: isEmail("Email inválido"),
-      password: hasLength(
-        { min: 8 },
-        "La contraseña debe tener al menos 8 caracteres",
-      ),
-    },
+    validate: schemaResolver(loginSchema, { sync: true }),
   });
 
   const handleSubmit = async (values: LoginPayload) => {
