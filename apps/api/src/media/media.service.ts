@@ -1,7 +1,8 @@
 import type { MediaType, AddMediaItemPayload, FilterMediaParams, UpdateMediaItemPayload } from '@aio-app/shared/media';
 
-import { prisma } from '../lib/prisma';
+import { prisma } from '../common/prisma';
 import * as tmdbService from './tmdb.service';
+import { recalculateStats } from '../users/stats.service';
 
 export async function search(query: string, page: number, type: string) {
   switch (type) {
@@ -43,7 +44,7 @@ export async function addToList(userId: string, dto: AddMediaItemPayload) {
     posterPath = detail.poster_path;
   }
 
-  return prisma.mediaItem.create({
+  const item = await prisma.mediaItem.create({
     data: {
       userId,
       tmdbId: dto.tmdbId,
@@ -53,6 +54,10 @@ export async function addToList(userId: string, dto: AddMediaItemPayload) {
       status: dto.status || 'to_watch',
     },
   });
+
+  await recalculateStats(userId);
+
+  return item;
 }
 
 export async function getList(userId: string, filters: FilterMediaParams) {
@@ -79,10 +84,14 @@ export async function updateStatus(
     throw { status: 404, message: 'Media item not found' };
   }
 
-  return prisma.mediaItem.update({
+  const updated = await prisma.mediaItem.update({
     where: { id: itemId },
     data: { status: dto.status },
   });
+
+  await recalculateStats(userId);
+
+  return updated;
 }
 
 export async function removeFromList(userId: string, itemId: string): Promise<void> {
@@ -95,4 +104,6 @@ export async function removeFromList(userId: string, itemId: string): Promise<vo
   }
 
   await prisma.mediaItem.delete({ where: { id: itemId } });
+
+  await recalculateStats(userId);
 }

@@ -1,3 +1,4 @@
 export { loginRoute, registerRoute } from "./auth";
 export { homeRoute } from "./home";
-export { mediaTrackerRoute } from "./mediaTracker";
+export { mediaRoute } from "./media";
+export { profileRoute } from "./users";

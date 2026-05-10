@@ -6,7 +6,7 @@ import { MyMediaList } from "./components/MyMediaList";
 import { useMediaSearch, useMyMediaList, useMediaMutations } from "./hooks";
 import type { MediaFilters, MediaType, MediaStatus } from "./types";
 
-export const MediaTrackerPage: FC = () => {
+export const MediaPage: FC = () => {
   // Search state
   const [searchQuery, setSearchQuery] = useState("");
   const [searchType, setSearchType] = useState("multi");

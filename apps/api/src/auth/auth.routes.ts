@@ -3,7 +3,7 @@ import type { Request, Response, NextFunction } from 'express';
 import rateLimit from 'express-rate-limit';
 import * as authService from './auth.service';
 import { registerSchema } from '@aio-app/shared/auth';
-import { validate } from '../middleware/validate';
+import { validate } from '../common/validate';
 import { authenticateLocal, authenticateJwt, authenticateJwtRefresh } from './middleware/auth.middleware';
 
 const authLimiter = rateLimit({

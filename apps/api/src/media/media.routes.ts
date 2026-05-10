@@ -3,7 +3,7 @@ import type { Request, Response, NextFunction } from 'express';
 import type { MediaType } from '@aio-app/shared/media';
 import { searchMediaSchema, addMediaItemSchema, updateMediaItemSchema, filterMediaSchema } from '@aio-app/shared/media';
 import { authenticateJwt } from '../auth/middleware/auth.middleware';
-import { validate } from '../middleware/validate';
+import { validate } from '../common/validate';
 import * as mediaService from './media.service';
 
 const router = Router();

@@ -9,14 +9,26 @@ datasource db {
 }
 
 model User {
-  id            String         @id @default(cuid())
+  id            String           @id @default(cuid())
   name          String
-  email         String         @unique
+  email         String           @unique
   password      String
-  createdAt     DateTime       @default(now())
-  updatedAt     DateTime       @updatedAt
+  avatarUrl     String?
+  createdAt     DateTime         @default(now())
+  updatedAt     DateTime         @updatedAt
   refreshTokens RefreshToken[]
   mediaItems    MediaItem[]
+  preferences   UserPreferences?
+  stats         UserStats?
+}
+
+model UserPreferences {
+  id            String   @id @default(cuid())
+  userId        String   @unique
+  user          User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  notifications Boolean  @default(false)
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
 }
 
 model RefreshToken {
@@ -45,4 +57,16 @@ model MediaItem {
 
   @@unique([userId, tmdbId, mediaType])
   @@index([userId])
+}
+
+model UserStats {
+  id            String   @id @default(cuid())
+  userId        String   @unique
+  user          User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  totalMovies   Int      @default(0)
+  totalTvShows  Int      @default(0)
+  totalWatched  Int      @default(0)
+  totalWatching Int      @default(0)
+  totalToWatch  Int      @default(0)
+  updatedAt     DateTime @updatedAt
 }

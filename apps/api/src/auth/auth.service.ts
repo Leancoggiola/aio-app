@@ -4,7 +4,7 @@ import { Response } from 'express';
 
 import { config } from '../config';
 import * as usersService from '../users/users.service';
-import { prisma } from '../lib/prisma';
+import { prisma } from '../common/prisma';
 import type { RegisterPayload } from '@aio-app/shared/auth';
 
 const BCRYPT_ROUNDS = 12;
