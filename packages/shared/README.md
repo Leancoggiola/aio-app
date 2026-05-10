@@ -1,29 +1,35 @@
 # @aio-app/shared
 
-Shared types, DTOs, and constants for the AIO App monorepo.
+Tipos TypeScript, schemas Zod y constantes compartidas entre la API y el frontend.
 
-This is a **Just-in-Time Package** - it exports TypeScript directly without a build step.
-The consuming applications' bundlers (Vite for web, ts-node for API) will compile it.
+Es un **Just-in-Time Package** — exporta TypeScript directo sin paso de build. Los bundlers de las apps consumidoras (Vite para web, tsx/tsup para API) lo compilan.
 
-## Usage
+## Exports
+
+| Path                    | Contenido                                                                                                                                                                                |
+| ----------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `@aio-app/shared`       | Re-export de todo                                                                                                                                                                        |
+| `@aio-app/shared/auth`  | `loginSchema`, `registerSchema` + tipos `LoginPayload`, `RegisterPayload`                                                                                                                |
+| `@aio-app/shared/media` | Schemas de media (add, update, search, filter) + tipos (`MediaType`, `MediaStatus`, `MediaItem`, `TmdbMediaResult`, etc.) + constantes (`MEDIA_TYPES`, `MEDIA_STATUSES`, `SEARCH_TYPES`) |
+
+## Uso
 
 ```typescript
-// Import types
-import type { MediaItem, MediaType } from '@aio-app/shared/types/media';
+// Schemas Zod (para validación en API y forms en Web)
+import { loginSchema, registerSchema } from "@aio-app/shared/auth";
+import { addMediaItemSchema, searchMediaSchema } from "@aio-app/shared/media";
 
-// Import DTOs
-import type { CreateMediaItemDto } from '@aio-app/shared/dtos/media';
+// Tipos TypeScript
+import type { LoginPayload, RegisterPayload } from "@aio-app/shared/auth";
+import type { MediaItem, MediaType, MediaStatus } from "@aio-app/shared/media";
 
-// Import constants
-import { MEDIA_TYPES, MEDIA_STATUSES } from '@aio-app/shared/constants';
+// Constantes
+import { MEDIA_TYPES, MEDIA_STATUSES } from "@aio-app/shared/media";
 ```
 
-## Development
+## Scripts
 
 ```bash
-# Type checking
-yarn workspace @aio-app/shared check-types
-
-# Linting
-yarn workspace @aio-app/shared lint
+yarn workspace @aio-app/shared check-types   # Type checking
+yarn workspace @aio-app/shared lint           # Linting
 ```

@@ -1,55 +1,80 @@
-# Web
+# Web — AIO App
 
-Frontend construido con **React**, **Vite**, **Mantine** y **SWR**.
+Frontend SPA para la aplicación de media tracking. Permite a los usuarios registrarse, buscar películas/series en TMDB y gestionar su lista personal.
 
 ## Stack
 
-- **React 18** — UI library
-- **Vite** — Dev server y bundler
-- **Mantine 8** — Component library (UI + forms + hooks)
-- **SWR** — Data fetching y cache
-- **React Router 7** — Routing (client-side)
-- **TypeScript**
+| Tecnología         | Uso                                       |
+| ------------------ | ----------------------------------------- |
+| **React 18**       | UI library                                |
+| **Vite**           | Dev server + bundler (con proxy a la API) |
+| **Mantine 8**      | Component library (UI + forms + hooks)    |
+| **SWR**            | Data fetching, cache y revalidación       |
+| **React Router 7** | Routing client-side con guards            |
+| **TypeScript**     | Type safety                               |
+| **SVGR**           | Importar SVGs como componentes React      |
 
 ## Estructura de carpetas
 
 ```
-apps/web/src/
-├── main.tsx                  # Entry point (monta App con providers)
+src/
+├── main.tsx                      # Entry point — providers + RouterProvider
+├── vite-env.d.ts                 # Tipos de Vite
 ├── app/
-│   ├── router.tsx            # Configuración del router
-│   ├── routes.tsx            # Definición de rutas
+│   ├── router.tsx                # createBrowserRouter + Suspense wrappers
+│   ├── routes.tsx                # Definición de rutas protegidas y guest
 │   ├── core/
-│   │   ├── auth/             # AuthContext (estado de sesión)
-│   │   ├── guards/           # ProtectedRoute, GuestRoute
-│   │   ├── hooks/            # Hooks compartidos
-│   │   └── layouts/          # AuthLayout, MainLayout
+│   │   ├── auth/
+│   │   │   └── AuthContext.tsx   # Estado de sesión (login, logout, register, refresh)
+│   │   ├── guards/
+│   │   │   ├── ProtectedRoute.tsx  # Redirige a /login si no autenticado
+│   │   │   └── GuestRoute.tsx      # Redirige a / si ya autenticado
+│   │   ├── hooks/                # Hooks compartidos de la app
+│   │   └── layouts/
+│   │       ├── RootLayout.tsx    # Layout principal (navbar, contenido)
+│   │       ├── AuthLayout.tsx    # Layout para login/register
+│   │       └── AnimatedBackground/  # Fondo animado para auth pages
 │   ├── features/
-│   │   ├── auth/             # Login, Register pages
-│   │   ├── home/             # Home page
-│   │   └── mediaTracker/     # Media tracker (search, list, cards)
+│   │   ├── auth/                 # Login y Register pages + componentes
+│   │   ├── home/                 # Home page
+│   │   └── mediaTracker/         # Búsqueda TMDB, lista de media, cards
 │   └── providers/
-│       └── SWRProvider.tsx   # Configuración global de SWR
+│       └── SWRProvider.tsx       # Config global de SWR (fetcher, revalidation)
 ├── lib/
-│   ├── api.ts                # Instancia base para llamadas HTTP
-│   └── fetcher.ts            # Fetcher para SWR
+│   ├── api.ts                    # Instancia base para HTTP requests (con interceptors)
+│   └── fetcher.ts                # Fetcher para SWR (usa api.ts)
 ├── theme/
-│   └── config.ts             # Tema de Mantine
-└── assets/
+│   └── config.ts                 # Tema customizado de Mantine
+└── assets/                       # Imágenes, íconos, etc.
 ```
+
+## Arquitectura de routing
+
+```
+ProtectedRoute (requiere auth)
+└── RootLayout (navbar + outlet)
+    ├── /          → Home
+    └── /tracker   → MediaTracker
+
+GuestRoute (solo sin auth)
+└── AuthLayout (fondo animado + outlet)
+    ├── /login     → Login
+    └── /register  → Register
+```
+
+Las rutas se definen en `routes.tsx` y se envuelven automáticamente con `<Suspense>` en `router.tsx`.
 
 ## Levantar
 
 ```bash
-# Desde la raíz del monorepo
-yarn dev          # Levanta web + api en paralelo
+# Desde la raíz del monorepo (recomendado — levanta con la API)
+yarn dev
 
-# O solo la web
-cd apps/web
-yarn dev          # http://localhost:5173
+# Solo la web
+yarn dev:web      # http://localhost:5173
 ```
 
-> La web necesita la API corriendo para funcionar. Asegurate de tener la API levantada en `http://localhost:3000`.
+> La web necesita la API corriendo. Vite hace proxy automático de `/api` → `http://localhost:3000`.
 
 ## Build de producción
 
@@ -60,5 +85,7 @@ yarn preview   # Preview del build local
 
 ## Paquetes compartidos
 
-- **`@aio-app/shared`** — Schemas Zod, tipos y constantes compartidas entre API y Web
-- **`@repo/ui`** — Componentes UI reutilizables
+| Paquete           | Descripción                                 |
+| ----------------- | ------------------------------------------- |
+| `@aio-app/shared` | Schemas Zod, tipos y constantes compartidas |
+| `@repo/ui`        | Componentes UI reutilizables                |
