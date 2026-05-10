@@ -18,10 +18,9 @@ Decisiones tomadas en la sesión de refactorización (2026-05-10), diferidas par
 - [ ] Definir qué tipo de notificaciones soportar (email, push, in-app)
 - [ ] Implementar backend de notificaciones cuando se defina el alcance
 
-## Build Issue (pre-existente)
+## ~~Build Issue (pre-existente)~~ ✅ RESUELTO
 
-- [ ] Error de esbuild/passport en `yarn build` de la API — no afecta `tsc --noEmit` ni el runtime, solo el bundling con tsup
-- [ ] Investigar resolución de módulos de passport con esbuild
+- [x] ~~Error de esbuild/passport en `yarn build` de la API~~ — Faltaban `passport` y `passport-jwt` en `dependencies` del `package.json` de la API. Agregados con `yarn add passport passport-jwt`.
 
 ## Otros pendientes
 
