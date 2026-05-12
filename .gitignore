@@ -64,5 +64,7 @@ pnpm-debug.log*
 .DS_Store
 *.pem
 
-
 postman-collection.json
+
+# MCPs
+.playwright-mcp
