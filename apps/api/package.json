@@ -7,7 +7,6 @@
     "dev": "tsx watch src/main.ts",
     "build": "prisma generate && tsup",
     "start": "node dist/main.js",
-    "generate": "prisma generate",
     "check-types": "tsc --noEmit",
     "test": "vitest run",
     "test:watch": "vitest",

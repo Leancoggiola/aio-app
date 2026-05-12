@@ -11,7 +11,7 @@
     "transit": {
       "dependsOn": ["^transit"]
     },
-    "generate": {
+    "db:generate": {
       "outputs": ["src/generated/**"]
     },
     "lint": {
@@ -19,7 +19,7 @@
       "outputs": []
     },
     "check-types": {
-      "dependsOn": ["transit", "generate"],
+      "dependsOn": ["transit", "db:generate"],
       "outputs": []
     },
     "test": {
