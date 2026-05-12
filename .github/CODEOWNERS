@@ -1,14 +1,18 @@
 # Default owner for everything
-* @Leancoggiola
+
+- @Leancoggiola
 
 # App-specific
+
 apps/api/ @Leancoggiola
 apps/web/ @Leancoggiola
 
 # Shared packages
+
 packages/ @Leancoggiola
 
 # CI/CD and infra
+
 .github/ @Leancoggiola
 turbo.json @Leancoggiola
 pnpm-workspace.yaml @Leancoggiola
