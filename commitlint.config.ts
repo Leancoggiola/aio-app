@@ -1,6 +1,4 @@
-import type { UserConfig } from "@commitlint/types";
-
-const config: UserConfig = {
+const config = {
   extends: ["@commitlint/config-conventional"],
   rules: {
     "scope-enum": [
@@ -17,8 +15,8 @@ const config: UserConfig = {
         "ci",
       ],
     ],
-    "scope-empty": [1, "never"],
-    "subject-case": [2, "always", "lower-case"],
+    "scope-empty": [0],
+    "subject-case": [2, "never", ["start-case", "pascal-case", "upper-case"]],
   },
 };
 

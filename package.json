@@ -9,17 +9,6 @@
     "format": "prettier --write \"**/*.{ts,tsx,md}\"",
     "prepare": "husky"
   },
-  "lint-staged": {
-    "apps/**/*.{ts,tsx}": [
-      "eslint --fix"
-    ],
-    "packages/**/*.{ts,tsx}": [
-      "eslint --fix"
-    ],
-    "*.{ts,tsx,json,md,css,scss,mjs}": [
-      "prettier --write"
-    ]
-  },
   "devDependencies": {
     "@commitlint/cli": "21.0.1",
     "@commitlint/config-conventional": "21.0.1",
