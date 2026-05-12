@@ -11,12 +11,15 @@
     "transit": {
       "dependsOn": ["^transit"]
     },
+    "generate": {
+      "outputs": ["src/generated/**"]
+    },
     "lint": {
       "dependsOn": ["transit"],
       "outputs": []
     },
     "check-types": {
-      "dependsOn": ["transit"],
+      "dependsOn": ["transit", "generate"],
       "outputs": []
     },
     "test": {
