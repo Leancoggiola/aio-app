@@ -53,7 +53,7 @@ describe("validate middleware", () => {
     expect(next).toHaveBeenCalledWith(
       expect.objectContaining({
         status: 400,
-        message: "Validation error",
+        message: "Error de validación",
       }),
     );
   });
