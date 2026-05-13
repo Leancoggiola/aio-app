@@ -8,8 +8,10 @@ export interface UserPreferences {
 
 export interface UserProfile {
   id: string;
+  username: string;
   name: string;
-  email: string;
+  email: string | null;
+  role: "ADMIN" | "USER";
   avatarUrl: string | null;
   createdAt: string;
   updatedAt: string;
