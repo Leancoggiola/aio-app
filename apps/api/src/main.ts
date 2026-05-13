@@ -1,35 +1,41 @@
-import { config } from './config';
-import express from 'express';
-import cors from 'cors';
-import helmet from 'helmet';
-import cookieParser from 'cookie-parser';
-import passport from 'passport';
+import { config } from "./config";
+import express from "express";
+import cors from "cors";
+import helmet from "helmet";
+import cookieParser from "cookie-parser";
+import passport from "passport";
 
 // Register passport strategies (side-effect imports)
-import './auth/strategies/local.strategy';
-import './auth/strategies/jwt.strategy';
-import './auth/strategies/jwt-refresh.strategy';
+import "./auth/strategies/local.strategy";
+import "./auth/strategies/jwt.strategy";
+import "./auth/strategies/jwt-refresh.strategy";
 
-import router from './router';
-import { errorHandler } from './common/error-handler';
-import { prisma } from './common/prisma';
+import router from "./router";
+import { errorHandler } from "./common/error-handler";
+import { prisma } from "./common/prisma";
 
 async function bootstrap() {
   await prisma.$connect();
-  console.log('Connected to PostgreSQL');
+  console.log("Connected to PostgreSQL");
 
   const app = express();
 
   app.use(helmet());
-  app.use(cors({
-    origin: config.corsOrigin,
-    credentials: true,
-  }));
+  app.use(
+    cors({
+      origin: config.corsOrigin,
+      credentials: true,
+    }),
+  );
   app.use(express.json());
   app.use(cookieParser());
   app.use(passport.initialize());
 
-  app.use('/api', router);
+  app.get("/api/health", (_req, res) => {
+    res.json({ status: "ok" });
+  });
+
+  app.use("/api", router);
 
   app.use(errorHandler);
 
@@ -39,6 +45,6 @@ async function bootstrap() {
 }
 
 bootstrap().catch((err) => {
-  console.error('Failed to start:', err);
+  console.error("Failed to start:", err);
   process.exit(1);
 });
