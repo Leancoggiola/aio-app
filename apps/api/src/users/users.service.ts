@@ -1,5 +1,5 @@
 import type { User } from "../generated/prisma/client";
-import type { RegisterPayload } from "@aio-app/shared/auth";
+import type { CreateUserPayload } from "@aio-app/shared/auth";
 import type {
   UpdateProfilePayload,
   UpdatePreferencesPayload,
@@ -9,11 +9,28 @@ import { prisma } from "../common/prisma";
 
 const BCRYPT_ROUNDS = 12;
 
-export async function create(dto: RegisterPayload): Promise<User> {
-  return prisma.user.create({ data: dto });
+export async function create(
+  dto: Omit<CreateUserPayload, "role"> & { password: string; role?: string },
+): Promise<User> {
+  return prisma.user.create({
+    data: {
+      username: dto.username.toLowerCase(),
+      name: dto.name,
+      email: dto.email ?? null,
+      password: dto.password,
+      role: (dto.role as "ADMIN" | "USER") ?? "USER",
+    },
+  });
 }
 
 /** Returns user WITH password (for auth validation). */
+export async function findByUsername(username: string): Promise<User | null> {
+  return prisma.user.findUnique({
+    where: { username: username.toLowerCase() },
+  });
+}
+
+/** Returns user WITH password (kept for future password recovery via email). */
 export async function findByEmail(email: string): Promise<User | null> {
   return prisma.user.findUnique({ where: { email } });
 }

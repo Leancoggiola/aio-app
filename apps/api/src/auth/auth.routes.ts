@@ -2,8 +2,8 @@ import { Router } from "express";
 import type { Request, Response, NextFunction } from "express";
 import rateLimit from "express-rate-limit";
 import * as authService from "./auth.service";
-import { registerSchema } from "@aio-app/shared/auth";
 import { validate } from "../common/validate";
+import { loginSchema } from "@aio-app/shared/auth";
 import {
   authenticateLocal,
   authenticateJwt,
@@ -31,22 +31,9 @@ const refreshLimiter = rateLimit({
 const router = Router();
 
 router.post(
-  "/register",
-  authLimiter,
-  validate(registerSchema),
-  async (req: Request, res: Response, next: NextFunction) => {
-    try {
-      const result = await authService.register(req.body, res);
-      res.status(201).json(result);
-    } catch (err) {
-      next(err);
-    }
-  },
-);
-
-router.post(
   "/login",
   authLimiter,
+  validate(loginSchema),
   authenticateLocal,
   async (req: Request, res: Response, next: NextFunction) => {
     try {
