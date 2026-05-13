@@ -1,7 +1,7 @@
-import passport from 'passport';
-import { Strategy as JwtStrategy, ExtractJwt } from 'passport-jwt';
-import { Request } from 'express';
-import { config } from '../../config';
+import passport from "passport";
+import { Strategy as JwtStrategy, ExtractJwt } from "passport-jwt";
+import { Request } from "express";
+import { config } from "../../config";
 
 export interface JwtPayload {
   sub: string;
@@ -9,7 +9,7 @@ export interface JwtPayload {
 }
 
 passport.use(
-  'jwt',
+  "jwt",
   new JwtStrategy(
     {
       jwtFromRequest: ExtractJwt.fromExtractors([

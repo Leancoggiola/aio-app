@@ -1,10 +1,25 @@
-import { Router } from 'express';
-import type { Request, Response, NextFunction } from 'express';
-import type { MediaType } from '@aio-app/shared/media';
-import { searchMediaSchema, addMediaItemSchema, updateMediaItemSchema, filterMediaSchema } from '@aio-app/shared/media';
-import { authenticateJwt } from '../auth/middleware/auth.middleware';
-import { validate } from '../common/validate';
-import * as mediaService from './media.service';
+import { Router } from "express";
+import type { Request, Response, NextFunction } from "express";
+import rateLimit from "express-rate-limit";
+import type { MediaType } from "@aio-app/shared/media";
+import {
+  searchMediaSchema,
+  addMediaItemSchema,
+  updateMediaItemSchema,
+  filterMediaSchema,
+} from "@aio-app/shared/media";
+import { authenticateJwt } from "../auth/middleware/auth.middleware";
+import { validate } from "../common/validate";
+import * as mediaService from "./media.service";
+
+const searchLimiter = rateLimit({
+  windowMs: 15 * 60 * 1000,
+  max: 50,
+  message: {
+    statusCode: 429,
+    message: "Demasiadas búsquedas, intenta de nuevo más tarde",
+  },
+});
 
 const router = Router();
 
@@ -12,12 +27,17 @@ const router = Router();
 router.use(authenticateJwt);
 
 router.get(
-  '/search',
-  validate(searchMediaSchema, 'query'),
+  "/search",
+  searchLimiter,
+  validate(searchMediaSchema, "query"),
   async (req: Request, res: Response, next: NextFunction) => {
     try {
       const { query, page, type } = req.query as any;
-      const result = await mediaService.search(query, page ?? 1, type ?? 'multi');
+      const result = await mediaService.search(
+        query,
+        page ?? 1,
+        type ?? "multi",
+      );
       res.json(result);
     } catch (err) {
       next(err);
@@ -26,7 +46,7 @@ router.get(
 );
 
 router.get(
-  '/tmdb/:type/:id',
+  "/tmdb/:type/:id",
   async (req: Request, res: Response, next: NextFunction) => {
     try {
       const type = req.params.type as string as MediaType;
@@ -40,8 +60,8 @@ router.get(
 );
 
 router.get(
-  '/list',
-  validate(filterMediaSchema, 'query'),
+  "/list",
+  validate(filterMediaSchema, "query"),
   async (req: Request, res: Response, next: NextFunction) => {
     try {
       const { userId } = req.user as { userId: string };
@@ -54,7 +74,7 @@ router.get(
 );
 
 router.post(
-  '/list',
+  "/list",
   validate(addMediaItemSchema),
   async (req: Request, res: Response, next: NextFunction) => {
     try {
@@ -68,12 +88,16 @@ router.post(
 );
 
 router.patch(
-  '/list/:id',
+  "/list/:id",
   validate(updateMediaItemSchema),
   async (req: Request, res: Response, next: NextFunction) => {
     try {
       const { userId } = req.user as { userId: string };
-      const result = await mediaService.updateStatus(userId, req.params.id as string, req.body);
+      const result = await mediaService.updateStatus(
+        userId,
+        req.params.id as string,
+        req.body,
+      );
       res.json(result);
     } catch (err) {
       next(err);
@@ -82,7 +106,7 @@ router.patch(
 );
 
 router.delete(
-  '/list/:id',
+  "/list/:id",
   async (req: Request, res: Response, next: NextFunction) => {
     try {
       const { userId } = req.user as { userId: string };

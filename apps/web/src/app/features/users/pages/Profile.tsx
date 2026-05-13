@@ -1,13 +1,22 @@
 import { FC, useCallback } from "react";
 import { Stack, Title, Loader, Divider } from "@mantine/core";
 import { useProfile, usePreferences } from "../hooks";
-import { ProfileForm, PasswordForm, PreferencesForm, DeleteAccountButton } from "../components";
+import {
+  ProfileForm,
+  PasswordForm,
+  PreferencesForm,
+  DeleteAccountButton,
+} from "../components";
 import { api } from "../../../../lib/api";
 import { useAuth } from "../../../core/auth";
 
 export const ProfilePage: FC = () => {
   const { profile, isLoading: profileLoading, updateProfile } = useProfile();
-  const { preferences, isLoading: prefsLoading, updatePreferences } = usePreferences();
+  const {
+    preferences,
+    isLoading: prefsLoading,
+    updatePreferences,
+  } = usePreferences();
   const { logout } = useAuth();
 
   const handleChangePassword = useCallback(async (newPassword: string) => {
@@ -42,7 +51,10 @@ export const ProfilePage: FC = () => {
         <>
           <Stack gap="lg">
             <Title order={4}>Preferences</Title>
-            <PreferencesForm preferences={preferences} onUpdate={updatePreferences} />
+            <PreferencesForm
+              preferences={preferences}
+              onUpdate={updatePreferences}
+            />
           </Stack>
 
           <Divider />

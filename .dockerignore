@@ -1,0 +1,16 @@
+**/node_modules
+.turbo
+**/.turbo
+.git
+.gitignore
+.github
+.husky
+.vscode
+*.md
+!README.md
+coverage
+.env*
+docker-compose*.yml
+Dockerfile
+*.log
+dist

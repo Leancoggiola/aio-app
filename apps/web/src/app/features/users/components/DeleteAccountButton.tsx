@@ -5,7 +5,9 @@ interface DeleteAccountButtonProps {
   onDelete: () => Promise<void>;
 }
 
-export const DeleteAccountButton: FC<DeleteAccountButtonProps> = ({ onDelete }) => {
+export const DeleteAccountButton: FC<DeleteAccountButtonProps> = ({
+  onDelete,
+}) => {
   const [opened, setOpened] = useState(false);
   const [loading, setLoading] = useState(false);
 
@@ -36,7 +38,12 @@ export const DeleteAccountButton: FC<DeleteAccountButtonProps> = ({ onDelete }) 
             Are you sure you want to delete your account? This action cannot be
             undone. All your data will be permanently removed.
           </Text>
-          <Button color="red" loading={loading} onClick={handleDelete} fullWidth>
+          <Button
+            color="red"
+            loading={loading}
+            onClick={handleDelete}
+            fullWidth
+          >
             Yes, delete my account
           </Button>
           <Button variant="default" onClick={() => setOpened(false)} fullWidth>

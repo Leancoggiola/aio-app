@@ -1,5 +1,6 @@
 {
   "$schema": "https://turborepo.dev/schema.json",
+  "globalDependencies": ["eslint.config.mjs"],
   "tasks": {
     "build": {
       "dependsOn": ["^build"],
@@ -7,13 +8,27 @@
       "outputs": ["dist/**"],
       "env": ["NODE_ENV"]
     },
+    "transit": {
+      "dependsOn": ["^transit"]
+    },
+    "db:generate": {
+      "outputs": ["src/generated/**"]
+    },
     "lint": {
-      "inputs": ["$TURBO_DEFAULT$", "eslint.config.*"],
+      "dependsOn": ["transit"],
       "outputs": []
     },
     "check-types": {
-      "inputs": ["$TURBO_DEFAULT$", "tsconfig.json"],
+      "dependsOn": ["transit", "db:generate"],
       "outputs": []
+    },
+    "test": {
+      "dependsOn": ["transit"],
+      "outputs": []
+    },
+    "test:coverage": {
+      "dependsOn": ["transit"],
+      "outputs": ["coverage/**"]
     },
     "dev": {
       "cache": false,

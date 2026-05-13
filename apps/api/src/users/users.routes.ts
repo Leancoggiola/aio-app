@@ -1,17 +1,32 @@
-import { Router } from 'express';
-import type { Request, Response, NextFunction } from 'express';
-import { updateProfileSchema, changePasswordSchema, updatePreferencesSchema } from '@aio-app/shared/users';
-import { authenticateJwt } from '../auth/middleware/auth.middleware';
-import { validate } from '../common/validate';
-import * as usersService from './users.service';
-import * as statsService from './stats.service';
+import { Router } from "express";
+import type { Request, Response, NextFunction } from "express";
+import rateLimit from "express-rate-limit";
+import {
+  updateProfileSchema,
+  changePasswordSchema,
+  updatePreferencesSchema,
+} from "@aio-app/shared/users";
+import { authenticateJwt } from "../auth/middleware/auth.middleware";
+import { validate } from "../common/validate";
+import * as usersService from "./users.service";
+import * as statsService from "./stats.service";
+
+const passwordLimiter = rateLimit({
+  windowMs: 15 * 60 * 1000,
+  max: 5,
+  message: {
+    statusCode: 429,
+    message:
+      "Demasiados intentos de cambio de contraseña, intenta de nuevo más tarde",
+  },
+});
 
 const router = Router();
 
 // ─── Profile ───────────────────────────────────────────────
 
 router.get(
-  '/profile',
+  "/profile",
   authenticateJwt,
   async (req: Request, res: Response, next: NextFunction) => {
     try {
@@ -25,7 +40,7 @@ router.get(
 );
 
 router.patch(
-  '/profile',
+  "/profile",
   authenticateJwt,
   validate(updateProfileSchema),
   async (req: Request, res: Response, next: NextFunction) => {
@@ -42,14 +57,15 @@ router.patch(
 // ─── Password ──────────────────────────────────────────────
 
 router.patch(
-  '/password',
+  "/password",
   authenticateJwt,
+  passwordLimiter,
   validate(changePasswordSchema),
   async (req: Request, res: Response, next: NextFunction) => {
     try {
       const { userId } = req.user as any;
       await usersService.changePassword(userId, req.body.newPassword);
-      res.json({ message: 'Password updated successfully' });
+      res.json({ message: "Contraseña actualizada exitosamente" });
     } catch (err) {
       next(err);
     }
@@ -59,15 +75,15 @@ router.patch(
 // ─── Delete Account ────────────────────────────────────────
 
 router.delete(
-  '/account',
+  "/account",
   authenticateJwt,
   async (req: Request, res: Response, next: NextFunction) => {
     try {
       const { userId } = req.user as any;
       await usersService.deleteAccount(userId);
-      res.clearCookie('access_token');
-      res.clearCookie('refresh_token');
-      res.json({ message: 'Account deleted successfully' });
+      res.clearCookie("access_token");
+      res.clearCookie("refresh_token");
+      res.json({ message: "Cuenta eliminada exitosamente" });
     } catch (err) {
       next(err);
     }
@@ -77,7 +93,7 @@ router.delete(
 // ─── Preferences ───────────────────────────────────────────
 
 router.get(
-  '/preferences',
+  "/preferences",
   authenticateJwt,
   async (req: Request, res: Response, next: NextFunction) => {
     try {
@@ -91,13 +107,16 @@ router.get(
 );
 
 router.patch(
-  '/preferences',
+  "/preferences",
   authenticateJwt,
   validate(updatePreferencesSchema),
   async (req: Request, res: Response, next: NextFunction) => {
     try {
       const { userId } = req.user as any;
-      const preferences = await usersService.updatePreferences(userId, req.body);
+      const preferences = await usersService.updatePreferences(
+        userId,
+        req.body,
+      );
       res.json({ preferences });
     } catch (err) {
       next(err);
@@ -108,7 +127,7 @@ router.patch(
 // ─── Stats ─────────────────────────────────────────────────
 
 router.get(
-  '/stats',
+  "/stats",
   authenticateJwt,
   async (req: Request, res: Response, next: NextFunction) => {
     try {
