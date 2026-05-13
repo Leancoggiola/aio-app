@@ -6,8 +6,7 @@ updates:
     schedule:
       interval: weekly
       day: monday
-    open-pull-requests-limit: 5
-    security-updates-only: true
+    open-pull-requests-limit: 0
     groups:
       security-npm:
         applies-to: security-updates
@@ -24,8 +23,7 @@ updates:
     schedule:
       interval: monthly
       day: monday
-    open-pull-requests-limit: 3
-    security-updates-only: true
+    open-pull-requests-limit: 0
     groups:
       security-actions:
         applies-to: security-updates
