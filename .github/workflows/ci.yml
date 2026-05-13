@@ -90,6 +90,32 @@ jobs:
 
       - run: pnpm audit --audit-level=high
 
+  format:
+    name: Format Check
+    needs: [install]
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: pnpm/action-setup@v4
+        with:
+          version: ${{ env.PNPM_VERSION }}
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: "pnpm"
+
+      - uses: actions/cache/restore@v4
+        with:
+          path: |
+            node_modules
+            apps/*/node_modules
+            packages/*/node_modules
+          key: modules-${{ runner.os }}-${{ hashFiles('pnpm-lock.yaml') }}
+
+      - run: pnpm format:check
+
   check-types:
     name: Type Check
     needs: [install]
@@ -163,7 +189,7 @@ jobs:
 
   build:
     name: Build
-    needs: [lint, check-types, test, audit]
+    needs: [lint, check-types, test, audit, format]
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4

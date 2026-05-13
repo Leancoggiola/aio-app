@@ -1,8 +1,11 @@
-import type { User } from '../generated/prisma/client';
-import type { RegisterPayload } from '@aio-app/shared/auth';
-import type { UpdateProfilePayload, UpdatePreferencesPayload } from '@aio-app/shared/users';
-import * as bcrypt from 'bcrypt';
-import { prisma } from '../common/prisma';
+import type { User } from "../generated/prisma/client";
+import type { RegisterPayload } from "@aio-app/shared/auth";
+import type {
+  UpdateProfilePayload,
+  UpdatePreferencesPayload,
+} from "@aio-app/shared/users";
+import * as bcrypt from "bcrypt";
+import { prisma } from "../common/prisma";
 
 const BCRYPT_ROUNDS = 12;
 
@@ -15,7 +18,9 @@ export async function findByEmail(email: string): Promise<User | null> {
   return prisma.user.findUnique({ where: { email } });
 }
 
-export async function findById(id: string): Promise<Omit<User, 'password'> | null> {
+export async function findById(
+  id: string,
+): Promise<Omit<User, "password"> | null> {
   return prisma.user.findUnique({
     where: { id },
     omit: { password: true },
@@ -32,7 +37,7 @@ export async function getProfile(userId: string) {
   });
 
   if (!user) {
-    throw { status: 404, message: 'User not found' };
+    throw { status: 404, message: "User not found" };
   }
 
   return user;
@@ -40,9 +45,11 @@ export async function getProfile(userId: string) {
 
 export async function updateProfile(userId: string, dto: UpdateProfilePayload) {
   if (dto.email) {
-    const existing = await prisma.user.findUnique({ where: { email: dto.email } });
+    const existing = await prisma.user.findUnique({
+      where: { email: dto.email },
+    });
     if (existing && existing.id !== userId) {
-      throw { status: 409, message: 'Email already in use' };
+      throw { status: 409, message: "Email already in use" };
     }
   }
 
@@ -86,7 +93,10 @@ export async function getPreferences(userId: string) {
   return preferences;
 }
 
-export async function updatePreferences(userId: string, dto: UpdatePreferencesPayload) {
+export async function updatePreferences(
+  userId: string,
+  dto: UpdatePreferencesPayload,
+) {
   return prisma.userPreferences.upsert({
     where: { userId },
     create: { userId, ...dto },

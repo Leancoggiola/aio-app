@@ -1,10 +1,10 @@
-import passport from 'passport';
-import { Strategy as JwtStrategy, ExtractJwt } from 'passport-jwt';
-import { Request } from 'express';
-import { config } from '../../config';
+import passport from "passport";
+import { Strategy as JwtStrategy, ExtractJwt } from "passport-jwt";
+import { Request } from "express";
+import { config } from "../../config";
 
 passport.use(
-  'jwt-refresh',
+  "jwt-refresh",
   new JwtStrategy(
     {
       jwtFromRequest: ExtractJwt.fromExtractors([

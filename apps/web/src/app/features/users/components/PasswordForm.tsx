@@ -29,7 +29,9 @@ export const PasswordForm: FC<PasswordFormProps> = ({ onSubmit }) => {
       setConfirmPassword("");
       setSuccess(true);
     } catch (err) {
-      setError(err instanceof Error ? err.message : "Failed to change password");
+      setError(
+        err instanceof Error ? err.message : "Failed to change password",
+      );
     } finally {
       setLoading(false);
     }

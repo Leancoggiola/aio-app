@@ -7,7 +7,10 @@ interface PreferencesFormProps {
   onUpdate: (data: { notifications?: boolean }) => Promise<unknown>;
 }
 
-export const PreferencesForm: FC<PreferencesFormProps> = ({ preferences, onUpdate }) => {
+export const PreferencesForm: FC<PreferencesFormProps> = ({
+  preferences,
+  onUpdate,
+}) => {
   return (
     <Stack gap="sm">
       <Switch
