@@ -1,5 +1,6 @@
 import { Router } from "express";
 import type { Request, Response, NextFunction } from "express";
+import rateLimit from "express-rate-limit";
 import {
   updateProfileSchema,
   changePasswordSchema,
@@ -9,6 +10,16 @@ import { authenticateJwt } from "../auth/middleware/auth.middleware";
 import { validate } from "../common/validate";
 import * as usersService from "./users.service";
 import * as statsService from "./stats.service";
+
+const passwordLimiter = rateLimit({
+  windowMs: 15 * 60 * 1000,
+  max: 5,
+  message: {
+    statusCode: 429,
+    message:
+      "Demasiados intentos de cambio de contraseña, intenta de nuevo más tarde",
+  },
+});
 
 const router = Router();
 
@@ -48,12 +59,13 @@ router.patch(
 router.patch(
   "/password",
   authenticateJwt,
+  passwordLimiter,
   validate(changePasswordSchema),
   async (req: Request, res: Response, next: NextFunction) => {
     try {
       const { userId } = req.user as any;
       await usersService.changePassword(userId, req.body.newPassword);
-      res.json({ message: "Password updated successfully" });
+      res.json({ message: "Contraseña actualizada exitosamente" });
     } catch (err) {
       next(err);
     }
@@ -71,7 +83,7 @@ router.delete(
       await usersService.deleteAccount(userId);
       res.clearCookie("access_token");
       res.clearCookie("refresh_token");
-      res.json({ message: "Account deleted successfully" });
+      res.json({ message: "Cuenta eliminada exitosamente" });
     } catch (err) {
       next(err);
     }

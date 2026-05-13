@@ -12,7 +12,7 @@ export function validate(schema: z.ZodType, target: ValidationTarget = "body") {
       if (err instanceof z.ZodError) {
         next({
           status: 400,
-          message: "Validation error",
+          message: "Error de validación",
           errors: z.flattenError(err).fieldErrors,
         });
       } else {

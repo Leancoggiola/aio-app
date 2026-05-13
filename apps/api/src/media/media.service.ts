@@ -39,7 +39,7 @@ export async function addToList(userId: string, dto: AddMediaItemPayload) {
   });
 
   if (existing) {
-    throw { status: 409, message: "This item is already in your list" };
+    throw { status: 409, message: "Este elemento ya está en tu lista" };
   }
 
   let title: string;
@@ -92,7 +92,7 @@ export async function updateStatus(
   });
 
   if (!item) {
-    throw { status: 404, message: "Media item not found" };
+    throw { status: 404, message: "Elemento no encontrado" };
   }
 
   const updated = await prisma.mediaItem.update({
@@ -114,7 +114,7 @@ export async function removeFromList(
   });
 
   if (!item) {
-    throw { status: 404, message: "Media item not found" };
+    throw { status: 404, message: "Elemento no encontrado" };
   }
 
   await prisma.mediaItem.delete({ where: { id: itemId } });

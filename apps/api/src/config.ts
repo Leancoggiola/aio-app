@@ -9,7 +9,9 @@ function required(key: string): string {
 export const config = {
   port: parseInt(process.env.PORT ?? "3000", 10),
   databaseUrl: required("DATABASE_URL"),
-  corsOrigin: process.env.CORS_ORIGIN || (true as string | boolean),
+  corsOrigin: process.env.CORS_ORIGIN
+    ? process.env.CORS_ORIGIN.split(",")
+    : ["http://localhost:5173"],
   nodeEnv: process.env.NODE_ENV ?? "development",
   isProduction: process.env.NODE_ENV === "production",
 

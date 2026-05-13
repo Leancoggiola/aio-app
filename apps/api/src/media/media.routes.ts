@@ -1,5 +1,6 @@
 import { Router } from "express";
 import type { Request, Response, NextFunction } from "express";
+import rateLimit from "express-rate-limit";
 import type { MediaType } from "@aio-app/shared/media";
 import {
   searchMediaSchema,
@@ -11,6 +12,15 @@ import { authenticateJwt } from "../auth/middleware/auth.middleware";
 import { validate } from "../common/validate";
 import * as mediaService from "./media.service";
 
+const searchLimiter = rateLimit({
+  windowMs: 15 * 60 * 1000,
+  max: 50,
+  message: {
+    statusCode: 429,
+    message: "Demasiadas búsquedas, intenta de nuevo más tarde",
+  },
+});
+
 const router = Router();
 
 // All media routes require authentication
@@ -18,6 +28,7 @@ router.use(authenticateJwt);
 
 router.get(
   "/search",
+  searchLimiter,
   validate(searchMediaSchema, "query"),
   async (req: Request, res: Response, next: NextFunction) => {
     try {

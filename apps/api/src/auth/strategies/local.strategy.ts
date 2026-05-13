@@ -9,7 +9,8 @@ passport.use(
     async (email, password, done) => {
       try {
         const user = await authService.validateUser(email, password);
-        if (!user) return done(null, false, { message: "Invalid credentials" });
+        if (!user)
+          return done(null, false, { message: "Credenciales inválidas" });
         return done(null, user);
       } catch (err) {
         return done(err);

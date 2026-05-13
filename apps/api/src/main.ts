@@ -5,6 +5,7 @@ import helmet from "helmet";
 import cookieParser from "cookie-parser";
 import passport from "passport";
 import pinoHttp from "pino-http";
+import rateLimit from "express-rate-limit";
 
 // Register passport strategies (side-effect imports)
 import "./auth/strategies/local.strategy";
@@ -29,6 +30,21 @@ async function bootstrap() {
       credentials: true,
     }),
   );
+
+  // Global rate limiter: 100 requests per 15 minutes per IP
+  app.use(
+    rateLimit({
+      windowMs: 15 * 60 * 1000,
+      max: 100,
+      standardHeaders: true,
+      legacyHeaders: false,
+      message: {
+        statusCode: 429,
+        message: "Demasiadas solicitudes, intenta de nuevo más tarde",
+      },
+    }),
+  );
+
   app.use(express.json());
   app.use(cookieParser());
   app.use(passport.initialize());

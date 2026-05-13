@@ -37,7 +37,7 @@ export async function getProfile(userId: string) {
   });
 
   if (!user) {
-    throw { status: 404, message: "User not found" };
+    throw { status: 404, message: "Usuario no encontrado" };
   }
 
   return user;
@@ -49,7 +49,7 @@ export async function updateProfile(userId: string, dto: UpdateProfilePayload) {
       where: { email: dto.email },
     });
     if (existing && existing.id !== userId) {
-      throw { status: 409, message: "Email already in use" };
+      throw { status: 409, message: "El correo electrónico ya está en uso" };
     }
   }
 

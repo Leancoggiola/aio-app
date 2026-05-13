@@ -22,8 +22,8 @@ export function errorHandler(
 
   const message =
     status === 500 && config.isProduction
-      ? "Internal Server Error"
-      : (err.message ?? "Internal Server Error");
+      ? "Error interno del servidor"
+      : (err.message ?? "Error interno del servidor");
 
   res.status(status).json({
     statusCode: status,

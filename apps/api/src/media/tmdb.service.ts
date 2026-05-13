@@ -26,7 +26,10 @@ async function get<T>(
 
   const res = await fetch(url.toString());
   if (!res.ok) {
-    throw { status: res.status, message: `TMDB API error: ${res.statusText}` };
+    throw {
+      status: res.status,
+      message: `Error de TMDB API: ${res.statusText}`,
+    };
   }
   return res.json() as Promise<T>;
 }

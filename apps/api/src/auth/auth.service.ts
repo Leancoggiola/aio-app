@@ -14,7 +14,7 @@ const BCRYPT_ROUNDS = 12;
 export async function register(dto: RegisterPayload, res: Response) {
   const existing = await usersService.findByEmail(dto.email);
   if (existing) {
-    throw { status: 409, message: "Email already registered" };
+    throw { status: 409, message: "El correo electrónico ya está registrado" };
   }
 
   const hashedPassword = await bcrypt.hash(dto.password, BCRYPT_ROUNDS);
@@ -80,7 +80,8 @@ export async function refresh(
     clearCookies(res);
     throw {
       status: 401,
-      message: "Refresh token not recognized. All sessions revoked.",
+      message:
+        "Token de refresco no reconocido. Todas las sesiones han sido revocadas.",
     };
   }
 
@@ -88,7 +89,7 @@ export async function refresh(
 
   const user = await usersService.findById(userId);
   if (!user) {
-    throw { status: 401, message: "User not found" };
+    throw { status: 401, message: "Usuario no encontrado" };
   }
 
   await issueTokens({ sub: userId, email: user.email }, res);
@@ -121,7 +122,7 @@ export async function logout(
 
   clearCookies(res);
 
-  return { message: "Logged out successfully" };
+  return { message: "Sesión cerrada exitosamente" };
 }
 
 // ─── Profile ───────────────────────────────────────────────
@@ -129,7 +130,7 @@ export async function logout(
 export async function getProfile(userId: string) {
   const user = await usersService.findById(userId);
   if (!user) {
-    throw { status: 401, message: "User not found" };
+    throw { status: 401, message: "Usuario no encontrado" };
   }
   return { user };
 }

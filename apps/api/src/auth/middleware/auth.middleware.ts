@@ -15,7 +15,7 @@ function authenticate(strategy: string) {
         if (!user) {
           return next({
             status: 401,
-            message: info?.message ?? "Unauthorized",
+            message: info?.message ?? "No autorizado",
           });
         }
         req.user = user;

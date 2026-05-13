@@ -13,13 +13,19 @@ import {
 const authLimiter = rateLimit({
   windowMs: 15 * 60 * 1000,
   max: 10,
-  message: { statusCode: 429, message: "Too many attempts, try again later" },
+  message: {
+    statusCode: 429,
+    message: "Demasiados intentos, intenta de nuevo más tarde",
+  },
 });
 
 const refreshLimiter = rateLimit({
   windowMs: 15 * 60 * 1000,
   max: 20,
-  message: { statusCode: 429, message: "Too many attempts, try again later" },
+  message: {
+    statusCode: 429,
+    message: "Demasiados intentos, intenta de nuevo más tarde",
+  },
 });
 
 const router = Router();
