@@ -1,0 +1,11 @@
+{
+  "recommendations": [
+    "dbaeumer.vscode-eslint",
+    "esbenp.prettier-vscode",
+    "Prisma.prisma",
+    "eamodio.gitlens",
+    "GitHub.copilot",
+    "bradlc.vscode-tailwindcss",
+    "mikestead.dotenv"
+  ]
+}

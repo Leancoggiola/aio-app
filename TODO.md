@@ -42,3 +42,7 @@ Decisiones tomadas en la sesión de refactorización (2026-05-10), diferidas par
 - [ ] **Configurar Render** — Conectar repo, usar `render.yaml` como IaC, configurar env vars (DATABASE_URL, JWT secrets, TMDB_API_KEY, CORS_ORIGIN)
 - [ ] **Configurar Vercel** — Importar repo → Root: `apps/web`, Framework: Vite, Build: `cd ../.. && pnpm turbo build --filter=web`, Output: `dist`, Install: `pnpm install --frozen-lockfile`, agregar env var `VITE_API_URL`
 - [ ] **UptimeRobot** — Monitor HTTP(s) a `https://<app>.onrender.com/api/health` cada 5 min (keep-alive para free tier)
+
+## Observability
+
+- [ ] **Sentry** (free tier) — Error tracking para API y Web. Source maps upload en build step.
