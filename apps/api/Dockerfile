@@ -30,6 +30,7 @@ COPY --from=installer /app/ .
 COPY --from=pruner /app/out/full/ .
 
 RUN pnpm turbo build --filter=api
+RUN pnpm --filter=api deploy --prod --legacy /app/deployed
 
 # ── Stage 5: Runner ───────────────────────────────────────────
 FROM node:22-alpine AS runner
@@ -38,11 +39,10 @@ WORKDIR /app
 RUN addgroup --system --gid 1001 appgroup && \
     adduser --system --uid 1001 appuser
 
-COPY --from=builder --chown=appuser:appgroup /app/apps/api/dist ./dist
-COPY --from=builder --chown=appuser:appgroup /app/apps/api/prisma ./prisma
-COPY --from=builder --chown=appuser:appgroup /app/apps/api/prisma.config.ts ./prisma.config.ts
-COPY --from=builder --chown=appuser:appgroup /app/apps/api/node_modules ./node_modules
-COPY --from=builder --chown=appuser:appgroup /app/apps/api/package.json ./package.json
+COPY --from=builder --chown=appuser:appgroup /app/deployed/dist ./dist
+COPY --from=builder --chown=appuser:appgroup /app/deployed/prisma ./prisma
+COPY --from=builder --chown=appuser:appgroup /app/deployed/node_modules ./node_modules
+COPY --from=builder --chown=appuser:appgroup /app/deployed/package.json ./package.json
 
 ENV NODE_ENV=production
 EXPOSE 3000
