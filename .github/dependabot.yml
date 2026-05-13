@@ -9,19 +9,15 @@ updates:
     open-pull-requests-limit: 5
     security-updates-only: true
     groups:
-      dev-dependencies:
-        dependency-type: development
-        update-types:
-          - minor
-          - patch
-      prod-dependencies:
-        dependency-type: production
-        update-types:
-          - patch
+      security-npm:
+        applies-to: security-updates
+        patterns:
+          - "*"
     labels:
       - dependencies
+      - security
     commit-message:
-      prefix: "chore(deps)"
+      prefix: "fix(deps)"
 
   - package-ecosystem: github-actions
     directory: /
@@ -30,7 +26,13 @@ updates:
       day: monday
     open-pull-requests-limit: 3
     security-updates-only: true
+    groups:
+      security-actions:
+        applies-to: security-updates
+        patterns:
+          - "*"
     labels:
       - ci
+      - security
     commit-message:
-      prefix: "ci(deps)"
+      prefix: "fix(ci)"
