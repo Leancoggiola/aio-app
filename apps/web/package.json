@@ -25,7 +25,7 @@
     "swr": "2.4.1"
   },
   "devDependencies": {
-    "@repo/eslint-config": "workspace:*",
+    "@aio-app/eslint-config": "workspace:*",
     "@repo/typescript-config": "workspace:*",
     "@testing-library/jest-dom": "^6.9.1",
     "@testing-library/react": "^16.3.2",

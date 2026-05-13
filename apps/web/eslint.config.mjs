@@ -1,3 +1,3 @@
-import { baseConfig } from "@repo/eslint-config";
+import { baseConfig } from "@aio-app/eslint-config";
 
 export default [...baseConfig];
