@@ -1,3 +1,9 @@
+# [1.0.0-rc.3](https://github.com/Leancoggiola/aio-app/compare/v1.0.0-rc.2...v1.0.0-rc.3) (2026-05-14)
+
+### Bug Fixes
+
+- **api:** dockerfile ([8c89c6f](https://github.com/Leancoggiola/aio-app/commit/8c89c6f0776a2c71af686a10340c85b9c59106df))
+
 # [1.0.0-rc.2](https://github.com/Leancoggiola/aio-app/compare/v1.0.0-rc.1...v1.0.0-rc.2) (2026-05-14)
 
 ### Bug Fixes
