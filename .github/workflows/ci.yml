@@ -18,6 +18,7 @@ jobs:
   install:
     name: Install
     runs-on: ubuntu-latest
+    timeout-minutes: 10
     steps:
       - uses: actions/checkout@v4
 
@@ -44,6 +45,7 @@ jobs:
     name: Lint
     needs: [install]
     runs-on: ubuntu-latest
+    timeout-minutes: 10
     steps:
       - uses: actions/checkout@v4
 
@@ -76,6 +78,7 @@ jobs:
     name: Security Audit
     needs: [install]
     runs-on: ubuntu-latest
+    timeout-minutes: 10
     steps:
       - uses: actions/checkout@v4
 
@@ -94,6 +97,7 @@ jobs:
     name: Format Check
     needs: [install]
     runs-on: ubuntu-latest
+    timeout-minutes: 10
     steps:
       - uses: actions/checkout@v4
 
@@ -120,6 +124,7 @@ jobs:
     name: Type Check
     needs: [install]
     runs-on: ubuntu-latest
+    timeout-minutes: 10
     steps:
       - uses: actions/checkout@v4
 
@@ -152,6 +157,7 @@ jobs:
     name: Test
     needs: [install]
     runs-on: ubuntu-latest
+    timeout-minutes: 15
     steps:
       - uses: actions/checkout@v4
 
@@ -191,6 +197,7 @@ jobs:
     name: Build
     needs: [lint, check-types, test, audit, format]
     runs-on: ubuntu-latest
+    timeout-minutes: 15
     steps:
       - uses: actions/checkout@v4
 
