@@ -41,14 +41,9 @@ Decisiones tomadas en la sesión de refactorización (2026-05-10), diferidas par
 
 - [x] **render.yaml** — IaC con env vars (DATABASE_URL, JWT secrets, TMDB_API_KEY, CORS_ORIGIN, ADMIN_USERNAME, ADMIN_PASSWORD)
 - [x] **Dockerfile** — CMD ejecuta `prisma migrate deploy` antes de iniciar el server
-- [ ] **Configurar Render** — Conectar repo, Render detecta `render.yaml`. Configurar env vars en dashboard:
-  - `DATABASE_URL`: connection string de Supabase (usar DIRECT_URL, port 5432, sin pgbouncer)
-  - `JWT_ACCESS_SECRET` / `JWT_REFRESH_SECRET`: generar con `openssl rand -base64 32`
-  - `TMDB_API_KEY`: API key de TMDB
-  - `CORS_ORIGIN`: URL de Vercel (ej: `https://aio-app.vercel.app`)
-  - `ADMIN_USERNAME` / `ADMIN_PASSWORD`: credenciales del primer admin
-- [ ] **Configurar Vercel** — Importar repo → Root: `apps/web`, Framework: Vite, Build: `cd ../.. && pnpm turbo build --filter=web`, Output: `dist`, Install: `pnpm install --frozen-lockfile`, agregar env var `VITE_API_URL`
-- [ ] **UptimeRobot** — Monitor HTTP(s) a `https://<app>.onrender.com/api/health` cada 5 min (keep-alive para free tier)
+- [x] **Configurar Render (dev)** — Web service manual en branch `develop`, Docker, env vars configuradas
+- [x] **Configurar Vercel (dev)** — Root: `apps/web`, Vite, branch `develop`, env var `VITE_API_URL`
+- [ ] **UptimeRobot (prod)** — Monitor HTTP(s) a `https://<app>.onrender.com/api/health` cada 5 min (solo para prod, en dev no es necesario)
 
 ## Observability
 

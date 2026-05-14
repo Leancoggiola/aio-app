@@ -43,7 +43,6 @@ COPY --from=builder --chown=appuser:appgroup /app/deployed/dist ./dist
 COPY --from=builder --chown=appuser:appgroup /app/deployed/prisma ./prisma
 COPY --from=builder --chown=appuser:appgroup /app/deployed/node_modules ./node_modules
 COPY --from=builder --chown=appuser:appgroup /app/deployed/package.json ./package.json
-COPY --from=builder --chown=appuser:appgroup /app/apps/api/prisma.config.ts ./prisma.config.ts
 COPY --from=builder --chown=appuser:appgroup /app/apps/api/src/generated ./src/generated
 
 ENV NODE_ENV=production
@@ -51,4 +50,4 @@ EXPOSE 3000
 
 USER appuser
 
-CMD ["sh", "-c", "npx prisma migrate deploy && node dist/main.js"]
+CMD ["sh", "-c", "npx prisma migrate deploy --schema=prisma/schema.prisma && node dist/main.js"]
