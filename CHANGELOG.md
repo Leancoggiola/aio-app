@@ -1,3 +1,17 @@
+# [1.0.0-rc.2](https://github.com/Leancoggiola/aio-app/compare/v1.0.0-rc.1...v1.0.0-rc.2) (2026-05-14)
+
+### Bug Fixes
+
+- **api:** removed deprecated methods ([3a55a5b](https://github.com/Leancoggiola/aio-app/commit/3a55a5ba894fd3faec8747e1a23d969902b17e7d))
+
+### Features
+
+- access control with username auth and deployment config ([#15](https://github.com/Leancoggiola/aio-app/issues/15)) ([5b1e6a7](https://github.com/Leancoggiola/aio-app/commit/5b1e6a7398434bc30290ca7dfc9da114dcf166c6))
+- **api:** add admin routes, guard, and service for user management ([d014ffe](https://github.com/Leancoggiola/aio-app/commit/d014ffece38bd86b9ba8f62b1a5480bc9b43f50e))
+- **api:** add admin seed script with prisma.config.ts integration ([ebfa8e7](https://github.com/Leancoggiola/aio-app/commit/ebfa8e74ce5edf24d60926bb34db0ccbd37f5f08))
+- **api:** add username, role enum, make email optional in schema ([153bd9f](https://github.com/Leancoggiola/aio-app/commit/153bd9f27ce377cac80e50a79821b63ddd0d722c))
+- **ci:** update render.yaml, Dockerfile startup migrations, update TODO ([1002fee](https://github.com/Leancoggiola/aio-app/commit/1002fee1b5957c74daeddedca374b0ca34bedab0))
+
 # 1.0.0-rc.1 (2026-05-13)
 
 ### Bug Fixes
