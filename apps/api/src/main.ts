@@ -58,8 +58,8 @@ async function bootstrap() {
 
   app.use(errorHandler);
 
-  app.listen(config.port, () => {
-    logger.info(`API running on http://localhost:${config.port}`);
+  app.listen(config.port, "0.0.0.0", () => {
+    logger.info(`API running on http://0.0.0.0:${config.port}`);
   });
 }
 
