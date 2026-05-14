@@ -31,7 +31,6 @@ COPY --from=pruner /app/out/full/ .
 
 RUN pnpm turbo build --filter=api
 RUN pnpm --filter=api deploy --prod --legacy /app/deployed
-RUN cd /app/deployed && npm install prisma@7.8.0
 
 # ── Stage 5: Runner ───────────────────────────────────────────
 FROM node:22-alpine AS runner
