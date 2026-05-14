@@ -20,7 +20,7 @@ export const Login: FC = () => {
   const form = useForm<LoginPayload>({
     mode: "uncontrolled",
     initialValues: {
-      email: "",
+      username: "",
       password: "",
     },
     validate: schemaResolver(loginSchema, { sync: true }),
@@ -30,7 +30,7 @@ export const Login: FC = () => {
     setLoading(true);
     setError(null);
     try {
-      await login(values.email, values.password);
+      await login(values.username, values.password);
       const from = (location.state as { from?: string })?.from ?? "/";
       navigate(from, { replace: true });
     } catch (err) {
@@ -57,9 +57,9 @@ export const Login: FC = () => {
       <form onSubmit={form.onSubmit(handleSubmit)}>
         <Stack>
           <TextInput
-            label="Email"
-            key={form.key("email")}
-            {...form.getInputProps("email")}
+            label="Usuario"
+            key={form.key("username")}
+            {...form.getInputProps("username")}
           />
           <PasswordInput
             label="Contraseña"
@@ -71,10 +71,6 @@ export const Login: FC = () => {
           </Button>
         </Stack>
       </form>
-
-      <Button onClick={() => navigate("/register")} variant="subtle">
-        ¿No tienes cuenta? Regístrate aquí.
-      </Button>
     </AuthCard>
   );
 };

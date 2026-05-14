@@ -16,8 +16,7 @@ export type { User };
 interface AuthContextValue {
   user: User | null;
   loading: boolean;
-  login: (email: string, password: string) => Promise<void>;
-  register: (name: string, email: string, password: string) => Promise<void>;
+  login: (username: string, password: string) => Promise<void>;
   logout: () => Promise<void>;
 }
 
@@ -33,25 +32,13 @@ export const AuthProvider: FC<PropsWithChildren> = ({ children }) => {
 
   const user = data?.user ?? null;
 
-  const login = useCallback(async (email: string, password: string) => {
+  const login = useCallback(async (username: string, password: string) => {
     const res = await api.post<ProfileResponse>("/api/auth/login", {
-      email,
+      username,
       password,
     });
     await mutate(AUTH_KEY, res, { revalidate: false });
   }, []);
-
-  const register = useCallback(
-    async (name: string, email: string, password: string) => {
-      const res = await api.post<ProfileResponse>("/api/auth/register", {
-        name,
-        email,
-        password,
-      });
-      await mutate(AUTH_KEY, res, { revalidate: false });
-    },
-    [],
-  );
 
   const logout = useCallback(async () => {
     await api.post("/api/auth/logout");
@@ -59,8 +46,8 @@ export const AuthProvider: FC<PropsWithChildren> = ({ children }) => {
   }, []);
 
   const value = useMemo(
-    () => ({ user, loading: isLoading, login, register, logout }),
-    [user, isLoading, login, register, logout],
+    () => ({ user, loading: isLoading, login, logout }),
+    [user, isLoading, login, logout],
   );
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
