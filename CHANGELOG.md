@@ -1,3 +1,9 @@
+# [1.0.0-rc.4](https://github.com/Leancoggiola/aio-app/compare/v1.0.0-rc.3...v1.0.0-rc.4) (2026-05-14)
+
+### Bug Fixes
+
+- **api:** install prisma globally in Docker runner for migrate deploy ([e750353](https://github.com/Leancoggiola/aio-app/commit/e75035398fac5ee19d418d4428e2c20c932ca9ed))
+
 # [1.0.0-rc.3](https://github.com/Leancoggiola/aio-app/compare/v1.0.0-rc.2...v1.0.0-rc.3) (2026-05-14)
 
 ### Bug Fixes
