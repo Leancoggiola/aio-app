@@ -22,24 +22,31 @@ Decisiones tomadas en la sesión de refactorización (2026-05-10), diferidas par
 
 - [x] ~~Error de esbuild/passport en `yarn build` de la API~~ — Faltaban `passport` y `passport-jwt` en `dependencies` del `package.json` de la API. Agregados con `yarn add passport passport-jwt`.
 
-## Control de acceso / Registro
+## ~~Control de acceso / Registro~~ ✅ IMPLEMENTADO
 
-- [ ] Restringir quién puede registrarse (actualmente el registro es público)
-- [ ] Opciones evaluadas:
-  - **Registro cerrado**: eliminar `/auth/register` público, solo admin crea cuentas
-  - **Invite codes**: requiere código de invitación para registrarse
-  - **Approve flow**: campo `isApproved` en User, admin aprueba antes de permitir login
-  - **Whitelist de emails**: solo emails pre-aprobados pueden registrarse
-- [ ] Decisión pendiente: elegir approach (para 2-3 usuarios, registro cerrado o approve flow)
+- [x] Registro cerrado: solo admin crea cuentas via `POST /api/admin/users`
+- [x] Roles: enum `ADMIN`/`USER` en Prisma, incluido en JWT
+- [x] Login por username/password (email opcional)
+- [x] Admin guard middleware (`requireAdmin`)
+- [x] Seed script para primer admin (`ADMIN_USERNAME` + `ADMIN_PASSWORD` env vars)
+- [x] Frontend: página Register eliminada, login usa username
 
 ## Otros pendientes
 
 - [ ] Considerar agregar `currentPassword` al flujo de cambio de contraseña (decisión: por ahora solo `newPassword`, el JWT autentica)
 - [ ] Agregar página/ruta de stats en el frontend (el endpoint `GET /api/users/stats` ya existe)
+- [ ] Agregar página de admin en frontend para gestionar usuarios (actualmente solo vía API)
 
 ## Deployment
 
-- [ ] **Configurar Render** — Conectar repo, usar `render.yaml` como IaC, configurar env vars (DATABASE_URL, JWT secrets, TMDB_API_KEY, CORS_ORIGIN)
+- [x] **render.yaml** — IaC con env vars (DATABASE_URL, JWT secrets, TMDB_API_KEY, CORS_ORIGIN, ADMIN_USERNAME, ADMIN_PASSWORD)
+- [x] **Dockerfile** — CMD ejecuta `prisma migrate deploy` antes de iniciar el server
+- [ ] **Configurar Render** — Conectar repo, Render detecta `render.yaml`. Configurar env vars en dashboard:
+  - `DATABASE_URL`: connection string de Supabase (usar DIRECT_URL, port 5432, sin pgbouncer)
+  - `JWT_ACCESS_SECRET` / `JWT_REFRESH_SECRET`: generar con `openssl rand -base64 32`
+  - `TMDB_API_KEY`: API key de TMDB
+  - `CORS_ORIGIN`: URL de Vercel (ej: `https://aio-app.vercel.app`)
+  - `ADMIN_USERNAME` / `ADMIN_PASSWORD`: credenciales del primer admin
 - [ ] **Configurar Vercel** — Importar repo → Root: `apps/web`, Framework: Vite, Build: `cd ../.. && pnpm turbo build --filter=web`, Output: `dist`, Install: `pnpm install --frozen-lockfile`, agregar env var `VITE_API_URL`
 - [ ] **UptimeRobot** — Monitor HTTP(s) a `https://<app>.onrender.com/api/health` cada 5 min (keep-alive para free tier)
 
