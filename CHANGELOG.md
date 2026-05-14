@@ -1,3 +1,9 @@
+# [1.0.0-rc.9](https://github.com/Leancoggiola/aio-app/compare/v1.0.0-rc.8...v1.0.0-rc.9) (2026-05-14)
+
+### Bug Fixes
+
+- **api:** bind to 0.0.0.0 for Render port detection ([f38a25c](https://github.com/Leancoggiola/aio-app/commit/f38a25cd7cfe89d80de72f1af2210ef6f6820efc))
+
 # [1.0.0-rc.8](https://github.com/Leancoggiola/aio-app/compare/v1.0.0-rc.7...v1.0.0-rc.8) (2026-05-14)
 
 ### Bug Fixes
