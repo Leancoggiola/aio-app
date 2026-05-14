@@ -1,3 +1,9 @@
+# [1.0.0-rc.6](https://github.com/Leancoggiola/aio-app/compare/v1.0.0-rc.5...v1.0.0-rc.6) (2026-05-14)
+
+### Bug Fixes
+
+- **ci:** deploy only when semantic-release publishes new version ([d1ccc72](https://github.com/Leancoggiola/aio-app/commit/d1ccc72fad22319a2c2782a4543236ce16e81a3e))
+
 # [1.0.0-rc.5](https://github.com/Leancoggiola/aio-app/compare/v1.0.0-rc.4...v1.0.0-rc.5) (2026-05-14)
 
 ### Bug Fixes
