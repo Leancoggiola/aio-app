@@ -21,7 +21,7 @@ export const createUserSchema = z.object({
   password: z
     .string()
     .min(8, { error: "La contraseña debe tener al menos 8 caracteres" }),
-  email: z.string().email({ error: "Email inválido" }).optional(),
+  email: z.email({ error: "Email inválido" }).optional(),
   role: z.enum(["ADMIN", "USER"]).default("USER").optional(),
 });
 export type CreateUserPayload = z.infer<typeof createUserSchema>;
