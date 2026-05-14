@@ -4,12 +4,15 @@ import type { UserProfile } from "@aio-app/shared/users";
 
 interface ProfileFormProps {
   profile: UserProfile;
-  onSubmit: (data: { name?: string; email?: string }) => Promise<unknown>;
+  onSubmit: (data: {
+    name?: string;
+    email?: string | null;
+  }) => Promise<unknown>;
 }
 
 export const ProfileForm: FC<ProfileFormProps> = ({ profile, onSubmit }) => {
   const [name, setName] = useState(profile.name);
-  const [email, setEmail] = useState(profile.email);
+  const [email, setEmail] = useState(profile.email ?? "");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
@@ -18,9 +21,10 @@ export const ProfileForm: FC<ProfileFormProps> = ({ profile, onSubmit }) => {
     setLoading(true);
     setError(null);
     try {
-      const updates: Record<string, string> = {};
+      const updates: Record<string, string | null> = {};
       if (name !== profile.name) updates.name = name;
-      if (email !== profile.email) updates.email = email;
+      const currentEmail = email || null;
+      if (currentEmail !== profile.email) updates.email = currentEmail;
       if (Object.keys(updates).length > 0) {
         await onSubmit(updates);
       }
@@ -34,8 +38,9 @@ export const ProfileForm: FC<ProfileFormProps> = ({ profile, onSubmit }) => {
   return (
     <form onSubmit={handleSubmit}>
       <Stack gap="sm">
+        <TextInput label="Usuario" value={profile.username} disabled />
         <TextInput
-          label="Name"
+          label="Nombre"
           value={name}
           onChange={(e) => setName(e.currentTarget.value)}
           required
@@ -46,7 +51,7 @@ export const ProfileForm: FC<ProfileFormProps> = ({ profile, onSubmit }) => {
           type="email"
           value={email}
           onChange={(e) => setEmail(e.currentTarget.value)}
-          required
+          placeholder="Opcional"
         />
         {error && (
           <div style={{ color: "var(--mantine-color-red-6)", fontSize: 14 }}>
@@ -54,7 +59,7 @@ export const ProfileForm: FC<ProfileFormProps> = ({ profile, onSubmit }) => {
           </div>
         )}
         <Button type="submit" loading={loading}>
-          Save Changes
+          Guardar cambios
         </Button>
       </Stack>
     </form>

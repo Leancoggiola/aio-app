@@ -5,33 +5,13 @@ import { Response } from "express";
 import { config } from "../config";
 import * as usersService from "../users/users.service";
 import { prisma } from "../common/prisma";
-import type { RegisterPayload } from "@aio-app/shared/auth";
 
 const BCRYPT_ROUNDS = 12;
 
-// ─── Register ───────────────────────────────────────────────
-
-export async function register(dto: RegisterPayload, res: Response) {
-  const existing = await usersService.findByEmail(dto.email);
-  if (existing) {
-    throw { status: 409, message: "El correo electrónico ya está registrado" };
-  }
-
-  const hashedPassword = await bcrypt.hash(dto.password, BCRYPT_ROUNDS);
-  const user = await usersService.create({
-    ...dto,
-    password: hashedPassword,
-  });
-
-  await issueTokens({ sub: user.id, email: user.email }, res);
-
-  return { user: sanitizeUser(user) };
-}
-
 // ─── Validate (for LocalStrategy) ──────────────────────────
 
-export async function validateUser(email: string, password: string) {
-  const user = await usersService.findByEmail(email);
+export async function validateUser(username: string, password: string) {
+  const user = await usersService.findByUsername(username);
   if (!user) return null;
 
   const isMatch = await bcrypt.compare(password, user.password);
@@ -43,10 +23,13 @@ export async function validateUser(email: string, password: string) {
 // ─── Login ─────────────────────────────────────────────────
 
 export async function login(
-  user: { id: string; email: string },
+  user: { id: string; username: string; role: string },
   res: Response,
 ) {
-  await issueTokens({ sub: user.id, email: user.email }, res);
+  await issueTokens(
+    { sub: user.id, username: user.username, role: user.role },
+    res,
+  );
   return { user };
 }
 
@@ -92,7 +75,10 @@ export async function refresh(
     throw { status: 401, message: "Usuario no encontrado" };
   }
 
-  await issueTokens({ sub: userId, email: user.email }, res);
+  await issueTokens(
+    { sub: userId, username: user.username, role: user.role },
+    res,
+  );
 
   return { user };
 }
@@ -138,7 +124,7 @@ export async function getProfile(userId: string) {
 // ─── Private helpers ──────────────────────────────────────
 
 async function issueTokens(
-  payload: { sub: string; email: string },
+  payload: { sub: string; username: string; role: string },
   res: Response,
 ) {
   const accessToken = jwt.sign(payload, config.jwt.accessSecret, {
