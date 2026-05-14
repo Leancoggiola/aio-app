@@ -27,7 +27,7 @@ async function main() {
   });
 
   if (existing) {
-    console.log(`✅ Admin user "${username}" already exists. Skipping.`);
+    console.log("✅ Admin user already exists. Skipping.");
     await prisma.$disconnect();
     return;
   }
@@ -43,7 +43,7 @@ async function main() {
     },
   });
 
-  console.log(`✅ Admin user "${username}" created successfully.`);
+  console.log("✅ Admin user created successfully.");
   await prisma.$disconnect();
 }
 
