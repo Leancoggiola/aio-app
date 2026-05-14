@@ -1,3 +1,9 @@
+# [1.0.0-rc.8](https://github.com/Leancoggiola/aio-app/compare/v1.0.0-rc.7...v1.0.0-rc.8) (2026-05-14)
+
+### Bug Fixes
+
+- **api:** move prisma to prod dependencies for Docker deploy ([83af68d](https://github.com/Leancoggiola/aio-app/commit/83af68d55fe951d37f76af63c41d2bc206b43175))
+
 # [1.0.0-rc.7](https://github.com/Leancoggiola/aio-app/compare/v1.0.0-rc.6...v1.0.0-rc.7) (2026-05-14)
 
 ### Bug Fixes
