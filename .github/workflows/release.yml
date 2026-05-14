@@ -46,3 +46,8 @@ jobs:
           git checkout develop
           git merge --no-edit origin/main
           git push origin develop
+
+      - name: Deploy API service
+        if: github.ref == 'refs/heads/main'
+        run: |
+          curl -s "https://api.render.com/deploy/srv-d82jbr83kofs73csd9eg?key=B47dZz6kQH4"
