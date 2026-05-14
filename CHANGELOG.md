@@ -1,3 +1,10 @@
+# [1.0.0-rc.7](https://github.com/Leancoggiola/aio-app/compare/v1.0.0-rc.6...v1.0.0-rc.7) (2026-05-14)
+
+### Bug Fixes
+
+- **api:** do more controlled deploys ([5f446d3](https://github.com/Leancoggiola/aio-app/commit/5f446d32d79190ad5f63dcbe938444daa93ccb6a))
+- **api:** install prisma in builder stage before copy to runner ([0e26e2e](https://github.com/Leancoggiola/aio-app/commit/0e26e2e9f9f7d9441b1a0b009cbaf352939018cf))
+
 # [1.0.0-rc.6](https://github.com/Leancoggiola/aio-app/compare/v1.0.0-rc.5...v1.0.0-rc.6) (2026-05-14)
 
 ### Bug Fixes
