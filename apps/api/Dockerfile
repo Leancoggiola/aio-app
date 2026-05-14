@@ -46,11 +46,11 @@ COPY --from=builder --chown=appuser:appgroup /app/deployed/package.json ./packag
 COPY --from=builder --chown=appuser:appgroup /app/apps/api/prisma.config.ts ./prisma.config.ts
 COPY --from=builder --chown=appuser:appgroup /app/apps/api/src/generated ./src/generated
 
-RUN npm install -g prisma@7.8.0
+RUN npm install prisma@7.8.0
 
 ENV NODE_ENV=production
 EXPOSE 3000
 
 USER appuser
 
-CMD ["sh", "-c", "prisma migrate deploy && node dist/main.js"]
+CMD ["sh", "-c", "npx prisma migrate deploy && node dist/main.js"]
