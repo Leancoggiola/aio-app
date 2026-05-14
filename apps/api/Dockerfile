@@ -31,6 +31,7 @@ COPY --from=pruner /app/out/full/ .
 
 RUN pnpm turbo build --filter=api
 RUN pnpm --filter=api deploy --prod --legacy /app/deployed
+RUN cd /app/deployed && npm install prisma@7.8.0
 
 # ── Stage 5: Runner ───────────────────────────────────────────
 FROM node:22-alpine AS runner
@@ -45,8 +46,6 @@ COPY --from=builder --chown=appuser:appgroup /app/deployed/node_modules ./node_m
 COPY --from=builder --chown=appuser:appgroup /app/deployed/package.json ./package.json
 COPY --from=builder --chown=appuser:appgroup /app/apps/api/prisma.config.ts ./prisma.config.ts
 COPY --from=builder --chown=appuser:appgroup /app/apps/api/src/generated ./src/generated
-
-RUN npm install prisma@7.8.0
 
 ENV NODE_ENV=production
 EXPOSE 3000
