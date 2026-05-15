@@ -48,3 +48,10 @@ jobs:
         if: steps.release.outputs.new_release == 'true'
         run: |
           curl -s "${{ secrets.RENDER_DEPLOY_HOOK_PROD }}"
+
+      - name: Sync develop with main
+        if: steps.release.outputs.new_release == 'true'
+        run: |
+          git checkout develop
+          git merge main --no-ff -m "chore(release): sync develop with main [skip ci]"
+          git push origin develop
