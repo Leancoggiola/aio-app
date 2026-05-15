@@ -1,8 +1,8 @@
-import { FC } from "react";
-import { Navigate, Outlet } from "react-router-dom";
-import { Center, Loader } from "@mantine/core";
+import { FC } from 'react';
+import { Navigate, Outlet } from 'react-router-dom';
+import { Center, Loader } from '@mantine/core';
 
-import { useAuth } from "../auth";
+import { useAuth } from '../auth';
 
 export const GuestRoute: FC = () => {
   const { user, loading } = useAuth();

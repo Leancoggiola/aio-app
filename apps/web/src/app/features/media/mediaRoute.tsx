@@ -1,8 +1,8 @@
-import { RouteObject } from "react-router-dom";
+import { RouteObject } from 'react-router-dom';
 
-import { MediaPage } from "./Media";
+import { MediaPage } from './Media';
 
 export const mediaRoute: RouteObject = {
-  path: "media",
+  path: 'media',
   element: <MediaPage />,
 };

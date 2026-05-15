@@ -1,17 +1,17 @@
-import { Outlet } from "react-router-dom";
-import { AppShell, Container } from "@mantine/core";
+import { Outlet } from 'react-router-dom';
+import { AppShell, Container } from '@mantine/core';
 
-import { AnimatedBackground } from "./AnimatedBackground";
+import { AnimatedBackground } from './AnimatedBackground';
 
-import type { FC } from "react";
+import type { FC } from 'react';
 
 export const AuthLayout: FC = () => {
   return (
     <AppShell padding="md">
       <AppShell.Main
         style={{
-          display: "grid",
-          placeItems: "center",
+          display: 'grid',
+          placeItems: 'center',
         }}
       >
         <AnimatedBackground />

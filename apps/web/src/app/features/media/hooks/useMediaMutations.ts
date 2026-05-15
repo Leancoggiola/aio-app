@@ -1,29 +1,22 @@
-import { useCallback } from "react";
-import { useSWRConfig } from "swr";
+import { useCallback } from 'react';
+import { useSWRConfig } from 'swr';
 
-import { api } from "@/common/api";
+import { api } from '@/common/api';
 
-import type { MediaItem, MediaStatus, MediaType } from "../types";
+import type { MediaItem, MediaStatus, MediaType } from '../types';
 
 export function useMediaMutations() {
   const { mutate } = useSWRConfig();
 
   const invalidateList = useCallback(() => {
-    mutate(
-      (key: string) =>
-        typeof key === "string" && key.startsWith("/api/media/list"),
-      undefined,
-      { revalidate: true },
-    );
+    mutate((key: string) => typeof key === 'string' && key.startsWith('/api/media/list'), undefined, {
+      revalidate: true,
+    });
   }, [mutate]);
 
   const addToList = useCallback(
-    async (
-      tmdbId: number,
-      mediaType: MediaType,
-      status: MediaStatus = "to_watch",
-    ) => {
-      const item = await api.post<MediaItem>("/api/media/list", {
+    async (tmdbId: number, mediaType: MediaType, status: MediaStatus = 'to_watch') => {
+      const item = await api.post<MediaItem>('/api/media/list', {
         tmdbId,
         mediaType,
         status,
@@ -31,7 +24,7 @@ export function useMediaMutations() {
       await invalidateList();
       return item;
     },
-    [invalidateList],
+    [invalidateList]
   );
 
   const updateStatus = useCallback(
@@ -42,7 +35,7 @@ export function useMediaMutations() {
       await invalidateList();
       return item;
     },
-    [invalidateList],
+    [invalidateList]
   );
 
   const removeFromList = useCallback(
@@ -50,7 +43,7 @@ export function useMediaMutations() {
       await api.delete(`/api/media/list/${itemId}`);
       await invalidateList();
     },
-    [invalidateList],
+    [invalidateList]
   );
 
   return { addToList, updateStatus, removeFromList };

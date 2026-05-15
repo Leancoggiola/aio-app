@@ -1,4 +1,4 @@
-import { prisma } from "../common/db";
+import { prisma } from '../common/db';
 
 export async function getStats(userId: string) {
   let stats = await prisma.userStats.findUnique({
@@ -25,11 +25,11 @@ export async function recalculateStats(userId: string) {
   let totalToWatch = 0;
 
   for (const item of items) {
-    if (item.mediaType === "movie") totalMovies++;
-    if (item.mediaType === "tv") totalTvShows++;
-    if (item.status === "watched") totalWatched++;
-    if (item.status === "watching") totalWatching++;
-    if (item.status === "to_watch") totalToWatch++;
+    if (item.mediaType === 'movie') totalMovies++;
+    if (item.mediaType === 'tv') totalTvShows++;
+    if (item.status === 'watched') totalWatched++;
+    if (item.status === 'watching') totalWatching++;
+    if (item.status === 'to_watch') totalToWatch++;
   }
 
   return prisma.userStats.upsert({

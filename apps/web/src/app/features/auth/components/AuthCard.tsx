@@ -1,8 +1,8 @@
-import { Avatar, Center, Paper, Stack, Title } from "@mantine/core";
+import { Avatar, Center, Paper, Stack, Title } from '@mantine/core';
 
-import Logo from "../../../../assets/logo.svg?react";
+import Logo from '../../../../assets/logo.svg?react';
 
-import type { FC, ReactNode } from "react";
+import type { FC, ReactNode } from 'react';
 
 interface AuthCardProps {
   title: ReactNode;
@@ -19,9 +19,9 @@ export const AuthCard: FC<AuthCardProps> = ({ title, children }) => {
             variant="filled"
             color="primary.2"
             radius="md"
-            style={{ boxShadow: "var(--mantine-shadow-md)" }}
+            style={{ boxShadow: 'var(--mantine-shadow-md)' }}
           >
-            <Logo style={{ padding: "0.5rem" }} />
+            <Logo style={{ padding: '0.5rem' }} />
           </Avatar>
         </Center>
         <Title order={2} fw={700} ta="center">

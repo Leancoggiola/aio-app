@@ -1,26 +1,18 @@
-import { ApiError } from "./fetcher";
+import { ApiError } from './fetcher';
 
-type HttpMethod = "POST" | "PUT" | "PATCH" | "DELETE";
+type HttpMethod = 'POST' | 'PUT' | 'PATCH' | 'DELETE';
 
-async function request<T = unknown>(
-  url: string,
-  method: HttpMethod,
-  body?: unknown,
-): Promise<T> {
+async function request<T = unknown>(url: string, method: HttpMethod, body?: unknown): Promise<T> {
   const res = await fetch(url, {
     method,
-    credentials: "include",
-    headers: { "Content-Type": "application/json" },
+    credentials: 'include',
+    headers: { 'Content-Type': 'application/json' },
     body: body != null ? JSON.stringify(body) : undefined,
   });
 
   if (!res.ok) {
     const info = await res.json().catch(() => ({}));
-    throw new ApiError(
-      (info as Record<string, string>).message || res.statusText,
-      res.status,
-      info,
-    );
+    throw new ApiError((info as Record<string, string>).message || res.statusText, res.status, info);
   }
 
   // Handle 204 No Content
@@ -29,11 +21,8 @@ async function request<T = unknown>(
 }
 
 export const api = {
-  post: <T = unknown>(url: string, body?: unknown) =>
-    request<T>(url, "POST", body),
-  put: <T = unknown>(url: string, body?: unknown) =>
-    request<T>(url, "PUT", body),
-  patch: <T = unknown>(url: string, body?: unknown) =>
-    request<T>(url, "PATCH", body),
-  delete: <T = unknown>(url: string) => request<T>(url, "DELETE"),
+  post: <T = unknown>(url: string, body?: unknown) => request<T>(url, 'POST', body),
+  put: <T = unknown>(url: string, body?: unknown) => request<T>(url, 'PUT', body),
+  patch: <T = unknown>(url: string, body?: unknown) => request<T>(url, 'PATCH', body),
+  delete: <T = unknown>(url: string) => request<T>(url, 'DELETE'),
 };

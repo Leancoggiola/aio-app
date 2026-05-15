@@ -1,15 +1,8 @@
-import {
-  ActionIcon,
-  AppShell,
-  Avatar,
-  Burger,
-  Group,
-  Text,
-} from "@mantine/core";
+import { ActionIcon, AppShell, Avatar, Burger, Group, Text } from '@mantine/core';
 
-import Logo from "../../../../assets/logo.svg?react";
+import Logo from '../../../../assets/logo.svg?react';
 
-import type { FC } from "react";
+import type { FC } from 'react';
 
 interface HeaderProps {
   opened: boolean;
@@ -27,9 +20,9 @@ export const Header: FC<HeaderProps> = ({ opened, onToggle }) => {
             variant="filled"
             color="primary.2"
             radius="md"
-            style={{ boxShadow: "var(--mantine-shadow-lg)" }}
+            style={{ boxShadow: 'var(--mantine-shadow-lg)' }}
           >
-            <Logo style={{ padding: "0.25rem" }} />
+            <Logo style={{ padding: '0.25rem' }} />
           </Avatar>
           <Text c="primary.7" fw={600}>
             AIO App
@@ -41,7 +34,7 @@ export const Header: FC<HeaderProps> = ({ opened, onToggle }) => {
               size="md"
               name="JON DOW"
               variant="gradient"
-              gradient={{ from: "primary.5", to: "primary.7", deg: 135 }}
+              gradient={{ from: 'primary.5', to: 'primary.7', deg: 135 }}
             />
           </ActionIcon>
         </Group>

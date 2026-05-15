@@ -1,13 +1,13 @@
-import { useCallback } from "react";
-import useSWR from "swr";
-import { mutate } from "swr";
+import { useCallback } from 'react';
+import useSWR from 'swr';
+import { mutate } from 'swr';
 
-import { api } from "@/common/api";
+import { api } from '@/common/api';
 
-import type { UserProfile } from "@aio-app/shared/users";
-import type { UpdateProfilePayload } from "@aio-app/shared/users";
+import type { UserProfile } from '@aio-app/shared/users';
+import type { UpdateProfilePayload } from '@aio-app/shared/users';
 
-const PROFILE_KEY = "/api/users/profile";
+const PROFILE_KEY = '/api/users/profile';
 
 export function useProfile() {
   const { data, isLoading, error } = useSWR<{ user: UserProfile }>(PROFILE_KEY);

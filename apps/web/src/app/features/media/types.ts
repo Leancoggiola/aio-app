@@ -8,4 +8,4 @@ export type {
   TmdbMovieDetail,
   TmdbSearchResponse,
   TmdbTvDetail,
-} from "@aio-app/shared/media";
+} from '@aio-app/shared/media';

@@ -1,32 +1,23 @@
-import { FC, useCallback } from "react";
-import { Divider, Loader, Stack, Title } from "@mantine/core";
+import { FC, useCallback } from 'react';
+import { Divider, Loader, Stack, Title } from '@mantine/core';
 
-import { api } from "@/common/api";
+import { api } from '@/common/api';
 
-import { useAuth } from "../../../core/auth";
-import {
-  DeleteAccountButton,
-  PasswordForm,
-  PreferencesForm,
-  ProfileForm,
-} from "../components";
-import { usePreferences, useProfile } from "../hooks";
+import { useAuth } from '../../../core/auth';
+import { DeleteAccountButton, PasswordForm, PreferencesForm, ProfileForm } from '../components';
+import { usePreferences, useProfile } from '../hooks';
 
 export const ProfilePage: FC = () => {
   const { profile, isLoading: profileLoading, updateProfile } = useProfile();
-  const {
-    preferences,
-    isLoading: prefsLoading,
-    updatePreferences,
-  } = usePreferences();
+  const { preferences, isLoading: prefsLoading, updatePreferences } = usePreferences();
   const { logout } = useAuth();
 
   const handleChangePassword = useCallback(async (newPassword: string) => {
-    await api.patch("/api/users/password", { newPassword });
+    await api.patch('/api/users/password', { newPassword });
   }, []);
 
   const handleDeleteAccount = useCallback(async () => {
-    await api.delete("/api/users/account");
+    await api.delete('/api/users/account');
     await logout();
   }, [logout]);
 
@@ -53,10 +44,7 @@ export const ProfilePage: FC = () => {
         <>
           <Stack gap="lg">
             <Title order={4}>Preferences</Title>
-            <PreferencesForm
-              preferences={preferences}
-              onUpdate={updatePreferences}
-            />
+            <PreferencesForm preferences={preferences} onUpdate={updatePreferences} />
           </Stack>
 
           <Divider />

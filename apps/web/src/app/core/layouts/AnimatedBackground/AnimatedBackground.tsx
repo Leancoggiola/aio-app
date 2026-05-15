@@ -1,8 +1,8 @@
-import { Box } from "@mantine/core";
+import { Box } from '@mantine/core';
 
-import type { FC } from "react";
+import type { FC } from 'react';
 
-import "./AnimatedBackground.scss";
+import './AnimatedBackground.scss';
 
 export const AnimatedBackground: FC = () => (
   <Box className="bg-container">

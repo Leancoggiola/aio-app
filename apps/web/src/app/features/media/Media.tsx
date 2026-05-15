@@ -1,22 +1,18 @@
-import { FC, useCallback, useState } from "react";
-import { Stack, Tabs, Title } from "@mantine/core";
+import { FC, useCallback, useState } from 'react';
+import { Stack, Tabs, Title } from '@mantine/core';
 
-import { MediaSearchBar } from "./components/MediaSearchBar";
-import { MediaSearchResults } from "./components/MediaSearchResults";
-import { MyMediaList } from "./components/MyMediaList";
-import { useMediaMutations, useMediaSearch, useMyMediaList } from "./hooks";
+import { MediaSearchBar } from './components/MediaSearchBar';
+import { MediaSearchResults } from './components/MediaSearchResults';
+import { MyMediaList } from './components/MyMediaList';
+import { useMediaMutations, useMediaSearch, useMyMediaList } from './hooks';
 
-import type { MediaFilters, MediaStatus, MediaType } from "./types";
+import type { MediaFilters, MediaStatus, MediaType } from './types';
 
 export const MediaPage: FC = () => {
   // Search state
-  const [searchQuery, setSearchQuery] = useState("");
-  const [searchType, setSearchType] = useState("multi");
-  const { data: searchData, isLoading: searchLoading } = useMediaSearch(
-    searchQuery,
-    1,
-    searchType,
-  );
+  const [searchQuery, setSearchQuery] = useState('');
+  const [searchType, setSearchType] = useState('multi');
+  const { data: searchData, isLoading: searchLoading } = useMediaSearch(searchQuery, 1, searchType);
 
   // List state
   const [filters, setFilters] = useState<MediaFilters>({});
@@ -25,14 +21,12 @@ export const MediaPage: FC = () => {
   const { addToList, updateStatus, removeFromList } = useMediaMutations();
 
   // Tab state: "search" or "list"
-  const [activeTab, setActiveTab] = useState<string | null>("list");
+  const [activeTab, setActiveTab] = useState<string | null>('list');
 
   // Build a set of existing items for the search results "already added" badge
   const existingTmdbIds = new Set<string>();
   if (listData) {
-    listData.forEach((item) =>
-      existingTmdbIds.add(`${item.mediaType}-${item.tmdbId}`),
-    );
+    listData.forEach(item => existingTmdbIds.add(`${item.mediaType}-${item.tmdbId}`));
   }
 
   const handleSearch = useCallback((query: string, type: string) => {
@@ -48,7 +42,7 @@ export const MediaPage: FC = () => {
         // Error handled by ApiError — could add notification here
       }
     },
-    [addToList],
+    [addToList]
   );
 
   const handleStatusChange = useCallback(
@@ -59,7 +53,7 @@ export const MediaPage: FC = () => {
         // Error handled by ApiError
       }
     },
-    [updateStatus],
+    [updateStatus]
   );
 
   const handleRemove = useCallback(
@@ -70,7 +64,7 @@ export const MediaPage: FC = () => {
         // Error handled by ApiError
       }
     },
-    [removeFromList],
+    [removeFromList]
   );
 
   return (

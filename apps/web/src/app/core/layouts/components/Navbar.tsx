@@ -1,20 +1,10 @@
-import { type FC, useCallback } from "react";
-import { useLocation, useNavigate } from "react-router-dom";
-import {
-  AppShell,
-  Avatar,
-  Burger,
-  Divider,
-  Group,
-  NavLink,
-  ScrollArea,
-  Stack,
-  Text,
-} from "@mantine/core";
+import { type FC, useCallback } from 'react';
+import { useLocation, useNavigate } from 'react-router-dom';
+import { AppShell, Avatar, Burger, Divider, Group, NavLink, ScrollArea, Stack, Text } from '@mantine/core';
 
-import Logo from "../../../../assets/logo.svg?react";
+import Logo from '../../../../assets/logo.svg?react';
 
-import type { User } from "@aio-app/shared/auth";
+import type { User } from '@aio-app/shared/auth';
 
 interface NavbarProps {
   user: User | null;
@@ -24,16 +14,11 @@ interface NavbarProps {
 }
 
 const NAV_ITEMS = [
-  { label: "Inicio", path: "/" },
-  { label: "Media Tracker", path: "/media" },
+  { label: 'Inicio', path: '/' },
+  { label: 'Media Tracker', path: '/media' },
 ];
 
-export const Navbar: FC<NavbarProps> = ({
-  user,
-  onLogout,
-  onClose,
-  toggle,
-}) => {
+export const Navbar: FC<NavbarProps> = ({ user, onLogout, onClose, toggle }) => {
   const location = useLocation();
   const navigate = useNavigate();
 
@@ -43,11 +28,8 @@ export const Navbar: FC<NavbarProps> = ({
   };
 
   const isActive = useCallback(
-    (path: string) =>
-      path === "/"
-        ? location.pathname === "/"
-        : location.pathname.startsWith(path),
-    [location.pathname],
+    (path: string) => (path === '/' ? location.pathname === '/' : location.pathname.startsWith(path)),
+    [location.pathname]
   );
 
   return (
@@ -59,9 +41,9 @@ export const Navbar: FC<NavbarProps> = ({
             variant="filled"
             color="primary.2"
             radius="md"
-            style={{ boxShadow: "var(--mantine-shadow-lg)" }}
+            style={{ boxShadow: 'var(--mantine-shadow-lg)' }}
           >
-            <Logo style={{ padding: "0.25rem" }} />
+            <Logo style={{ padding: '0.25rem' }} />
           </Avatar>
           <Stack gap="none">
             <Text c="primary.7" size="lg">
@@ -77,7 +59,7 @@ export const Navbar: FC<NavbarProps> = ({
       <Divider />
       <AppShell.Section grow my="md" component={ScrollArea}>
         <Stack gap="2xs">
-          {NAV_ITEMS.map((item) => (
+          {NAV_ITEMS.map(item => (
             <NavLink
               key={item.path}
               label={item.label}
@@ -91,11 +73,7 @@ export const Navbar: FC<NavbarProps> = ({
       <Divider />
 
       <AppShell.Section>
-        <NavLink
-          label={`Cerrar sesión${user ? ` (${user.name})` : ""}`}
-          onClick={() => onLogout()}
-          c="red"
-        />
+        <NavLink label={`Cerrar sesión${user ? ` (${user.name})` : ''}`} onClick={() => onLogout()} c="red" />
       </AppShell.Section>
     </AppShell.Navbar>
   );

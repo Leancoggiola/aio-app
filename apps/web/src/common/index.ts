@@ -1,1 +1,1 @@
-export { api, ApiError, fetcher } from "./api";
+export { api, ApiError, fetcher } from './api';
