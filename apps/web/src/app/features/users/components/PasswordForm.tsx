@@ -1,5 +1,5 @@
 import { FC, useState } from "react";
-import { PasswordInput, Button, Stack } from "@mantine/core";
+import { Button, PasswordInput, Stack } from "@mantine/core";
 
 interface PasswordFormProps {
   onSubmit: (newPassword: string) => Promise<void>;

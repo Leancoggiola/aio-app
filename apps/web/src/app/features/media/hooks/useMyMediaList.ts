@@ -1,5 +1,6 @@
 import useSWR from "swr";
-import type { MediaItem, MediaFilters } from "../types";
+
+import type { MediaFilters, MediaItem } from "../types";
 
 export function useMyMediaList(filters: MediaFilters = {}) {
   const params = new URLSearchParams();

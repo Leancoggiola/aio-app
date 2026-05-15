@@ -1,5 +1,6 @@
 import { FC, useState } from "react";
-import { TextInput, Button, Stack } from "@mantine/core";
+import { Button, Stack, TextInput } from "@mantine/core";
+
 import type { UserProfile } from "@aio-app/shared/users";
 
 interface ProfileFormProps {

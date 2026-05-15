@@ -1,4 +1,5 @@
 import { Avatar, Center, Paper, Stack, Title } from "@mantine/core";
+
 import Logo from "../../../../assets/logo.svg?react";
 
 import type { FC, ReactNode } from "react";

@@ -7,7 +7,9 @@ import {
   useMemo,
 } from "react";
 import useSWR, { mutate } from "swr";
-import { api } from "../../../lib/api";
+
+import { api } from "@/common/api";
+
 import type { User } from "@aio-app/shared/auth";
 import type { ProfileResponse } from "@aio-app/shared/auth";
 

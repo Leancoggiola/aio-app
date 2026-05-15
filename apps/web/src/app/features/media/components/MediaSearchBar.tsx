@@ -1,6 +1,7 @@
-import { TextInput, SegmentedControl, Group } from "@mantine/core";
+import { FC, useEffect, useState } from "react";
+import { Group, SegmentedControl, TextInput } from "@mantine/core";
 import { useDebouncedValue } from "@mantine/hooks";
-import { FC, useState, useEffect } from "react";
+
 import { MEDIA_TYPE_LABELS } from "@aio-app/shared/media";
 
 interface MediaSearchBarProps {

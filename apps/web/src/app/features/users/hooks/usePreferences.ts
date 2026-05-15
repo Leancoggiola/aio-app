@@ -1,11 +1,13 @@
-import useSWR from "swr";
-import type {
-  UserPreferences,
-  UpdatePreferencesPayload,
-} from "@aio-app/shared/users";
-import { api } from "../../../../lib/api";
-import { mutate } from "swr";
 import { useCallback } from "react";
+import useSWR from "swr";
+import { mutate } from "swr";
+
+import { api } from "@/common/api";
+
+import type {
+  UpdatePreferencesPayload,
+  UserPreferences,
+} from "@aio-app/shared/users";
 
 const PREFERENCES_KEY = "/api/users/preferences";
 

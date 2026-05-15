@@ -1,4 +1,4 @@
-export { ProfileForm } from "./ProfileForm";
+export { DeleteAccountButton } from "./DeleteAccountButton";
 export { PasswordForm } from "./PasswordForm";
 export { PreferencesForm } from "./PreferencesForm";
-export { DeleteAccountButton } from "./DeleteAccountButton";
+export { ProfileForm } from "./ProfileForm";

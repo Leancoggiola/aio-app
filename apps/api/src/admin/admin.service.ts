@@ -28,7 +28,7 @@ export async function createUser(dto: CreateUserPayload) {
 }
 
 export async function listUsers() {
-  const { prisma } = await import("../common/prisma");
+  const { prisma } = await import("../common/db");
   return prisma.user.findMany({
     omit: { password: true },
     orderBy: { createdAt: "desc" },

@@ -2,7 +2,7 @@ import { Router } from "express";
 import type { Request, Response, NextFunction } from "express";
 import rateLimit from "express-rate-limit";
 import * as authService from "./auth.service";
-import { validate } from "../common/validate";
+import { validate } from "../common/utils";
 import { loginSchema } from "@aio-app/shared/auth";
 import {
   authenticateLocal,

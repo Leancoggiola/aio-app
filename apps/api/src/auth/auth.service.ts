@@ -4,7 +4,7 @@ import { Response } from "express";
 
 import { config } from "../config";
 import * as usersService from "../users/users.service";
-import { prisma } from "../common/prisma";
+import { prisma } from "../common/db";
 
 const BCRYPT_ROUNDS = 12;
 

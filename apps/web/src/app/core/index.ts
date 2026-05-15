@@ -1,4 +1,4 @@
 export { AuthProvider, useAuth } from "./auth";
-export { ProtectedRoute, GuestRoute } from "./guards";
-export { RootLayout, AuthLayout } from "./layouts";
+export { GuestRoute, ProtectedRoute } from "./guards";
+export { AuthLayout, RootLayout } from "./layouts";
 export { SWRProvider } from "./providers";

@@ -1,6 +1,7 @@
-import { Loader, Center } from "@mantine/core";
 import { FC } from "react";
 import { Navigate, Outlet, useLocation } from "react-router-dom";
+import { Center, Loader } from "@mantine/core";
+
 import { useAuth } from "../auth";
 
 export const ProtectedRoute: FC = () => {

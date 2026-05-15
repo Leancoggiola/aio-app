@@ -1,7 +1,9 @@
-import { render, screen } from "@testing-library/react";
-import { describe, it, expect } from "vitest";
 import { MantineProvider } from "@mantine/core";
-import { HomePage } from "../app/features/home/Home";
+import { describe, expect, it } from "vitest";
+
+import { HomePage } from "../Home";
+
+import { render, screen } from "@testing-library/react";
 
 function renderWithProviders(ui: React.ReactElement) {
   return render(<MantineProvider>{ui}</MantineProvider>);

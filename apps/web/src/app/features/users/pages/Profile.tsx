@@ -1,14 +1,16 @@
 import { FC, useCallback } from "react";
-import { Stack, Title, Loader, Divider } from "@mantine/core";
-import { useProfile, usePreferences } from "../hooks";
+import { Divider, Loader, Stack, Title } from "@mantine/core";
+
+import { api } from "@/common/api";
+
+import { useAuth } from "../../../core/auth";
 import {
-  ProfileForm,
+  DeleteAccountButton,
   PasswordForm,
   PreferencesForm,
-  DeleteAccountButton,
+  ProfileForm,
 } from "../components";
-import { api } from "../../../../lib/api";
-import { useAuth } from "../../../core/auth";
+import { usePreferences, useProfile } from "../hooks";
 
 export const ProfilePage: FC = () => {
   const { profile, isLoading: profileLoading, updateProfile } = useProfile();

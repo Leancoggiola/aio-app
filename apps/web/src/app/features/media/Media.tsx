@@ -1,10 +1,12 @@
-import { Stack, Title, Tabs } from "@mantine/core";
 import { FC, useCallback, useState } from "react";
+import { Stack, Tabs, Title } from "@mantine/core";
+
 import { MediaSearchBar } from "./components/MediaSearchBar";
 import { MediaSearchResults } from "./components/MediaSearchResults";
 import { MyMediaList } from "./components/MyMediaList";
-import { useMediaSearch, useMyMediaList, useMediaMutations } from "./hooks";
-import type { MediaFilters, MediaType, MediaStatus } from "./types";
+import { useMediaMutations, useMediaSearch, useMyMediaList } from "./hooks";
+
+import type { MediaFilters, MediaStatus, MediaType } from "./types";
 
 export const MediaPage: FC = () => {
   // Search state

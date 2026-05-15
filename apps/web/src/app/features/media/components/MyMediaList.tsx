@@ -1,16 +1,19 @@
-import {
-  SimpleGrid,
-  Select,
-  Group,
-  Text,
-  Loader,
-  Center,
-  Tabs,
-  Stack,
-} from "@mantine/core";
 import { FC } from "react";
+import {
+  Center,
+  Group,
+  Loader,
+  Select,
+  SimpleGrid,
+  Stack,
+  Tabs,
+  Text,
+} from "@mantine/core";
+
 import { MediaCard } from "./MediaCard";
-import type { MediaItem, MediaFilters, MediaStatus, MediaType } from "../types";
+
+import type { MediaFilters, MediaItem, MediaStatus, MediaType } from "../types";
+
 import { MEDIA_STATUS_LABELS, MEDIA_TYPE_LABELS } from "@aio-app/shared/media";
 
 interface MyMediaListProps {

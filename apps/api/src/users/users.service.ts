@@ -5,7 +5,7 @@ import type {
   UpdatePreferencesPayload,
 } from "@aio-app/shared/users";
 import * as bcrypt from "bcrypt";
-import { prisma } from "../common/prisma";
+import { prisma } from "../common/db";
 
 const BCRYPT_ROUNDS = 12;
 

@@ -1,7 +1,9 @@
 import { useCallback } from "react";
 import { useSWRConfig } from "swr";
-import { api } from "../../../../lib/api";
-import type { MediaItem, MediaType, MediaStatus } from "../types";
+
+import { api } from "@/common/api";
+
+import type { MediaItem, MediaStatus, MediaType } from "../types";
 
 export function useMediaMutations() {
   const { mutate } = useSWRConfig();

@@ -1,21 +1,23 @@
+import { FC } from "react";
 import {
-  Card,
-  Image,
-  Text,
   Badge,
   Button,
+  Card,
+  Center,
   Group,
+  Image,
+  Loader,
+  Menu,
   SimpleGrid,
   Stack,
-  Loader,
-  Center,
-  Menu,
+  Text,
 } from "@mantine/core";
-import { FC } from "react";
-import type { TmdbMediaResult, MediaType, MediaStatus } from "../types";
+
+import type { MediaStatus, MediaType, TmdbMediaResult } from "../types";
+
 import {
-  MEDIA_TYPE_LABELS,
   MEDIA_STATUS_LABELS,
+  MEDIA_TYPE_LABELS,
   TMDB_POSTER_W300,
 } from "@aio-app/shared/media";
 

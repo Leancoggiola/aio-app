@@ -5,7 +5,7 @@ import type {
   UpdateMediaItemPayload,
 } from "@aio-app/shared/media";
 
-import { prisma } from "../common/prisma";
+import { prisma } from "../common/db";
 import * as tmdbService from "./tmdb.service";
 import { recalculateStats } from "../users/stats.service";
 

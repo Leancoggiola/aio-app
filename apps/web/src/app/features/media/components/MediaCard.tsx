@@ -1,18 +1,20 @@
-import {
-  Card,
-  Image,
-  Text,
-  Badge,
-  Group,
-  Stack,
-  ActionIcon,
-  Menu,
-} from "@mantine/core";
 import { FC } from "react";
-import type { MediaItem, MediaStatus } from "../types";
 import {
-  MEDIA_TYPE_LABELS,
+  ActionIcon,
+  Badge,
+  Card,
+  Group,
+  Image,
+  Menu,
+  Stack,
+  Text,
+} from "@mantine/core";
+
+import type { MediaItem, MediaStatus } from "../types";
+
+import {
   MEDIA_STATUS_LABELS,
+  MEDIA_TYPE_LABELS,
   TMDB_POSTER_W300,
 } from "@aio-app/shared/media";
 

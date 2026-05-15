@@ -1,5 +1,5 @@
 import type { Request, Response, NextFunction } from "express";
-import { config } from "../config";
+import { config } from "../../config";
 import { logger } from "./logger";
 
 export interface AppError {

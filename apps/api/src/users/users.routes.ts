@@ -7,7 +7,7 @@ import {
   updatePreferencesSchema,
 } from "@aio-app/shared/users";
 import { authenticateJwt } from "../auth/middleware/auth.middleware";
-import { validate } from "../common/validate";
+import { validate } from "../common/utils";
 import * as usersService from "./users.service";
 import * as statsService from "./stats.service";
 

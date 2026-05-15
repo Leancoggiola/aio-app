@@ -1,5 +1,5 @@
 import { FC, useState } from "react";
-import { Button, Modal, Text, Stack } from "@mantine/core";
+import { Button, Modal, Stack, Text } from "@mantine/core";
 
 interface DeleteAccountButtonProps {
   onDelete: () => Promise<void>;

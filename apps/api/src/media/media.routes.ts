@@ -9,7 +9,7 @@ import {
   filterMediaSchema,
 } from "@aio-app/shared/media";
 import { authenticateJwt } from "../auth/middleware/auth.middleware";
-import { validate } from "../common/validate";
+import { validate } from "../common/utils";
 import * as mediaService from "./media.service";
 
 const searchLimiter = rateLimit({

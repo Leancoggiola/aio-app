@@ -1,4 +1,5 @@
 import { createTheme } from "@mantine/core";
+
 import { ComponentsOverride } from "./components";
 
 export const THEME = createTheme({
@@ -13,16 +14,16 @@ export const THEME = createTheme({
   black: "#1F1413",
   colors: {
     primary: [
-      "#FFF4E2",
-      "#FDE4BC",
-      "#E8C9A2",
-      "#D3AB80",
-      "#B89379",
-      "#96786F",
-      "#6B4A45",
-      "#472825",
-      "#3A211F",
-      "#2E1A18",
+      "#FFF4E2", // 0
+      "#FDE4BC", // 1
+      "#E8C9A2", // 2
+      "#D3AB80", // 3
+      "#B89379", // 4
+      "#96786F", // 5
+      "#6B4A45", // 6
+      "#472825", // 7
+      "#3A211F", // 8
+      "#2E1A18", // 9
     ],
   },
 

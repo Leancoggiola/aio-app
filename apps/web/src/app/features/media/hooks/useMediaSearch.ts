@@ -1,4 +1,5 @@
 import useSWR from "swr";
+
 import type { TmdbSearchResponse } from "../types";
 
 export function useMediaSearch(query: string, page = 1, type = "multi") {

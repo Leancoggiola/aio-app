@@ -1,9 +1,11 @@
-import useSWR from "swr";
-import type { UserProfile } from "@aio-app/shared/users";
-import { api } from "../../../../lib/api";
-import type { UpdateProfilePayload } from "@aio-app/shared/users";
-import { mutate } from "swr";
 import { useCallback } from "react";
+import useSWR from "swr";
+import { mutate } from "swr";
+
+import { api } from "@/common/api";
+
+import type { UserProfile } from "@aio-app/shared/users";
+import type { UpdateProfilePayload } from "@aio-app/shared/users";
 
 const PROFILE_KEY = "/api/users/profile";
 

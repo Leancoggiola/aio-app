@@ -1,5 +1,6 @@
-import { AppShell, Container } from "@mantine/core";
 import { Outlet } from "react-router-dom";
+import { AppShell, Container } from "@mantine/core";
+
 import { AnimatedBackground } from "./AnimatedBackground";
 
 import type { FC } from "react";

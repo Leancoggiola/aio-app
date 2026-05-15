@@ -1,4 +1,4 @@
-import { prisma } from "../common/prisma";
+import { prisma } from "../common/db";
 
 export async function getStats(userId: string) {
   let stats = await prisma.userStats.findUnique({

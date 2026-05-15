@@ -1,14 +1,15 @@
-import { Alert, Button, PasswordInput, Stack, TextInput } from "@mantine/core";
-import { schemaResolver, useForm } from "@mantine/form";
 import { useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
+import { Alert, Button, PasswordInput, Stack, TextInput } from "@mantine/core";
+import { schemaResolver, useForm } from "@mantine/form";
 
 import { useAuth } from "../../../core/auth";
 import { AuthCard } from "../components/AuthCard";
 
-import type { FC } from "react";
-import { loginSchema } from "@aio-app/shared/auth";
 import type { LoginPayload } from "@aio-app/shared/auth";
+import type { FC } from "react";
+
+import { loginSchema } from "@aio-app/shared/auth";
 
 export const Login: FC = () => {
   const navigate = useNavigate();

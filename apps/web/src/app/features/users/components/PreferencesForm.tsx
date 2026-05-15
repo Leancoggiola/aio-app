@@ -1,5 +1,6 @@
 import { FC } from "react";
-import { Switch, Stack } from "@mantine/core";
+import { Stack, Switch } from "@mantine/core";
+
 import type { UserPreferences } from "@aio-app/shared/users";
 
 interface PreferencesFormProps {

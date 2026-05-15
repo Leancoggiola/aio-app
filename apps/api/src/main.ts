@@ -13,9 +13,8 @@ import "./auth/strategies/jwt.strategy";
 import "./auth/strategies/jwt-refresh.strategy";
 
 import router from "./router";
-import { errorHandler } from "./common/error-handler";
-import { logger } from "./common/logger";
-import { prisma } from "./common/prisma";
+import { errorHandler, logger } from "./common/utils";
+import { prisma } from "./common/db";
 
 async function bootstrap() {
   await prisma.$connect();
