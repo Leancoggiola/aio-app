@@ -2,7 +2,7 @@ name: Release
 
 on:
   push:
-    branches: [main, develop]
+    branches: [main]
 
 permissions:
   contents: write
@@ -44,23 +44,7 @@ jobs:
             echo "new_release=true" >> $GITHUB_OUTPUT
           fi
 
-      - name: Sync develop with main
-        if: github.ref == 'refs/heads/main'
-        run: |
-          git config user.name "github-actions[bot]"
-          git config user.email "github-actions[bot]@users.noreply.github.com"
-          git remote set-url origin https://x-access-token:${{ secrets.RELEASE_TOKEN }}@github.com/${{ github.repository }}
-          git fetch origin
-          git checkout develop
-          git merge --no-edit origin/main
-          git push origin develop
-
-      - name: Deploy API (dev)
-        if: steps.release.outputs.new_release == 'true' && github.ref == 'refs/heads/develop'
-        run: |
-          curl -s "https://api.render.com/deploy/srv-d82jbr83kofs73csd9eg?key=B47dZz6kQH4"
-
-      - name: Deploy API (prod)
-        if: steps.release.outputs.new_release == 'true' && github.ref == 'refs/heads/main'
+      - name: Deploy API
+        if: steps.release.outputs.new_release == 'true'
         run: |
           curl -s "${{ secrets.RENDER_DEPLOY_HOOK_PROD }}"
