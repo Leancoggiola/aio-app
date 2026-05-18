@@ -3,13 +3,13 @@ import useSWRImmutable from 'swr/immutable';
 
 import { api, ApiError, SWR_KEYS } from '@/common/api';
 
-import type { User } from '@aio-app/shared/auth';
+import type { SessionUser } from '@aio-app/shared/auth';
 import type { ProfileResponse } from '@aio-app/shared/auth';
 
-export type { User };
+export type { SessionUser };
 
 interface AuthContextValue {
-  user: User | null;
+  user: SessionUser | null;
   isAuthenticated: boolean;
   isLoading: boolean;
   error: ApiError | undefined;
@@ -49,7 +49,7 @@ export const AuthProvider: FC<PropsWithChildren> = ({ children }) => {
 export const useAuth = (): AuthContextValue => {
   const ctx = useContext(AuthContext);
   if (!ctx) {
-    throw new Error('useAuth must be used within an AuthProvider');
+    throw new Error('useAuth debe usarse dentro de un AuthProvider');
   }
   return ctx;
 };

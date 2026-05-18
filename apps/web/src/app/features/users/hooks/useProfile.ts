@@ -1,26 +1,78 @@
+import { useCallback } from 'react';
 import useSWRImmutable from 'swr/immutable';
 import useSWRMutation from 'swr/mutation';
+import { useSWRConfig } from 'swr';
 
 import { api, SWR_KEYS } from '@/common/api';
 
-import type { UserProfile } from '@aio-app/shared/users';
-import type { UpdateProfilePayload } from '@aio-app/shared/users';
+import { toSessionUser } from '@aio-app/shared/auth';
+import type { ProfileResponse } from '@aio-app/shared/auth';
+import type {
+  UpdatePreferencesPayload,
+  UpdateProfilePayload,
+  UserPreferences,
+  UserProfile,
+} from '@aio-app/shared/users';
 
 export function useProfile() {
-  const { data, isLoading, error } = useSWRImmutable<{ user: UserProfile }>(SWR_KEYS.users.profile);
+  const { mutate: globalMutate } = useSWRConfig();
+  const { data, isLoading, error, mutate } = useSWRImmutable<{ user: UserProfile }>(SWR_KEYS.users.profile);
 
-  const { trigger: updateProfile, isMutating } = useSWRMutation(
+  const syncAuthCache = useCallback(
+    (profile: UserProfile) => {
+      void globalMutate<ProfileResponse>(
+        SWR_KEYS.auth.profile,
+        { user: toSessionUser(profile) },
+        { revalidate: false }
+      );
+    },
+    [globalMutate]
+  );
+
+  const { trigger: updateProfile, isMutating: isUpdatingProfile } = useSWRMutation(
     SWR_KEYS.users.profile,
     (_url: string, { arg }: { arg: UpdateProfilePayload }) =>
       api.patch<{ user: UserProfile }>(SWR_KEYS.users.profile, arg),
-    { populateCache: true, revalidate: false }
+    {
+      populateCache: (updated, current) => {
+        if (current?.user?.preferences && !updated.user.preferences) {
+          return { user: { ...updated.user, preferences: current.user.preferences } };
+        }
+        return updated;
+      },
+      revalidate: false,
+      onSuccess: data => syncAuthCache(data.user),
+    }
+  );
+
+  const { trigger: updatePreferences, isMutating: isUpdatingPreferences } = useSWRMutation(
+    SWR_KEYS.users.preferences,
+    async (_url: string, { arg }: { arg: UpdatePreferencesPayload }) => {
+      const res = await api.patch<{ preferences: UserPreferences }>(SWR_KEYS.users.preferences, arg);
+      await mutate(
+        current =>
+          current
+            ? {
+                user: {
+                  ...current.user,
+                  preferences: current.user.preferences
+                    ? { ...current.user.preferences, ...res.preferences }
+                    : res.preferences,
+                },
+              }
+            : current,
+        { revalidate: false }
+      );
+      return res.preferences;
+    }
   );
 
   return {
     profile: data?.user ?? null,
     isLoading,
-    isMutating,
+    isMutating: isUpdatingProfile || isUpdatingPreferences,
     error,
     updateProfile,
+    updatePreferences,
   };
 }

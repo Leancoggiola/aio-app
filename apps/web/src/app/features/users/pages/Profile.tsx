@@ -5,11 +5,10 @@ import { api } from '@/common/api';
 
 import { useAuth } from '../../../core/auth';
 import { DeleteAccountButton, PasswordForm, PreferencesForm, ProfileForm } from '../components';
-import { usePreferences, useProfile } from '../hooks';
+import { useProfile } from '../hooks';
 
 export const ProfilePage: FC = () => {
-  const { profile, isLoading: profileLoading, updateProfile } = useProfile();
-  const { preferences, isLoading: prefsLoading, updatePreferences } = usePreferences();
+  const { profile, isLoading, updateProfile, updatePreferences } = useProfile();
   const { logout } = useAuth();
 
   const handleChangePassword = useCallback(async (newPassword: string) => {
@@ -21,7 +20,7 @@ export const ProfilePage: FC = () => {
     await logout();
   }, [logout]);
 
-  if (profileLoading || prefsLoading) {
+  if (isLoading) {
     return <Loader />;
   }
 
@@ -29,12 +28,14 @@ export const ProfilePage: FC = () => {
     return null;
   }
 
+  const preferences = profile.preferences;
+
   return (
     <Stack gap="xl">
-      <Title order={2}>Profile</Title>
+      <Title order={2}>Perfil</Title>
 
       <Stack gap="lg">
-        <Title order={4}>Personal Information</Title>
+        <Title order={4}>Información personal</Title>
         <ProfileForm profile={profile} onSubmit={updateProfile} />
       </Stack>
 
@@ -43,7 +44,7 @@ export const ProfilePage: FC = () => {
       {preferences && (
         <>
           <Stack gap="lg">
-            <Title order={4}>Preferences</Title>
+            <Title order={4}>Preferencias</Title>
             <PreferencesForm preferences={preferences} onUpdate={updatePreferences} />
           </Stack>
 
@@ -52,14 +53,14 @@ export const ProfilePage: FC = () => {
       )}
 
       <Stack gap="lg">
-        <Title order={4}>Change Password</Title>
+        <Title order={4}>Cambiar contraseña</Title>
         <PasswordForm onSubmit={handleChangePassword} />
       </Stack>
 
       <Divider />
 
       <Stack gap="lg">
-        <Title order={4}>Danger Zone</Title>
+        <Title order={4}>Zona de peligro</Title>
         <DeleteAccountButton onDelete={handleDeleteAccount} />
       </Stack>
     </Stack>
