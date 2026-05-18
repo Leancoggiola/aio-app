@@ -1,9 +1,13 @@
 import { Avatar, Group, Paper, Stack, Text } from '@mantine/core';
 import { StarIcon } from '@phosphor-icons/react/dist/ssr';
 
+import { useAuth } from '@/app/core/auth';
+
 import type { FC } from 'react';
 
 export const HomePage: FC = () => {
+  const { user } = useAuth();
+
   return (
     <Paper p="2xl">
       <Group wrap="nowrap" justify="space-between" mb="xl">
@@ -12,7 +16,7 @@ export const HomePage: FC = () => {
             Buenas Tardes
           </Text>
           <Text c="primary.7" fz="1.5rem" fw={600}>
-            Nombre
+            {user?.name}
           </Text>
         </Stack>
         <Avatar size="lg">

@@ -3,7 +3,6 @@ import { FilmSlateIcon, HouseIcon, SignOutIcon } from '@phosphor-icons/react';
 import { useCallback } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { useAuth } from '@/app/core/auth';
-import { useProfile } from '@/app/features/users/hooks/useProfile';
 
 import { ColorSchemeToggle } from '../ColorSchemeToggle';
 import { LogoAvatar } from '../LogoAvatar';
@@ -25,7 +24,6 @@ export const Navbar: FC<NavbarProps> = ({ onClose, toggle }) => {
   const location = useLocation();
   const navigate = useNavigate();
   const { user, logout } = useAuth();
-  const { profile } = useProfile();
 
   const handleNavigate = (path: string) => {
     navigate(path);
@@ -77,7 +75,7 @@ export const Navbar: FC<NavbarProps> = ({ onClose, toggle }) => {
       <AppShell.Section mt="md">
         <Paper p="sm" bg="primary.0" withBorder={false}>
           <Group gap="sm" wrap="nowrap">
-            <UserAvatar name={user?.name ?? ''} src={profile?.avatarUrl} />
+            <UserAvatar name={user?.name ?? ''} src={user?.avatarUrl} />
             <Stack gap="none">
               <Text size="sm" fw={600} c="primary.7">
                 {user?.name ?? '—'}
@@ -86,7 +84,7 @@ export const Navbar: FC<NavbarProps> = ({ onClose, toggle }) => {
                 {user?.email ?? '—'}
               </Text>
             </Stack>
-            <Group ml="auto" gap="2xs">
+            <Group ml="auto" gap="2xs" wrap="nowrap">
               <ColorSchemeToggle />
               <ActionIcon variant="subtle" size="lg" onClick={handleLogout}>
                 <SignOutIcon size="1rem" />

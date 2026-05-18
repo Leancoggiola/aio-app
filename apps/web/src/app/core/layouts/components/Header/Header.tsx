@@ -1,5 +1,4 @@
 import { useAuth } from '@/app/core/auth';
-import { useProfile } from '@/app/features/users/hooks/useProfile';
 import { AppShell, Burger, Group, Text } from '@mantine/core';
 
 import { ColorSchemeToggle } from '../ColorSchemeToggle';
@@ -15,7 +14,6 @@ interface HeaderProps {
 
 export const Header: FC<HeaderProps> = ({ opened, onToggle }) => {
   const { user } = useAuth();
-  const { profile } = useProfile();
 
   return (
     <AppShell.Header bg="primary.0" hiddenFrom="md" px="md" py="sm">
@@ -29,7 +27,7 @@ export const Header: FC<HeaderProps> = ({ opened, onToggle }) => {
         </Group>
         <Group>
           <ColorSchemeToggle />
-          <UserAvatar name={user?.name ?? ''} src={profile?.avatarUrl} />
+          <UserAvatar name={user?.name ?? ''} src={user?.avatarUrl} />
         </Group>
       </Group>
     </AppShell.Header>
