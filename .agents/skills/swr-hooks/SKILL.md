@@ -1,6 +1,6 @@
 ---
 name: swr-hooks
-description: Patterns for creating and refactoring SWR hooks in this project (aio-app). Use automatically when creating, modifying, or reviewing any hook under apps/web/src/app/features/*/hooks/ or apps/web/src/app/core/auth/. Triggers on useSWR, useSWRImmutable, useSWRMutation, SWR_KEYS, buildQueryString, useProfile, usePreferences, useAuth, useMyMediaList, useMediaMutations, useMediaSearch, or any new API data-fetching hook. When a new pattern is established that is not covered here, update this skill before finishing the task.
+description: Patterns for creating and refactoring SWR hooks in this project (aio-app). Use automatically when creating, modifying, or reviewing any hook under apps/web/src/app/features/*/hooks/ or apps/web/src/app/core/auth/. Triggers on useSWR, useSWRImmutable, useSWRMutation, SWR_KEYS, buildQueryString, useProfile, useAuth, useMyMediaList, useMediaMutations, useMediaSearch, or any new API data-fetching hook. When a new pattern is established that is not covered here, update this skill before finishing the task.
 ---
 
 # SWR Hooks — Project Patterns
@@ -24,7 +24,7 @@ import { api, SWR_KEYS, buildQueryString } from '@/common/api';
 
 ```
 New hook needed?
-├── Read-only, data rarely/never changes server-side (profile, preferences, auth)?
+├── Read-only, data rarely/never changes server-side (auth session, user profile page)?
 │   └── useSWRImmutable  ← no revalidation on focus/reconnect
 │
 ├── Read-only, data changes server-side (lists, search results)?
@@ -116,7 +116,19 @@ Auth cache uses bound mutate from `useSWRImmutable` inside `AuthContext`:
 - **login**: `await mutate(apiResponse, { revalidate: false })` — populate with server response
 - **logout**: `await mutate(undefined, { revalidate: false })` — clear cache without hitting the API again
 
+### Auth vs profile — two caches, two shapes
+
+| Hook / context | SWR key | Type | When it loads |
+|---|---|---|---|
+| `useAuth` | `SWR_KEYS.auth.profile` | `SessionUser` (no `id`) | App shell, guards, login |
+| `useProfile` | `SWR_KEYS.users.profile` | `UserProfile` (with `id`, `preferences`) | Profile page only |
+
+- Do **not** call `useProfile` in layout/shell — use `useAuth` for `name`, `email`, `avatarUrl`.
+- After `updateProfile`, sync auth cache with `toSessionUser(profile)` via `useSWRConfig().mutate(SWR_KEYS.auth.profile, …)`.
+- `updatePreferences` patches `SWR_KEYS.users.preferences` and merges into the profile cache. There is no `GET /api/users/preferences` — preferences come from `GET /api/users/profile`.
+
 ---
+
 
 ## Where to place hooks
 
