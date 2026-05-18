@@ -12,7 +12,7 @@ export const PreferencesForm: FC<PreferencesFormProps> = ({ preferences, onUpdat
   return (
     <Stack gap="sm">
       <Switch
-        label="Notifications"
+        label="Notificaciones"
         checked={preferences.notifications}
         onChange={e => onUpdate({ notifications: e.currentTarget.checked })}
       />

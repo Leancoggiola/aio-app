@@ -27,7 +27,7 @@ export const ProfileForm: FC<ProfileFormProps> = ({ profile, onSubmit }) => {
         await onSubmit(updates);
       }
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'Failed to update profile');
+      setError(err instanceof Error ? err.message : 'No se pudo actualizar el perfil');
     } finally {
       setLoading(false);
     }
@@ -39,7 +39,7 @@ export const ProfileForm: FC<ProfileFormProps> = ({ profile, onSubmit }) => {
         <TextInput label="Usuario" value={profile.username} disabled />
         <TextInput label="Nombre" value={name} onChange={e => setName(e.currentTarget.value)} required minLength={2} />
         <TextInput
-          label="Email"
+          label="Correo electrónico"
           type="email"
           value={email}
           onChange={e => setEmail(e.currentTarget.value)}
