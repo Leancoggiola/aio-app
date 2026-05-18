@@ -15,13 +15,13 @@ export const RootLayout: FC = () => {
       padding={isDesktop ? '2xl' : 'md'}
       header={{ height: 60, collapsed: !!isDesktop }}
       navbar={{
-        width: 280,
+        width: '19rem',
         breakpoint: 'md',
         collapsed: { mobile: !opened },
       }}
       layout="alt"
       withBorder={false}
-      styles={{ root: { '--app-shell-navbar-width': '17.5rem' } }}
+      styles={{ root: { '--app-shell-navbar-width': '19rem' } }}
     >
       <Header opened={opened} onToggle={toggle} />
       <Navbar onClose={close} toggle={toggle} />
