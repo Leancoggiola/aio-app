@@ -1,20 +1,19 @@
 import { Outlet } from 'react-router-dom';
 import { AppShell, Container, Overlay } from '@mantine/core';
-import { useDisclosure } from '@mantine/hooks';
+import { useDisclosure, useMediaQuery } from '@mantine/hooks';
 
-import { useAuth } from '../auth';
 import { Header, Navbar } from './components';
 
 import type { FC } from 'react';
 
 export const RootLayout: FC = () => {
   const [opened, { toggle, close }] = useDisclosure();
-  const { user, logout } = useAuth();
+  const isDesktop = useMediaQuery('(min-width: 62em)');
 
   return (
     <AppShell
-      padding="md"
-      header={{ height: 60 }}
+      padding={isDesktop ? '2xl' : 'md'}
+      header={{ height: 60, collapsed: !!isDesktop }}
       navbar={{
         width: 280,
         breakpoint: 'md',
@@ -25,9 +24,9 @@ export const RootLayout: FC = () => {
       styles={{ root: { '--app-shell-navbar-width': '17.5rem' } }}
     >
       <Header opened={opened} onToggle={toggle} />
-      <Navbar user={user} onLogout={logout} onClose={close} toggle={toggle} />
+      <Navbar onClose={close} toggle={toggle} />
 
-      <AppShell.Main>
+      <AppShell.Main bg="primary.1">
         <Container>
           <Overlay hiddenFrom="md" hidden={!opened} color="#000" backgroundOpacity={0.69} blur={2} zIndex={100} />
           <Outlet />

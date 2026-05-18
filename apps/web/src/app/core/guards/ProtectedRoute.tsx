@@ -5,10 +5,10 @@ import { Center, Loader } from '@mantine/core';
 import { useAuth } from '../auth';
 
 export const ProtectedRoute: FC = () => {
-  const { user, loading } = useAuth();
+  const { user, isLoading } = useAuth();
   const location = useLocation();
 
-  if (loading) {
+  if (isLoading) {
     return (
       <Center h="100vh">
         <Loader />
