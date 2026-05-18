@@ -5,6 +5,8 @@ import { Response } from 'express';
 import { config } from '../config';
 import * as usersService from '../users/users.service';
 import { prisma } from '../common/db';
+import type { Role } from '@aio-app/shared/auth';
+import { toSessionUser } from './auth.mappers';
 
 const BCRYPT_ROUNDS = 12;
 
@@ -22,9 +24,19 @@ export async function validateUser(username: string, password: string) {
 
 // ─── Login ─────────────────────────────────────────────────
 
-export async function login(user: { id: string; username: string; role: string }, res: Response) {
+export async function login(
+  user: {
+    id: string;
+    username: string;
+    name: string;
+    email: string | null;
+    role: Role;
+    avatarUrl: string | null;
+  },
+  res: Response
+) {
   await issueTokens({ sub: user.id, username: user.username, role: user.role }, res);
-  return { user };
+  return { user: toSessionUser(user) };
 }
 
 // ─── Refresh ───────────────────────────────────────────────
@@ -66,7 +78,7 @@ export async function refresh(userId: string, rawRefreshToken: string, res: Resp
 
   await issueTokens({ sub: userId, username: user.username, role: user.role }, res);
 
-  return { user };
+  return { user: toSessionUser(user) };
 }
 
 // ─── Logout ────────────────────────────────────────────────
@@ -100,7 +112,7 @@ export async function getProfile(userId: string) {
   if (!user) {
     throw { status: 401, message: 'Usuario no encontrado' };
   }
-  return { user };
+  return { user: toSessionUser(user) };
 }
 
 // ─── Private helpers ──────────────────────────────────────
