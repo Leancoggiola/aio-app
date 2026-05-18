@@ -1,7 +1,7 @@
 import { useCallback } from 'react';
 import { useSWRConfig } from 'swr';
 
-import { api } from '@/common/api';
+import { api, SWR_KEYS } from '@/common/api';
 
 import type { MediaItem, MediaStatus, MediaType } from '../types';
 
@@ -9,14 +9,14 @@ export function useMediaMutations() {
   const { mutate } = useSWRConfig();
 
   const invalidateList = useCallback(() => {
-    mutate((key: string) => typeof key === 'string' && key.startsWith('/api/media/list'), undefined, {
+    mutate((key: unknown) => typeof key === 'string' && key.startsWith(SWR_KEYS.media.list), undefined, {
       revalidate: true,
     });
   }, [mutate]);
 
   const addToList = useCallback(
     async (tmdbId: number, mediaType: MediaType, status: MediaStatus = 'to_watch') => {
-      const item = await api.post<MediaItem>('/api/media/list', {
+      const item = await api.post<MediaItem>(SWR_KEYS.media.list, {
         tmdbId,
         mediaType,
         status,
