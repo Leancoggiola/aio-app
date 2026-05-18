@@ -1,25 +1,24 @@
-import { useCallback } from 'react';
-import useSWR from 'swr';
-import { mutate } from 'swr';
+import useSWRImmutable from 'swr/immutable';
+import useSWRMutation from 'swr/mutation';
 
-import { api } from '@/common/api';
+import { api, SWR_KEYS } from '@/common/api';
 
 import type { UpdatePreferencesPayload, UserPreferences } from '@aio-app/shared/users';
 
-const PREFERENCES_KEY = '/api/users/preferences';
-
 export function usePreferences() {
-  const { data, isLoading, error } = useSWR<{ preferences: UserPreferences }>(PREFERENCES_KEY);
+  const { data, isLoading, error } = useSWRImmutable<{ preferences: UserPreferences }>(SWR_KEYS.users.preferences);
 
-  const updatePreferences = useCallback(async (dto: UpdatePreferencesPayload) => {
-    const result = await api.patch<{ preferences: UserPreferences }>(PREFERENCES_KEY, dto);
-    await mutate(PREFERENCES_KEY, result, { revalidate: false });
-    return result.preferences;
-  }, []);
+  const { trigger: updatePreferences, isMutating } = useSWRMutation(
+    SWR_KEYS.users.preferences,
+    (_url: string, { arg }: { arg: UpdatePreferencesPayload }) =>
+      api.patch<{ preferences: UserPreferences }>(SWR_KEYS.users.preferences, arg),
+    { populateCache: true, revalidate: false }
+  );
 
   return {
     preferences: data?.preferences ?? null,
     isLoading,
+    isMutating,
     error,
     updatePreferences,
   };

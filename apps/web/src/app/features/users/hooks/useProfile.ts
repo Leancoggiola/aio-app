@@ -1,26 +1,25 @@
-import { useCallback } from 'react';
-import useSWR from 'swr';
-import { mutate } from 'swr';
+import useSWRImmutable from 'swr/immutable';
+import useSWRMutation from 'swr/mutation';
 
-import { api } from '@/common/api';
+import { api, SWR_KEYS } from '@/common/api';
 
 import type { UserProfile } from '@aio-app/shared/users';
 import type { UpdateProfilePayload } from '@aio-app/shared/users';
 
-const PROFILE_KEY = '/api/users/profile';
-
 export function useProfile() {
-  const { data, isLoading, error } = useSWR<{ user: UserProfile }>(PROFILE_KEY);
+  const { data, isLoading, error } = useSWRImmutable<{ user: UserProfile }>(SWR_KEYS.users.profile);
 
-  const updateProfile = useCallback(async (dto: UpdateProfilePayload) => {
-    const result = await api.patch<{ user: UserProfile }>(PROFILE_KEY, dto);
-    await mutate(PROFILE_KEY, result, { revalidate: false });
-    return result.user;
-  }, []);
+  const { trigger: updateProfile, isMutating } = useSWRMutation(
+    SWR_KEYS.users.profile,
+    (_url: string, { arg }: { arg: UpdateProfilePayload }) =>
+      api.patch<{ user: UserProfile }>(SWR_KEYS.users.profile, arg),
+    { populateCache: true, revalidate: false }
+  );
 
   return {
     profile: data?.user ?? null,
     isLoading,
+    isMutating,
     error,
     updateProfile,
   };
