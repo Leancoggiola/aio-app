@@ -17,9 +17,9 @@ export const MediaCard: FC<MediaCardProps> = ({ item, onStatusChange, onRemove }
       <Card.Section>
         <Image
           src={item.posterPath ? `${TMDB_POSTER_W300}${item.posterPath}` : undefined}
-          h={280}
+          h={'19rem'}
           alt={item.title}
-          fallbackSrc="https://placehold.co/300x450?text=No+Image"
+          fallbackSrc="https://placehold.co/300x450?text=Sin+imagen"
         />
       </Card.Section>
 
@@ -40,7 +40,7 @@ export const MediaCard: FC<MediaCardProps> = ({ item, onStatusChange, onRemove }
 
         {item.streamingReleaseDate && (
           <Text size="xs" c="dimmed">
-            Streaming: {new Date(item.streamingReleaseDate).toLocaleDateString()}
+            En streaming: {new Date(item.streamingReleaseDate).toLocaleDateString('es')}
           </Text>
         )}
       </Stack>

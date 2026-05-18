@@ -45,7 +45,7 @@ export const MediaSearchResults: FC<MediaSearchResultsProps> = ({ results, isLoa
                 src={item.poster_path ? `${TMDB_POSTER_W300}${item.poster_path}` : undefined}
                 h={220}
                 alt={title}
-                fallbackSrc="https://placehold.co/300x450?text=No+Image"
+                fallbackSrc="https://placehold.co/300x450?text=Sin+imagen"
               />
             </Card.Section>
 

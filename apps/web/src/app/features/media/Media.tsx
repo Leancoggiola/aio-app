@@ -69,7 +69,7 @@ export const MediaPage: FC = () => {
 
   return (
     <Stack gap="lg">
-      <Title order={2}>Media Tracker</Title>
+      <Title order={2}>Películas y series</Title>
 
       <Tabs value={activeTab} onChange={setActiveTab}>
         <Tabs.List>
