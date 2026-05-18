@@ -79,16 +79,6 @@ router.delete('/account', authenticateJwt, async (req: Request, res: Response, n
 
 // ─── Preferences ───────────────────────────────────────────
 
-router.get('/preferences', authenticateJwt, async (req: Request, res: Response, next: NextFunction) => {
-  try {
-    const { userId } = req.user as any;
-    const preferences = await usersService.getPreferences(userId);
-    res.json({ preferences });
-  } catch (err) {
-    next(err);
-  }
-});
-
 router.patch(
   '/preferences',
   authenticateJwt,

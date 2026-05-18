@@ -69,6 +69,7 @@ export async function updateProfile(userId: string, dto: UpdateProfilePayload) {
     where: { id: userId },
     data: dto,
     omit: { password: true },
+    include: { preferences: true },
   });
 }
 
@@ -90,20 +91,6 @@ export async function deleteAccount(userId: string) {
 }
 
 // ─── Preferences ───────────────────────────────────────────
-
-export async function getPreferences(userId: string) {
-  let preferences = await prisma.userPreferences.findUnique({
-    where: { userId },
-  });
-
-  if (!preferences) {
-    preferences = await prisma.userPreferences.create({
-      data: { userId },
-    });
-  }
-
-  return preferences;
-}
 
 export async function updatePreferences(userId: string, dto: UpdatePreferencesPayload) {
   return prisma.userPreferences.upsert({
