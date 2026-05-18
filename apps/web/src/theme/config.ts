@@ -1,9 +1,9 @@
-import { createTheme } from '@mantine/core';
+import { createTheme, virtualColor } from '@mantine/core';
 
 import { ComponentsOverride } from './components';
 
 export const THEME = createTheme({
-  fontFamily: "'Open Sans', sans-serif",
+  fontFamily: "'ui-sans-serif', 'Open Sans', sans-serif",
   primaryColor: 'primary',
   primaryShade: 6,
 
@@ -13,7 +13,7 @@ export const THEME = createTheme({
   autoContrast: true,
   black: '#1F1413',
   colors: {
-    primary: [
+    lightPalette: [
       '#FFF4E2', // 0
       '#FDE4BC', // 1
       '#E8C9A2', // 2
@@ -25,6 +25,23 @@ export const THEME = createTheme({
       '#3A211F', // 8
       '#2E1A18', // 9
     ],
+    darkPalette: [
+      '#FFF4E2', // 0
+      '#FDE4BC', // 1
+      '#E8C9A2', // 2
+      '#D3AB80', // 3
+      '#B89379', // 4
+      '#96786F', // 5
+      '#6B4A45', // 6
+      '#472825', // 7
+      '#3A211F', // 8
+      '#2E1A18', // 9
+    ],
+    primary: virtualColor({
+      name: 'primary',
+      light: 'lightPalette',
+      dark: 'darkPalette',
+    }),
   },
 
   defaultRadius: 'md',
