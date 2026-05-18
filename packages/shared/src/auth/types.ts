@@ -1,15 +1,14 @@
 export type Role = 'ADMIN' | 'USER';
 
-export interface User {
-  id: string;
+/** Usuario expuesto en login, refresh y GET /api/auth/profile (sin id). */
+export interface SessionUser {
   username: string;
   name: string;
   email: string | null;
   role: Role;
-  createdAt: string;
-  updatedAt: string;
+  avatarUrl: string | null;
 }
 
 export interface ProfileResponse {
-  user: User;
+  user: SessionUser;
 }
