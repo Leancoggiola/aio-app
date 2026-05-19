@@ -5,10 +5,10 @@
 
   &[data-active] {
     color: var(--mantine-color-white);
-    background-image: linear-gradient(to right, var(--mantine-color-primary-5), var(--mantine-color-primary-7));
+    background-image: linear-gradient(to right, var(--mantine-color-brand-5), var(--mantine-color-brand-7));
   }
   &:hover {
-    background-color: var(--mantine-color-primary-2);
+    background-color: var(--mantine-color-brand-2);
   }
   /* NavLink root styles */
 }

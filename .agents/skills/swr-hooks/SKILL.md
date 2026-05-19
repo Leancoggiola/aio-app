@@ -1,6 +1,6 @@
 ---
 name: swr-hooks
-description: Patterns for creating and refactoring SWR hooks in this project (aio-app). Use automatically when creating, modifying, or reviewing any hook under apps/web/src/app/features/*/hooks/ or apps/web/src/app/core/auth/. Triggers on useSWR, useSWRImmutable, useSWRMutation, SWR_KEYS, buildQueryString, useProfile, useAuth, useMyMediaList, useMediaMutations, useMediaSearch, or any new API data-fetching hook. When a new pattern is established that is not covered here, update this skill before finishing the task.
+description: Patterns for creating and refactoring SWR hooks in this project (aio-app). Use automatically when creating, modifying, or reviewing any hook under apps/web/src/features/*/modules/*/hooks/ or apps/web/src/core/auth/. Triggers on useSWR, useSWRImmutable, useSWRMutation, SWR_KEYS, buildQueryString, useProfile, useAuth, useMyMediaList, useMediaMutations, useMediaSearch, or any new API data-fetching hook. When a new pattern is established that is not covered here, update this skill before finishing the task.
 ---
 
 # SWR Hooks — Project Patterns
@@ -9,11 +9,11 @@ description: Patterns for creating and refactoring SWR hooks in this project (ai
 
 ## Imports and keys
 
-All SWR keys live in `apps/web/src/common/api/keys.ts`, exported via `@/common/api`.
+All SWR keys live in `apps/web/src/shared/api/keys.ts`, exported via `@/shared/api`.
 Never hardcode URL strings in hooks.
 
 ```ts
-import { api, SWR_KEYS, buildQueryString } from '@/common/api';
+import { api, SWR_KEYS, buildQueryString } from '@/shared/api';
 ```
 
 `buildQueryString` sorts params alphabetically — always use it for dynamic query strings to guarantee consistent cache keys.
@@ -44,7 +44,7 @@ New hook needed?
 
 ```ts
 import useSWRImmutable from 'swr/immutable';
-import { SWR_KEYS } from '@/common/api';
+import { SWR_KEYS } from '@/shared/api';
 
 export function useProfile() {
   const { data, isLoading, error } = useSWRImmutable<{ user: UserProfile }>(SWR_KEYS.users.profile);
@@ -56,7 +56,7 @@ export function useProfile() {
 
 ```ts
 import useSWR from 'swr';
-import { buildQueryString, SWR_KEYS } from '@/common/api';
+import { buildQueryString, SWR_KEYS } from '@/shared/api';
 
 export function useMyMediaList(filters: MediaFilters = {}) {
   const key = `${SWR_KEYS.media.list}${buildQueryString({ mediaType: filters.mediaType, status: filters.status })}`;
@@ -69,7 +69,7 @@ export function useMyMediaList(filters: MediaFilters = {}) {
 ```ts
 import useSWRImmutable from 'swr/immutable';
 import useSWRMutation from 'swr/mutation';
-import { api, SWR_KEYS } from '@/common/api';
+import { api, SWR_KEYS } from '@/shared/api';
 
 export function useProfile() {
   const { data, isLoading, error } = useSWRImmutable<{ user: UserProfile }>(SWR_KEYS.users.profile);
@@ -94,7 +94,7 @@ Use when a write should bust multiple cached entries (e.g. list with/without fil
 
 ```ts
 import { useSWRConfig } from 'swr';
-import { SWR_KEYS } from '@/common/api';
+import { SWR_KEYS } from '@/shared/api';
 
 export function useMediaMutations() {
   const { mutate } = useSWRConfig();

@@ -5,6 +5,7 @@
     "dev": "turbo run dev",
     "dev:api": "turbo run dev --filter=api",
     "dev:web": "turbo run dev --filter=web",
+    "web:new-feature": "node apps/web/scripts/new-feature.mjs",
     "lint": "turbo run lint",
     "test": "turbo run test",
     "test:coverage": "turbo run test:coverage",

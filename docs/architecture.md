@@ -74,104 +74,69 @@ src/
 ```
 src/
   app/
-    core/                 ← Setup global de la app
-      auth/
-        AuthContext.tsx   ← Context + useAuth hook
-        index.ts
-      guards/
-        ProtectedRoute.tsx
-        GuestRoute.tsx
-        index.ts
-      layouts/
-        RootLayout.tsx    ← Layout con sidebar + header
-        AuthLayout.tsx    ← Layout para login
-        AnimatedBackground/
-        components/       ← Header.tsx, Navbar.tsx
-        index.ts
-      providers/
-        SWRProvider.tsx
-        index.ts
-      index.ts            ← Barril de core
-    features/             ← Módulos de producto
-      auth/
-        components/       ← AuthCard.tsx
-        pages/            ← Login.tsx
-        routes/           ← loginRoute.tsx
-        index.ts
-      home/
-        Home.tsx
-        homeRoute.tsx
-        __tests__/        ← Tests co-locados con la feature
-        index.ts
-      media/
-        components/       ← MediaCard, MediaSearchBar, etc.
-        hooks/            ← useMediaSearch, useMyMediaList, etc.
-        pages/
-        types.ts
-        index.ts
-      users/
-        components/       ← ProfileForm, PasswordForm, etc.
-        hooks/            ← useProfile, usePreferences
-        pages/            ← Profile.tsx
-        routes/           ← profileRoute.tsx
-        index.ts
-      index.ts            ← Exporta todas las routes
-    components/           ← Shared components (entre features)
-      index.ts
-    hooks/                ← Shared hooks (entre features)
-      index.ts
     router.tsx
-    routes.tsx
-  common/                 ← Utilidades transversales
-    api/
-      client.ts           ← HTTP client (POST, PUT, PATCH, DELETE)
-      fetcher.ts          ← GET fetcher + ApiError class
-      index.ts
-    index.ts
+    routes.ts
+    navigation/
+      nav-registry.tsx
+  features/               ← Dominio de producto (1 navbar item = 1 feature)
+    home/
+    auth/
+    media/
+    profile/              ← UI “Perfil”; API sigue en users/
+  shared/
+    api/                  ← client, fetcher, SWR_KEYS
+    ui/                   ← componentes cross-feature (UserAvatar, …)
+  core/
+    auth/
+    guards/
+    providers/
+  layouts/
+    RootLayout.tsx
+    AuthLayout.tsx
+    components/           ← Navbar, Header, …
   theme/
-    config.ts             ← Mantine theme config
-    components.tsx        ← Mantine component overrides
   assets/
-    logo.svg
-  __tests__/
-    setup.ts              ← Vitest setup global
-  main.tsx                ← Entry point
-  vite-env.d.ts
+  main.tsx
 ```
+
+Cada feature usa `modules/<nombre>/` (sub-dominios), carpetas por componente/hook y barrels `index.ts`. Ver [web-new-feature.md](./web-new-feature.md).
 
 ### Convenciones Web
 
-| Elemento             | Convención                                                  |
-| -------------------- | ----------------------------------------------------------- |
-| Componentes          | `PascalCase.tsx`, named export (`export const MyComponent`) |
-| Hooks                | `camelCase` con prefijo `use`, named export                 |
-| Archivos de utilidad | `camelCase.ts`                                              |
-| Imports externos     | Aliases (`@/common/api`, `@/core/auth`, `@/features/media`) |
+| Elemento     | Convención                                               |
+| ------------ | -------------------------------------------------------- |
+| Feature      | `<name>.page.tsx`, `<name>.routes.tsx`, `<name>.nav.tsx` |
+| Componentes  | `Component/Component.tsx` + `index.ts`                   |
+| Hooks        | `useX/useX.ts` + `index.ts`                              |
+| Imports      | `@/shared/api`, `@/core/auth`, `@/features/media`        |
+| Dependencias | Un feature **no** importa otro feature                   |
 
-### Path aliases disponibles
+### Path aliases
 
-| Alias            | Apunta a               |
-| ---------------- | ---------------------- |
-| `@/*`            | `src/*`                |
-| `@/features/*`   | `src/app/features/*`   |
-| `@/core/*`       | `src/app/core/*`       |
-| `@/components/*` | `src/app/components/*` |
-| `@/hooks/*`      | `src/app/hooks/*`      |
-| `@/common/*`     | `src/common/*`         |
-| `@/theme/*`      | `src/theme/*`          |
-| `@/assets/*`     | `src/assets/*`         |
+| Alias          | Apunta a         |
+| -------------- | ---------------- |
+| `@/*`          | `src/*`          |
+| `@/app/*`      | `src/app/*`      |
+| `@/features/*` | `src/features/*` |
+| `@/shared/*`   | `src/shared/*`   |
+| `@/core/*`     | `src/core/*`     |
+| `@/layouts/*`  | `src/layouts/*`  |
+| `@/theme/*`    | `src/theme/*`    |
+| `@/assets/*`   | `src/assets/*`   |
+
+> `@/shared` (frontend) ≠ `@aio-app/shared` (paquete monorepo de tipos/schemas).
 
 ---
 
 ## Paralelo Web ↔ API
 
-| Concepto               | API                                         | Web                                                    |
-| ---------------------- | ------------------------------------------- | ------------------------------------------------------ |
-| Utilidades compartidas | `common/db/`, `common/utils/`               | `common/api/`                                          |
-| Módulos de producto    | `auth/`, `media/`, `users/`                 | `features/auth/`, `features/media/`, `features/users/` |
-| Setup global           | `config.ts`, `main.ts`                      | `core/`, `main.tsx`                                    |
-| Servicios              | `*.service.ts`                              | hooks (`use*.ts`)                                      |
-| Validación             | `common/utils/validate.ts` (Zod middleware) | Schemas de `@aio-app/shared`                           |
+| Concepto               | API                                         | Web                                                      |
+| ---------------------- | ------------------------------------------- | -------------------------------------------------------- |
+| Utilidades compartidas | `common/db/`, `common/utils/`               | `shared/api/`                                            |
+| Módulos de producto    | `auth/`, `media/`, `users/`                 | `features/auth/`, `features/media/`, `features/profile/` |
+| Setup global           | `config.ts`, `main.ts`                      | `core/`, `layouts/`, `main.tsx`                          |
+| Servicios              | `*.service.ts`                              | hooks en `features/*/modules/*/hooks/`                   |
+| Validación             | `common/utils/validate.ts` (Zod middleware) | Schemas de `@aio-app/shared`                             |
 
 ---
 
@@ -185,45 +150,19 @@ src/
 
 ### En Web
 
-1. Crear `src/app/features/<feature>/`
-2. Estructura interna:
-   ```
-   <feature>/
-     components/
-     hooks/
-     pages/
-     routes/
-     types.ts      ← si aplica
-     index.ts      ← exportar la route
-   ```
-3. Exportar la route desde `src/app/features/index.ts`
-4. Registrar en `src/app/routes.tsx`
+1. `pnpm web:new-feature <name>` o seguir [web-new-feature.md](./web-new-feature.md)
+2. Registrar route en `app/routes.ts` y nav en `app/navigation/nav-registry.tsx`
+3. Keys SWR en `shared/api/keys.ts` si aplica
+
+Tooling: [web-tooling.md](./web-tooling.md) (Cursor rule + script).
 
 ---
 
-## Agregar un shared component o hook (Web)
+## Shared UI (Web)
 
-**Shared component** (usado en 2+ features):
+Componentes usados en 2+ features → `shared/ui/<Component>/`.
 
-```
-src/app/components/
-  MyComponent/
-    MyComponent.tsx     ← export const MyComponent: FC = ...
-    index.ts            ← export { MyComponent } from "./MyComponent"
-```
-
-Exportar desde `src/app/components/index.ts`.
-
-**Shared hook** (usado en 2+ features):
-
-```
-src/app/hooks/
-  useMyHook.ts
-```
-
-Exportar desde `src/app/hooks/index.ts`.
-
-> Si el hook o componente es exclusivo de una feature, va dentro de `features/<feature>/hooks/` o `features/<feature>/components/`.
+Hooks cross-feature (si aparecen) → `shared/hooks/` (crear cuando haga falta).
 
 ---
 
