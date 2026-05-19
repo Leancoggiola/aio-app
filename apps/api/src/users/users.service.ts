@@ -56,18 +56,22 @@ export async function getProfile(userId: string) {
 }
 
 export async function updateProfile(userId: string, dto: UpdateProfilePayload) {
-  if (dto.email) {
-    const existing = await prisma.user.findUnique({
-      where: { email: dto.email },
-    });
-    if (existing && existing.id !== userId) {
-      throw { status: 409, message: 'El correo electrónico ya está en uso' };
-    }
+  const data: { phone?: string | null; birthDate?: Date | null } = {};
+
+  if (dto.phone !== undefined) {
+    data.phone = dto.phone;
+  }
+  if (dto.birthDate !== undefined) {
+    data.birthDate = dto.birthDate === null ? null : new Date(dto.birthDate);
+  }
+
+  if (Object.keys(data).length === 0) {
+    return getProfile(userId);
   }
 
   return prisma.user.update({
     where: { id: userId },
-    data: dto,
+    data,
     omit: { password: true },
     include: { preferences: true },
   });
