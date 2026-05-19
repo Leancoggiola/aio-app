@@ -3,14 +3,21 @@ import passport from 'passport';
 
 function authenticate(strategy: string) {
   return (req: Request, res: Response, next: NextFunction) => {
-    passport.authenticate(strategy, { session: false }, (err: Error | null, user: Express.User | false, info: { message?: string }) => {
-      if (err) return next(err);
-      if (!user) {
-        return next({ status: 401, message: info?.message ?? 'Unauthorized' });
+    passport.authenticate(
+      strategy,
+      { session: false },
+      (err: Error | null, user: Express.User | false, info: { message?: string }) => {
+        if (err) return next(err);
+        if (!user) {
+          return next({
+            status: 401,
+            message: info?.message ?? 'No autorizado',
+          });
+        }
+        req.user = user;
+        next();
       }
-      req.user = user;
-      next();
-    })(req, res, next);
+    )(req, res, next);
   };
 }
 

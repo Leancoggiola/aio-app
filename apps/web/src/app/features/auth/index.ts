@@ -1,2 +1,1 @@
-export { loginRoute } from "./routes/loginRoute";
-export { registerRoute } from "./routes/registerRoute";
+export { loginRoute } from './routes/loginRoute';

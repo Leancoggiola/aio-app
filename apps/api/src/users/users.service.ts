@@ -1,16 +1,33 @@
 import type { User } from '../generated/prisma/client';
-import type { RegisterPayload } from '@aio-app/shared/auth';
+import type { CreateUserPayload } from '@aio-app/shared/auth';
 import type { UpdateProfilePayload, UpdatePreferencesPayload } from '@aio-app/shared/users';
 import * as bcrypt from 'bcrypt';
-import { prisma } from '../common/prisma';
+import { prisma } from '../common/db';
 
 const BCRYPT_ROUNDS = 12;
 
-export async function create(dto: RegisterPayload): Promise<User> {
-  return prisma.user.create({ data: dto });
+export async function create(
+  dto: Omit<CreateUserPayload, 'role'> & { password: string; role?: string }
+): Promise<User> {
+  return prisma.user.create({
+    data: {
+      username: dto.username.toLowerCase(),
+      name: dto.name,
+      email: dto.email ?? null,
+      password: dto.password,
+      role: (dto.role as 'ADMIN' | 'USER') ?? 'USER',
+    },
+  });
 }
 
 /** Returns user WITH password (for auth validation). */
+export async function findByUsername(username: string): Promise<User | null> {
+  return prisma.user.findUnique({
+    where: { username: username.toLowerCase() },
+  });
+}
+
+/** Returns user WITH password (kept for future password recovery via email). */
 export async function findByEmail(email: string): Promise<User | null> {
   return prisma.user.findUnique({ where: { email } });
 }
@@ -32,24 +49,31 @@ export async function getProfile(userId: string) {
   });
 
   if (!user) {
-    throw { status: 404, message: 'User not found' };
+    throw { status: 404, message: 'Usuario no encontrado' };
   }
 
   return user;
 }
 
 export async function updateProfile(userId: string, dto: UpdateProfilePayload) {
-  if (dto.email) {
-    const existing = await prisma.user.findUnique({ where: { email: dto.email } });
-    if (existing && existing.id !== userId) {
-      throw { status: 409, message: 'Email already in use' };
-    }
+  const data: { phone?: string | null; birthDate?: Date | null } = {};
+
+  if (dto.phone !== undefined) {
+    data.phone = dto.phone;
+  }
+  if (dto.birthDate !== undefined) {
+    data.birthDate = dto.birthDate === null ? null : new Date(dto.birthDate);
+  }
+
+  if (Object.keys(data).length === 0) {
+    return getProfile(userId);
   }
 
   return prisma.user.update({
     where: { id: userId },
-    data: dto,
+    data,
     omit: { password: true },
+    include: { preferences: true },
   });
 }
 
@@ -71,20 +95,6 @@ export async function deleteAccount(userId: string) {
 }
 
 // ─── Preferences ───────────────────────────────────────────
-
-export async function getPreferences(userId: string) {
-  let preferences = await prisma.userPreferences.findUnique({
-    where: { userId },
-  });
-
-  if (!preferences) {
-    preferences = await prisma.userPreferences.create({
-      data: { userId },
-    });
-  }
-
-  return preferences;
-}
 
 export async function updatePreferences(userId: string, dto: UpdatePreferencesPayload) {
   return prisma.userPreferences.upsert({

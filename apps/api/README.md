@@ -4,18 +4,18 @@ API REST para la aplicación de media tracking. Gestiona autenticación de usuar
 
 ## Stack
 
-| Tecnología | Uso |
-|---|---|
-| **Express 5** | HTTP framework |
-| **Prisma** | ORM, migraciones y type-safe queries |
-| **PostgreSQL** | Base de datos (Supabase) |
-| **Passport.js** | Autenticación con 3 strategies (local, jwt, jwt-refresh) |
-| **Zod** | Validación de payloads (schemas compartidos desde `@aio-app/shared`) |
-| **bcrypt** | Hash de passwords |
-| **Helmet** | Headers de seguridad HTTP |
-| **express-rate-limit** | Rate limiting en rutas de auth |
-| **tsup** | Bundler para producción |
-| **tsx** | Runner con hot reload para desarrollo |
+| Tecnología             | Uso                                                                  |
+| ---------------------- | -------------------------------------------------------------------- |
+| **Express 5**          | HTTP framework                                                       |
+| **Prisma**             | ORM, migraciones y type-safe queries                                 |
+| **PostgreSQL**         | Base de datos (Supabase)                                             |
+| **Passport.js**        | Autenticación con 3 strategies (local, jwt, jwt-refresh)             |
+| **Zod**                | Validación de payloads (schemas compartidos desde `@aio-app/shared`) |
+| **bcrypt**             | Hash de passwords                                                    |
+| **Helmet**             | Headers de seguridad HTTP                                            |
+| **express-rate-limit** | Rate limiting en rutas de auth                                       |
+| **tsup**               | Bundler para producción                                              |
+| **tsx**                | Runner con hot reload para desarrollo                                |
 
 ## Estructura de carpetas
 
@@ -52,24 +52,24 @@ Todas las rutas están bajo el prefijo `/api`.
 
 ### Auth (`/api/auth`)
 
-| Método | Ruta | Auth | Rate Limit | Body/Query | Descripción |
-|---|---|---|---|---|---|
-| `POST` | `/register` | ❌ | 10/15min | `{ name, email, password }` | Crea usuario, retorna tokens |
-| `POST` | `/login` | ❌ | 10/15min | `{ email, password }` | Login, retorna access token + refresh cookie |
-| `POST` | `/refresh` | 🔄 Cookie | 20/15min | — | Rota refresh token, retorna nuevo access token |
-| `POST` | `/logout` | 🔒 JWT | — | — | Invalida refresh token, limpia cookie |
-| `GET` | `/profile` | 🔒 JWT | — | — | Retorna datos del usuario |
+| Método | Ruta        | Auth      | Rate Limit | Body/Query                  | Descripción                                    |
+| ------ | ----------- | --------- | ---------- | --------------------------- | ---------------------------------------------- |
+| `POST` | `/register` | ❌        | 10/15min   | `{ name, email, password }` | Crea usuario, retorna tokens                   |
+| `POST` | `/login`    | ❌        | 10/15min   | `{ email, password }`       | Login, retorna access token + refresh cookie   |
+| `POST` | `/refresh`  | 🔄 Cookie | 20/15min   | —                           | Rota refresh token, retorna nuevo access token |
+| `POST` | `/logout`   | 🔒 JWT    | —          | —                           | Invalida refresh token, limpia cookie          |
+| `GET`  | `/profile`  | 🔒 JWT    | —          | —                           | Retorna datos del usuario                      |
 
 ### Media (`/api/media`) — Todas requieren 🔒 JWT
 
-| Método | Ruta | Query/Body | Descripción |
-|---|---|---|---|
-| `GET` | `/search` | `?query=&page=1&type=multi` | Busca en TMDB (movie, tv, multi) |
-| `GET` | `/tmdb/:type/:id` | — | Detalle completo de un item en TMDB |
-| `GET` | `/list` | `?status=&mediaType=` | Lista de media del usuario (filtrable) |
-| `POST` | `/list` | `{ tmdbId, mediaType, status? }` | Agrega item a la lista |
-| `PATCH` | `/list/:id` | `{ status }` | Actualiza estado (to_watch, watching, watched) |
-| `DELETE` | `/list/:id` | — | Elimina item de la lista |
+| Método   | Ruta              | Query/Body                       | Descripción                                    |
+| -------- | ----------------- | -------------------------------- | ---------------------------------------------- |
+| `GET`    | `/search`         | `?query=&page=1&type=multi`      | Busca en TMDB (movie, tv, multi)               |
+| `GET`    | `/tmdb/:type/:id` | —                                | Detalle completo de un item en TMDB            |
+| `GET`    | `/list`           | `?status=&mediaType=`            | Lista de media del usuario (filtrable)         |
+| `POST`   | `/list`           | `{ tmdbId, mediaType, status? }` | Agrega item a la lista                         |
+| `PATCH`  | `/list/:id`       | `{ status }`                     | Actualiza estado (to_watch, watching, watched) |
+| `DELETE` | `/list/:id`       | —                                | Elimina item de la lista                       |
 
 ## Flujo de autenticación
 
@@ -96,11 +96,11 @@ Todas las rutas están bajo el prefijo `/api`.
 
 ### Schema (`prisma/schema.prisma`)
 
-| Modelo | Campos clave | Notas |
-|---|---|---|
-| **User** | id, name, email (unique), password | Cascade delete en tokens y media |
-| **RefreshToken** | tokenHash, expiresAt, userId | Index en userId |
-| **MediaItem** | tmdbId, mediaType, title, status | Unique compound: userId + tmdbId + mediaType |
+| Modelo           | Campos clave                       | Notas                                        |
+| ---------------- | ---------------------------------- | -------------------------------------------- |
+| **User**         | id, name, email (unique), password | Cascade delete en tokens y media             |
+| **RefreshToken** | tokenHash, expiresAt, userId       | Index en userId                              |
+| **MediaItem**    | tmdbId, mediaType, title, status   | Unique compound: userId + tmdbId + mediaType |
 
 ### Comandos
 
@@ -113,11 +113,11 @@ yarn db:studio     # UI visual para la DB
 
 ### migrate vs push
 
-| | `db:migrate` | `db:push` |
-|---|---|---|
-| Crea archivo de migración | ✅ | ❌ |
-| Historial de cambios | ✅ | ❌ |
-| Uso recomendado | Desarrollo / producción | Prototipado rápido |
+|                           | `db:migrate`            | `db:push`          |
+| ------------------------- | ----------------------- | ------------------ |
+| Crea archivo de migración | ✅                      | ❌                 |
+| Historial de cambios      | ✅                      | ❌                 |
+| Uso recomendado           | Desarrollo / producción | Prototipado rápido |
 
 ## Levantar
 
@@ -136,15 +136,15 @@ yarn start    # node dist/main.js
 
 ## Variables de entorno
 
-| Variable | Requerida | Default | Descripción |
-|---|---|---|---|
-| `DATABASE_URL` | ✅ | — | Connection string PostgreSQL (con pgbouncer) |
-| `DIRECT_URL` | ✅ | — | Connection string directa (para migraciones) |
-| `JWT_ACCESS_SECRET` | ✅ | — | Secret para access tokens |
-| `JWT_REFRESH_SECRET` | ✅ | — | Secret para refresh tokens |
-| `TMDB_API_KEY` | ✅ | — | API key de TMDB |
-| `PORT` | ❌ | `3000` | Puerto del servidor |
-| `CORS_ORIGIN` | ❌ | `true` | Origen permitido para CORS |
-| `JWT_ACCESS_EXPIRES_IN` | ❌ | `15m` | Expiración access token |
-| `JWT_REFRESH_EXPIRES_IN` | ❌ | `7d` | Expiración refresh token |
-| `COOKIE_REFRESH_MAX_AGE` | ❌ | `604800` | Max age cookie en segundos (7 días) |
+| Variable                 | Requerida | Default  | Descripción                                  |
+| ------------------------ | --------- | -------- | -------------------------------------------- |
+| `DATABASE_URL`           | ✅        | —        | Connection string PostgreSQL (con pgbouncer) |
+| `DIRECT_URL`             | ✅        | —        | Connection string directa (para migraciones) |
+| `JWT_ACCESS_SECRET`      | ✅        | —        | Secret para access tokens                    |
+| `JWT_REFRESH_SECRET`     | ✅        | —        | Secret para refresh tokens                   |
+| `TMDB_API_KEY`           | ✅        | —        | API key de TMDB                              |
+| `PORT`                   | ❌        | `3000`   | Puerto del servidor                          |
+| `CORS_ORIGIN`            | ❌        | `true`   | Origen permitido para CORS                   |
+| `JWT_ACCESS_EXPIRES_IN`  | ❌        | `15m`    | Expiración access token                      |
+| `JWT_REFRESH_EXPIRES_IN` | ❌        | `7d`     | Expiración refresh token                     |
+| `COOKIE_REFRESH_MAX_AGE` | ❌        | `604800` | Max age cookie en segundos (7 días)          |

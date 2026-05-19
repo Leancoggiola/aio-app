@@ -1,4 +1,4 @@
-import { prisma } from '../common/prisma';
+import { prisma } from '../common/db';
 
 export async function getStats(userId: string) {
   let stats = await prisma.userStats.findUnique({
@@ -34,7 +34,20 @@ export async function recalculateStats(userId: string) {
 
   return prisma.userStats.upsert({
     where: { userId },
-    create: { userId, totalMovies, totalTvShows, totalWatched, totalWatching, totalToWatch },
-    update: { totalMovies, totalTvShows, totalWatched, totalWatching, totalToWatch },
+    create: {
+      userId,
+      totalMovies,
+      totalTvShows,
+      totalWatched,
+      totalWatching,
+      totalToWatch,
+    },
+    update: {
+      totalMovies,
+      totalTvShows,
+      totalWatched,
+      totalWatching,
+      totalToWatch,
+    },
   });
 }

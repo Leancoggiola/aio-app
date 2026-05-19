@@ -2,6 +2,18 @@
   "extends": "@repo/typescript-config/vite.json",
   "include": ["src", "vite.config.ts"],
   "compilerOptions": {
-    "jsx": "react-jsx"
+    "jsx": "react-jsx",
+    "ignoreDeprecations": "6.0",
+    "baseUrl": ".",
+    "paths": {
+      "@/*": ["src/*"],
+      "@/features/*": ["src/app/features/*"],
+      "@/core/*": ["src/app/core/*"],
+      "@/components/*": ["src/app/components/*"],
+      "@/hooks/*": ["src/app/hooks/*"],
+      "@/common/*": ["src/common/*"],
+      "@/theme/*": ["src/theme/*"],
+      "@/assets/*": ["src/assets/*"]
+    }
   }
 }

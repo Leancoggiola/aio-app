@@ -1,0 +1,25 @@
+# Dependencies
+node_modules
+
+# Build outputs
+dist
+build
+
+# Coverage reports
+coverage
+
+# Cache
+.turbo
+
+# Lock files
+pnpm-lock.yaml
+
+# Generated code
+apps/api/src/generated
+
+# Auto-generated files
+CHANGELOG.md
+
+# Tooling
+.agents
+

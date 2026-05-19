@@ -1,25 +1,79 @@
-import useSWR from "swr";
-import type { UserProfile } from "@aio-app/shared/users";
-import { api } from "../../../../lib/api";
-import type { UpdateProfilePayload } from "@aio-app/shared/users";
-import { mutate } from "swr";
-import { useCallback } from "react";
+import { useCallback } from 'react';
+import { useSWRConfig } from 'swr';
+import useSWRImmutable from 'swr/immutable';
+import useSWRMutation from 'swr/mutation';
 
-const PROFILE_KEY = "/api/users/profile";
+import { api, SWR_KEYS } from '@/common/api';
+
+import type { ProfileResponse } from '@aio-app/shared/auth';
+import type {
+  UpdatePreferencesPayload,
+  UpdateProfilePayload,
+  UserPreferences,
+  UserProfile,
+} from '@aio-app/shared/users';
+
+import { toSessionUser } from '@aio-app/shared/auth';
 
 export function useProfile() {
-  const { data, isLoading, error } = useSWR<{ user: UserProfile }>(PROFILE_KEY);
+  const { mutate: globalMutate } = useSWRConfig();
+  const { data, isLoading, error, mutate } = useSWRImmutable<{ user: UserProfile }>(SWR_KEYS.users.profile);
 
-  const updateProfile = useCallback(async (dto: UpdateProfilePayload) => {
-    const result = await api.patch<{ user: UserProfile }>(PROFILE_KEY, dto);
-    await mutate(PROFILE_KEY, result, { revalidate: false });
-    return result.user;
-  }, []);
+  const syncAuthCache = useCallback(
+    (profile: UserProfile) => {
+      void globalMutate<ProfileResponse>(
+        SWR_KEYS.auth.profile,
+        { user: toSessionUser(profile) },
+        { revalidate: false }
+      );
+    },
+    [globalMutate]
+  );
+
+  const { trigger: updateProfile, isMutating: isUpdatingProfile } = useSWRMutation(
+    SWR_KEYS.users.profile,
+    (_url: string, { arg }: { arg: UpdateProfilePayload }) =>
+      api.patch<{ user: UserProfile }>(SWR_KEYS.users.profile, arg),
+    {
+      populateCache: (updated, current) => {
+        if (current?.user?.preferences && !updated.user.preferences) {
+          return { user: { ...updated.user, preferences: current.user.preferences } };
+        }
+        return updated;
+      },
+      revalidate: false,
+      onSuccess: data => syncAuthCache(data.user),
+    }
+  );
+
+  const { trigger: updatePreferences, isMutating: isUpdatingPreferences } = useSWRMutation(
+    SWR_KEYS.users.preferences,
+    async (_url: string, { arg }: { arg: UpdatePreferencesPayload }) => {
+      const res = await api.patch<{ preferences: UserPreferences }>(SWR_KEYS.users.preferences, arg);
+      await mutate(
+        current =>
+          current
+            ? {
+                user: {
+                  ...current.user,
+                  preferences: current.user.preferences
+                    ? { ...current.user.preferences, ...res.preferences }
+                    : res.preferences,
+                },
+              }
+            : current,
+        { revalidate: false }
+      );
+      return res.preferences;
+    }
+  );
 
   return {
     profile: data?.user ?? null,
     isLoading,
+    isMutating: isUpdatingProfile || isUpdatingPreferences,
     error,
     updateProfile,
+    updatePreferences,
   };
 }

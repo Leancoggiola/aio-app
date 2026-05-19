@@ -1,0 +1,36 @@
+version: 2
+
+updates:
+  - package-ecosystem: npm
+    directory: /
+    schedule:
+      interval: weekly
+      day: monday
+    open-pull-requests-limit: 0
+    groups:
+      security-npm:
+        applies-to: security-updates
+        patterns:
+          - '*'
+    labels:
+      - dependencies
+      - security
+    commit-message:
+      prefix: 'fix(deps)'
+
+  - package-ecosystem: github-actions
+    directory: /
+    schedule:
+      interval: monthly
+      day: monday
+    open-pull-requests-limit: 0
+    groups:
+      security-actions:
+        applies-to: security-updates
+        patterns:
+          - '*'
+    labels:
+      - ci
+      - security
+    commit-message:
+      prefix: 'fix(ci)'

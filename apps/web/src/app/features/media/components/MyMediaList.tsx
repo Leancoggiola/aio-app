@@ -1,17 +1,11 @@
-import {
-  SimpleGrid,
-  Select,
-  Group,
-  Text,
-  Loader,
-  Center,
-  Tabs,
-  Stack,
-} from "@mantine/core";
-import { FC } from "react";
-import { MediaCard } from "./MediaCard";
-import type { MediaItem, MediaFilters, MediaStatus, MediaType } from "../types";
-import { MEDIA_STATUS_LABELS, MEDIA_TYPE_LABELS } from "@aio-app/shared/media";
+import { FC } from 'react';
+import { Center, Group, Loader, Select, SimpleGrid, Stack, Tabs, Text } from '@mantine/core';
+
+import { MediaCard } from './MediaCard';
+
+import type { MediaFilters, MediaItem, MediaStatus, MediaType } from '../types';
+
+import { MEDIA_STATUS_LABELS, MEDIA_TYPE_LABELS } from '@aio-app/shared/media';
 
 interface MyMediaListProps {
   items: MediaItem[] | undefined;
@@ -30,28 +24,26 @@ export const MyMediaList: FC<MyMediaListProps> = ({
   onStatusChange,
   onRemove,
 }) => {
-  const tabValue = filters.status || "all";
+  const tabValue = filters.status || 'all';
 
   return (
     <Stack gap="md">
       <Tabs
         value={tabValue}
-        onChange={(val) =>
+        onChange={val =>
           onFiltersChange({
             ...filters,
-            status: val === "all" ? undefined : (val as MediaStatus),
+            status: val === 'all' ? undefined : (val as MediaStatus),
           })
         }
       >
         <Tabs.List>
           <Tabs.Tab value="all">Todos</Tabs.Tab>
-          {(Object.entries(MEDIA_STATUS_LABELS) as [MediaStatus, string][]).map(
-            ([status, label]) => (
-              <Tabs.Tab key={status} value={status}>
-                {label}
-              </Tabs.Tab>
-            ),
-          )}
+          {(Object.entries(MEDIA_STATUS_LABELS) as [MediaStatus, string][]).map(([status, label]) => (
+            <Tabs.Tab key={status} value={status}>
+              {label}
+            </Tabs.Tab>
+          ))}
         </Tabs.List>
       </Tabs>
 
@@ -60,7 +52,7 @@ export const MyMediaList: FC<MyMediaListProps> = ({
           placeholder="Tipo"
           clearable
           value={filters.mediaType || null}
-          onChange={(val) =>
+          onChange={val =>
             onFiltersChange({
               ...filters,
               mediaType: (val as MediaType) || undefined,
@@ -85,13 +77,8 @@ export const MyMediaList: FC<MyMediaListProps> = ({
         </Text>
       ) : (
         <SimpleGrid cols={{ base: 2, sm: 3, md: 4, lg: 5 }} spacing="md">
-          {items.map((item) => (
-            <MediaCard
-              key={item.id}
-              item={item}
-              onStatusChange={onStatusChange}
-              onRemove={onRemove}
-            />
+          {items.map(item => (
+            <MediaCard key={item.id} item={item} onStatusChange={onStatusChange} onRemove={onRemove} />
           ))}
         </SimpleGrid>
       )}

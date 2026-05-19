@@ -1,0 +1,57 @@
+name: Release
+
+on:
+  push:
+    branches: [main]
+
+permissions:
+  contents: write
+  issues: write
+  pull-requests: write
+
+jobs:
+  release:
+    name: Release
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+          token: ${{ secrets.RELEASE_TOKEN }}
+
+      - uses: pnpm/action-setup@v4
+        with:
+          version: '10.11.0'
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: 'pnpm'
+
+      - run: pnpm install --frozen-lockfile
+
+      - name: Release
+        id: release
+        env:
+          GITHUB_TOKEN: ${{ secrets.RELEASE_TOKEN }}
+        run: |
+          BEFORE=$(git tag --list 'v*' | wc -l)
+          npx semantic-release
+          git fetch --tags origin
+          AFTER=$(git tag --list 'v*' | wc -l)
+          if [ "$AFTER" -gt "$BEFORE" ]; then
+            echo "new_release=true" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Deploy API
+        if: steps.release.outputs.new_release == 'true'
+        run: |
+          curl -s "${{ secrets.RENDER_DEPLOY_HOOK_PROD }}"
+
+      - name: Sync develop with main
+        if: steps.release.outputs.new_release == 'true'
+        run: |
+          git checkout develop
+          git merge main --no-ff -m "chore(release): sync develop with main [skip ci]"
+          git push origin develop

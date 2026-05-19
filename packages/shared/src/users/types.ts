@@ -1,16 +1,25 @@
+import type { ProfileTheme } from './schemas';
+
+export type { ProfileTheme };
+
 export interface UserPreferences {
   id: string;
   userId: string;
   notifications: boolean;
+  theme: ProfileTheme;
   createdAt: string;
   updatedAt: string;
 }
 
 export interface UserProfile {
   id: string;
+  username: string;
   name: string;
-  email: string;
+  email: string | null;
+  role: 'ADMIN' | 'USER';
   avatarUrl: string | null;
+  phone: string | null;
+  birthDate: string | null;
   createdAt: string;
   updatedAt: string;
   preferences: UserPreferences | null;

@@ -1,9 +1,11 @@
-import useSWR from "swr";
-import type { TmdbSearchResponse } from "../types";
+import useSWR from 'swr';
 
-export function useMediaSearch(query: string, page = 1, type = "multi") {
-  const params = new URLSearchParams({ query, page: String(page), type });
-  const key = query.trim() ? `/api/media/search?${params.toString()}` : null;
+import { buildQueryString, SWR_KEYS } from '@/common/api';
+
+import type { TmdbSearchResponse } from '../types';
+
+export function useMediaSearch(query: string, page = 1, type = 'multi') {
+  const key = query.trim() ? `${SWR_KEYS.media.search}${buildQueryString({ page, query, type })}` : null;
 
   return useSWR<TmdbSearchResponse>(key, {
     keepPreviousData: true,

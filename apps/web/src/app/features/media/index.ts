@@ -1,1 +1,1 @@
-export { mediaRoute } from "./mediaRoute";
+export { mediaRoute } from './mediaRoute';

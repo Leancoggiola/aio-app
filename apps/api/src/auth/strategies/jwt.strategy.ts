@@ -5,21 +5,24 @@ import { config } from '../../config';
 
 export interface JwtPayload {
   sub: string;
-  email: string;
+  username: string;
+  role: string;
 }
 
 passport.use(
   'jwt',
   new JwtStrategy(
     {
-      jwtFromRequest: ExtractJwt.fromExtractors([
-        (req: Request) => req?.cookies?.access_token ?? null,
-      ]),
+      jwtFromRequest: ExtractJwt.fromExtractors([(req: Request) => req?.cookies?.access_token ?? null]),
       ignoreExpiration: false,
       secretOrKey: config.jwt.accessSecret,
     },
     (payload: JwtPayload, done) => {
-      return done(null, { userId: payload.sub, email: payload.email });
-    },
-  ),
+      return done(null, {
+        userId: payload.sub,
+        username: payload.username,
+        role: payload.role,
+      });
+    }
+  )
 );

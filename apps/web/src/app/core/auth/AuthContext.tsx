@@ -1,66 +1,46 @@
-import {
-  createContext,
-  FC,
-  PropsWithChildren,
-  useCallback,
-  useContext,
-  useMemo,
-} from "react";
-import useSWR, { mutate } from "swr";
-import { api } from "../../../lib/api";
-import type { User } from "@aio-app/shared/auth";
-import type { ProfileResponse } from "@aio-app/shared/auth";
+import { createContext, FC, PropsWithChildren, useCallback, useContext, useMemo } from 'react';
+import useSWRImmutable from 'swr/immutable';
 
-export type { User };
+import { api, ApiError, SWR_KEYS } from '@/common/api';
+
+import type { SessionUser } from '@aio-app/shared/auth';
+import type { ProfileResponse } from '@aio-app/shared/auth';
+
+export type { SessionUser };
 
 interface AuthContextValue {
-  user: User | null;
-  loading: boolean;
-  login: (email: string, password: string) => Promise<void>;
-  register: (name: string, email: string, password: string) => Promise<void>;
+  user: SessionUser | null;
+  isAuthenticated: boolean;
+  isLoading: boolean;
+  error: ApiError | undefined;
+  login: (username: string, password: string) => Promise<void>;
   logout: () => Promise<void>;
 }
-
-const AUTH_KEY = "/api/auth/profile";
 
 const AuthContext = createContext<AuthContextValue | null>(null);
 
 export const AuthProvider: FC<PropsWithChildren> = ({ children }) => {
-  const { data, isLoading } = useSWR<ProfileResponse>(AUTH_KEY, {
-    revalidateOnFocus: false,
-    shouldRetryOnError: false,
-  });
+  const { data, isLoading, error, mutate } = useSWRImmutable<ProfileResponse>(SWR_KEYS.auth.profile);
 
   const user = data?.user ?? null;
+  const isAuthenticated = !!data?.user;
 
-  const login = useCallback(async (email: string, password: string) => {
-    const res = await api.post<ProfileResponse>("/api/auth/login", {
-      email,
-      password,
-    });
-    await mutate(AUTH_KEY, res, { revalidate: false });
-  }, []);
-
-  const register = useCallback(
-    async (name: string, email: string, password: string) => {
-      const res = await api.post<ProfileResponse>("/api/auth/register", {
-        name,
-        email,
-        password,
-      });
-      await mutate(AUTH_KEY, res, { revalidate: false });
+  const login = useCallback(
+    async (username: string, password: string) => {
+      const res = await api.post<ProfileResponse>('/api/auth/login', { username, password });
+      await mutate(res, { revalidate: false });
     },
-    [],
+    [mutate]
   );
 
   const logout = useCallback(async () => {
-    await api.post("/api/auth/logout");
-    await mutate(AUTH_KEY, null, { revalidate: false });
-  }, []);
+    await api.post('/api/auth/logout');
+    await mutate(undefined, { revalidate: false });
+  }, [mutate]);
 
   const value = useMemo(
-    () => ({ user, loading: isLoading, login, register, logout }),
-    [user, isLoading, login, register, logout],
+    () => ({ user, isAuthenticated, isLoading, error, login, logout }),
+    [user, isAuthenticated, isLoading, error, login, logout]
   );
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
@@ -69,7 +49,7 @@ export const AuthProvider: FC<PropsWithChildren> = ({ children }) => {
 export const useAuth = (): AuthContextValue => {
   const ctx = useContext(AuthContext);
   if (!ctx) {
-    throw new Error("useAuth must be used within an AuthProvider");
+    throw new Error('useAuth debe usarse dentro de un AuthProvider');
   }
   return ctx;
 };

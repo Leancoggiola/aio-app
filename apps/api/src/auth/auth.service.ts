@@ -4,34 +4,16 @@ import { Response } from 'express';
 
 import { config } from '../config';
 import * as usersService from '../users/users.service';
-import { prisma } from '../common/prisma';
-import type { RegisterPayload } from '@aio-app/shared/auth';
+import { prisma } from '../common/db';
+import type { Role } from '@aio-app/shared/auth';
+import { toSessionUser } from './auth.mappers';
 
 const BCRYPT_ROUNDS = 12;
 
-// ─── Register ───────────────────────────────────────────────
-
-export async function register(dto: RegisterPayload, res: Response) {
-  const existing = await usersService.findByEmail(dto.email);
-  if (existing) {
-    throw { status: 409, message: 'Email already registered' };
-  }
-
-  const hashedPassword = await bcrypt.hash(dto.password, BCRYPT_ROUNDS);
-  const user = await usersService.create({
-    ...dto,
-    password: hashedPassword,
-  });
-
-  await issueTokens({ sub: user.id, email: user.email }, res);
-
-  return { user: sanitizeUser(user) };
-}
-
 // ─── Validate (for LocalStrategy) ──────────────────────────
 
-export async function validateUser(email: string, password: string) {
-  const user = await usersService.findByEmail(email);
+export async function validateUser(username: string, password: string) {
+  const user = await usersService.findByUsername(username);
   if (!user) return null;
 
   const isMatch = await bcrypt.compare(password, user.password);
@@ -42,18 +24,32 @@ export async function validateUser(email: string, password: string) {
 
 // ─── Login ─────────────────────────────────────────────────
 
-export async function login(user: { id: string; email: string }, res: Response) {
-  await issueTokens({ sub: user.id, email: user.email }, res);
-  return { user };
+export async function login(
+  user: {
+    id: string;
+    username: string;
+    name: string;
+    email: string | null;
+    role: Role;
+    avatarUrl: string | null;
+  },
+  res: Response
+) {
+  await issueTokens({ sub: user.id, username: user.username, role: user.role }, res);
+  return { user: toSessionUser(user) };
 }
 
 // ─── Refresh ───────────────────────────────────────────────
 
 export async function refresh(userId: string, rawRefreshToken: string, res: Response) {
   // Clean up expired tokens for this user
-  await prisma.refreshToken.deleteMany({ where: { userId, expiresAt: { lt: new Date() } } });
+  await prisma.refreshToken.deleteMany({
+    where: { userId, expiresAt: { lt: new Date() } },
+  });
 
-  const storedTokens = await prisma.refreshToken.findMany({ where: { userId } });
+  const storedTokens = await prisma.refreshToken.findMany({
+    where: { userId },
+  });
 
   let matchedToken: (typeof storedTokens)[number] | null = null;
   for (const token of storedTokens) {
@@ -67,26 +63,31 @@ export async function refresh(userId: string, rawRefreshToken: string, res: Resp
   if (!matchedToken) {
     await prisma.refreshToken.deleteMany({ where: { userId } });
     clearCookies(res);
-    throw { status: 401, message: 'Refresh token not recognized. All sessions revoked.' };
+    throw {
+      status: 401,
+      message: 'Token de refresco no reconocido. Todas las sesiones han sido revocadas.',
+    };
   }
 
   await prisma.refreshToken.delete({ where: { id: matchedToken.id } });
 
   const user = await usersService.findById(userId);
   if (!user) {
-    throw { status: 401, message: 'User not found' };
+    throw { status: 401, message: 'Usuario no encontrado' };
   }
 
-  await issueTokens({ sub: userId, email: user.email }, res);
+  await issueTokens({ sub: userId, username: user.username, role: user.role }, res);
 
-  return { user };
+  return { user: toSessionUser(user) };
 }
 
 // ─── Logout ────────────────────────────────────────────────
 
 export async function logout(userId: string, rawRefreshToken: string | undefined, res: Response) {
   if (rawRefreshToken) {
-    const storedTokens = await prisma.refreshToken.findMany({ where: { userId } });
+    const storedTokens = await prisma.refreshToken.findMany({
+      where: { userId },
+    });
 
     for (const token of storedTokens) {
       const isMatch = await bcrypt.compare(rawRefreshToken, token.tokenHash);
@@ -101,7 +102,7 @@ export async function logout(userId: string, rawRefreshToken: string | undefined
 
   clearCookies(res);
 
-  return { message: 'Logged out successfully' };
+  return { message: 'Sesión cerrada exitosamente' };
 }
 
 // ─── Profile ───────────────────────────────────────────────
@@ -109,14 +110,14 @@ export async function logout(userId: string, rawRefreshToken: string | undefined
 export async function getProfile(userId: string) {
   const user = await usersService.findById(userId);
   if (!user) {
-    throw { status: 401, message: 'User not found' };
+    throw { status: 401, message: 'Usuario no encontrado' };
   }
-  return { user };
+  return { user: toSessionUser(user) };
 }
 
 // ─── Private helpers ──────────────────────────────────────
 
-async function issueTokens(payload: { sub: string; email: string }, res: Response) {
+async function issueTokens(payload: { sub: string; username: string; role: string }, res: Response) {
   const accessToken = jwt.sign(payload, config.jwt.accessSecret, {
     expiresIn: config.jwt.accessExpiresIn as string & jwt.SignOptions['expiresIn'],
   });

@@ -1,6 +1,6 @@
 import type { MediaType, AddMediaItemPayload, FilterMediaParams, UpdateMediaItemPayload } from '@aio-app/shared/media';
 
-import { prisma } from '../common/prisma';
+import { prisma } from '../common/db';
 import * as tmdbService from './tmdb.service';
 import { recalculateStats } from '../users/stats.service';
 
@@ -24,11 +24,17 @@ export async function getTmdbDetail(type: MediaType, tmdbId: number) {
 
 export async function addToList(userId: string, dto: AddMediaItemPayload) {
   const existing = await prisma.mediaItem.findUnique({
-    where: { userId_tmdbId_mediaType: { userId, tmdbId: dto.tmdbId, mediaType: dto.mediaType } },
+    where: {
+      userId_tmdbId_mediaType: {
+        userId,
+        tmdbId: dto.tmdbId,
+        mediaType: dto.mediaType,
+      },
+    },
   });
 
   if (existing) {
-    throw { status: 409, message: 'This item is already in your list' };
+    throw { status: 409, message: 'Este elemento ya está en tu lista' };
   }
 
   let title: string;
@@ -71,17 +77,13 @@ export async function getList(userId: string, filters: FilterMediaParams) {
   });
 }
 
-export async function updateStatus(
-  userId: string,
-  itemId: string,
-  dto: UpdateMediaItemPayload,
-) {
+export async function updateStatus(userId: string, itemId: string, dto: UpdateMediaItemPayload) {
   const item = await prisma.mediaItem.findFirst({
     where: { id: itemId, userId },
   });
 
   if (!item) {
-    throw { status: 404, message: 'Media item not found' };
+    throw { status: 404, message: 'Elemento no encontrado' };
   }
 
   const updated = await prisma.mediaItem.update({
@@ -100,7 +102,7 @@ export async function removeFromList(userId: string, itemId: string): Promise<vo
   });
 
   if (!item) {
-    throw { status: 404, message: 'Media item not found' };
+    throw { status: 404, message: 'Elemento no encontrado' };
   }
 
   await prisma.mediaItem.delete({ where: { id: itemId } });

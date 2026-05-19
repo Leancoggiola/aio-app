@@ -1,28 +1,34 @@
 import { Router } from 'express';
 import type { Request, Response, NextFunction } from 'express';
+import rateLimit from 'express-rate-limit';
 import { updateProfileSchema, changePasswordSchema, updatePreferencesSchema } from '@aio-app/shared/users';
 import { authenticateJwt } from '../auth/middleware/auth.middleware';
-import { validate } from '../common/validate';
+import { validate } from '../common/utils';
 import * as usersService from './users.service';
 import * as statsService from './stats.service';
+
+const passwordLimiter = rateLimit({
+  windowMs: 15 * 60 * 1000,
+  max: 5,
+  message: {
+    statusCode: 429,
+    message: 'Demasiados intentos de cambio de contraseña, intenta de nuevo más tarde',
+  },
+});
 
 const router = Router();
 
 // ─── Profile ───────────────────────────────────────────────
 
-router.get(
-  '/profile',
-  authenticateJwt,
-  async (req: Request, res: Response, next: NextFunction) => {
-    try {
-      const { userId } = req.user as any;
-      const profile = await usersService.getProfile(userId);
-      res.json({ user: profile });
-    } catch (err) {
-      next(err);
-    }
-  },
-);
+router.get('/profile', authenticateJwt, async (req: Request, res: Response, next: NextFunction) => {
+  try {
+    const { userId } = req.user as any;
+    const profile = await usersService.getProfile(userId);
+    res.json({ user: profile });
+  } catch (err) {
+    next(err);
+  }
+});
 
 router.patch(
   '/profile',
@@ -36,7 +42,7 @@ router.patch(
     } catch (err) {
       next(err);
     }
-  },
+  }
 );
 
 // ─── Password ──────────────────────────────────────────────
@@ -44,51 +50,34 @@ router.patch(
 router.patch(
   '/password',
   authenticateJwt,
+  passwordLimiter,
   validate(changePasswordSchema),
   async (req: Request, res: Response, next: NextFunction) => {
     try {
       const { userId } = req.user as any;
       await usersService.changePassword(userId, req.body.newPassword);
-      res.json({ message: 'Password updated successfully' });
+      res.json({ message: 'Contraseña actualizada exitosamente' });
     } catch (err) {
       next(err);
     }
-  },
+  }
 );
 
 // ─── Delete Account ────────────────────────────────────────
 
-router.delete(
-  '/account',
-  authenticateJwt,
-  async (req: Request, res: Response, next: NextFunction) => {
-    try {
-      const { userId } = req.user as any;
-      await usersService.deleteAccount(userId);
-      res.clearCookie('access_token');
-      res.clearCookie('refresh_token');
-      res.json({ message: 'Account deleted successfully' });
-    } catch (err) {
-      next(err);
-    }
-  },
-);
+router.delete('/account', authenticateJwt, async (req: Request, res: Response, next: NextFunction) => {
+  try {
+    const { userId } = req.user as any;
+    await usersService.deleteAccount(userId);
+    res.clearCookie('access_token');
+    res.clearCookie('refresh_token');
+    res.json({ message: 'Cuenta eliminada exitosamente' });
+  } catch (err) {
+    next(err);
+  }
+});
 
 // ─── Preferences ───────────────────────────────────────────
-
-router.get(
-  '/preferences',
-  authenticateJwt,
-  async (req: Request, res: Response, next: NextFunction) => {
-    try {
-      const { userId } = req.user as any;
-      const preferences = await usersService.getPreferences(userId);
-      res.json({ preferences });
-    } catch (err) {
-      next(err);
-    }
-  },
-);
 
 router.patch(
   '/preferences',
@@ -102,23 +91,19 @@ router.patch(
     } catch (err) {
       next(err);
     }
-  },
+  }
 );
 
 // ─── Stats ─────────────────────────────────────────────────
 
-router.get(
-  '/stats',
-  authenticateJwt,
-  async (req: Request, res: Response, next: NextFunction) => {
-    try {
-      const { userId } = req.user as any;
-      const stats = await statsService.getStats(userId);
-      res.json({ stats });
-    } catch (err) {
-      next(err);
-    }
-  },
-);
+router.get('/stats', authenticateJwt, async (req: Request, res: Response, next: NextFunction) => {
+  try {
+    const { userId } = req.user as any;
+    const stats = await statsService.getStats(userId);
+    res.json({ stats });
+  } catch (err) {
+    next(err);
+  }
+});
 
 export default router;
