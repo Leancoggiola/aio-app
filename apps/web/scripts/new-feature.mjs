@@ -150,6 +150,10 @@ function write(filePath, content) {
   fs.writeFileSync(filePath, content, 'utf8');
 }
 
+function escapeRegExp(value) {
+  return value.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+}
+
 function appendRoute(name, camel) {
   const routesFile = path.join(srcRoot, 'app', 'routes.ts');
   let content = fs.readFileSync(routesFile, 'utf8');
@@ -158,9 +162,10 @@ function appendRoute(name, camel) {
     content = content.replace(/(import \{ profileRoute \} from '@\/features\/profile';)/, `$1\n${importLine}`);
   }
   const routeRef = `${camel}Route`;
+  const escapedRouteRef = escapeRegExp(routeRef);
   if (
     !content.includes(`protectedRoutes = [${routeRef}`) &&
-    !content.match(new RegExp(`protectedRoutes = \\[[^\\]]*${routeRef}`))
+    !content.match(new RegExp(`protectedRoutes = \\[[^\\]]*${escapedRouteRef}`))
   ) {
     content = content.replace(/export const protectedRoutes = (\[[^\]]+\])/, (_, arr) => {
       const inner = arr.slice(1, -1).trim();
