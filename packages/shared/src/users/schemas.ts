@@ -1,9 +1,12 @@
 import { z } from 'zod';
 
-export const updateProfileSchema = z.object({
-  name: z.string().min(2).optional(),
-  email: z.email().optional().nullable(),
-});
+/** Self-service profile updates. Name and email are immutable after registration. */
+export const updateProfileSchema = z
+  .object({
+    phone: z.string().max(30).optional().nullable(),
+    birthDate: z.iso.datetime().optional().nullable(),
+  })
+  .strict();
 export type UpdateProfilePayload = z.infer<typeof updateProfileSchema>;
 
 export const changePasswordSchema = z.object({
@@ -11,7 +14,13 @@ export const changePasswordSchema = z.object({
 });
 export type ChangePasswordPayload = z.infer<typeof changePasswordSchema>;
 
-export const updatePreferencesSchema = z.object({
-  notifications: z.boolean().optional(),
-});
+export const profileThemeSchema = z.enum(['light', 'dark', 'auto']);
+
+export const updatePreferencesSchema = z
+  .object({
+    notifications: z.boolean().optional(),
+    theme: profileThemeSchema.optional(),
+  })
+  .strict();
 export type UpdatePreferencesPayload = z.infer<typeof updatePreferencesSchema>;
+export type ProfileTheme = z.infer<typeof profileThemeSchema>;
