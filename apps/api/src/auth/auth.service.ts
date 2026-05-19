@@ -2,7 +2,7 @@ import jwt from 'jsonwebtoken';
 import * as bcrypt from 'bcrypt';
 import { Response } from 'express';
 
-import { config } from '../config';
+import { getConfig } from '../config';
 import * as usersService from '../users/users.service';
 import { prisma } from '../common/db';
 import type { Role } from '@aio-app/shared/auth';
@@ -118,6 +118,7 @@ export async function getProfile(userId: string) {
 // ─── Private helpers ──────────────────────────────────────
 
 async function issueTokens(payload: { sub: string; username: string; role: string }, res: Response) {
+  const config = getConfig();
   const accessToken = jwt.sign(payload, config.jwt.accessSecret, {
     expiresIn: config.jwt.accessExpiresIn as string & jwt.SignOptions['expiresIn'],
   });
@@ -137,6 +138,7 @@ async function issueTokens(payload: { sub: string; username: string; role: strin
 }
 
 function setAccessCookie(res: Response, token: string) {
+  const config = getConfig();
   res.cookie('access_token', token, {
     httpOnly: true,
     secure: config.isProduction,
@@ -147,6 +149,7 @@ function setAccessCookie(res: Response, token: string) {
 }
 
 function setRefreshCookie(res: Response, token: string) {
+  const config = getConfig();
   res.cookie('refresh_token', token, {
     httpOnly: true,
     secure: config.isProduction,
@@ -157,6 +160,7 @@ function setRefreshCookie(res: Response, token: string) {
 }
 
 function clearCookies(res: Response) {
+  const config = getConfig();
   res.clearCookie('access_token', {
     httpOnly: true,
     secure: config.isProduction,

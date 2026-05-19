@@ -1,9 +1,10 @@
-import { config } from '../config';
+import { getConfig } from '../config';
 import type { TmdbSearchResponse, TmdbMediaResult, TmdbMovieDetail, TmdbTvDetail } from '@aio-app/shared/media';
 
 export type { TmdbSearchResponse, TmdbMediaResult, TmdbMovieDetail, TmdbTvDetail };
 
 async function get<T>(path: string, params: Record<string, string | number> = {}): Promise<T> {
+  const config = getConfig();
   const url = new URL(`${config.tmdb.baseUrl}${path}`);
   url.searchParams.set('api_key', config.tmdb.apiKey);
   url.searchParams.set('language', 'es-ES');
