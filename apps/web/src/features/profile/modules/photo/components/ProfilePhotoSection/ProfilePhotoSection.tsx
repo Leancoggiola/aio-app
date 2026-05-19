@@ -1,9 +1,9 @@
 import { useState } from 'react';
 import { FileButton, Group, Stack, Text, UnstyledButton } from '@mantine/core';
 
-import { UserAvatar } from '@/app/core/layouts/components/UserAvatar';
+import { UserAvatar } from '@/shared/ui';
 
-import { ProfileSectionCard } from './ProfileSectionCard';
+import { ProfileSectionCard } from '../../../_shared/components/ProfileSectionCard';
 
 import type { FC } from 'react';
 
@@ -39,7 +39,7 @@ export const ProfilePhotoSection: FC<ProfilePhotoSectionProps> = ({ name, avatar
         <Stack gap="2xs">
           <FileButton accept={ACCEPTED_AVATAR_TYPES} onChange={handleFileChange}>
             {props => (
-              <UnstyledButton {...props} c="primary.6" fz="sm" fw={500}>
+              <UnstyledButton {...props} c="brand.6" fz="sm" fw={500}>
                 <Group gap="xs" wrap="nowrap">
                   <CameraIcon size="1rem" aria-hidden />
                   Cambiar foto

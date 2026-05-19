@@ -3,7 +3,7 @@ import { useSWRConfig } from 'swr';
 import useSWRImmutable from 'swr/immutable';
 import useSWRMutation from 'swr/mutation';
 
-import { api, SWR_KEYS } from '@/common/api';
+import { api, SWR_KEYS } from '@/shared/api';
 
 import type { ProfileResponse } from '@aio-app/shared/auth';
 import type {

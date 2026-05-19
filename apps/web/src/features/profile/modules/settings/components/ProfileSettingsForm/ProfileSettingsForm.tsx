@@ -13,13 +13,13 @@ import {
 import { DatePickerInput } from '@mantine/dates';
 import { useForm } from '@mantine/form';
 
+import { ProfileSectionCard } from '../../../_shared/components/ProfileSectionCard';
 import {
   buildPreferencesUpdates,
   buildProfileUpdates,
   type ProfileFormValues,
   toProfileFormValues,
-} from '../utils/profileForm';
-import { ProfileSectionCard } from './ProfileSectionCard';
+} from '../../../_shared/utils';
 
 import type { ProfileTheme, UpdatePreferencesPayload, UpdateProfilePayload, UserProfile } from '@aio-app/shared/users';
 import type { FC } from 'react';

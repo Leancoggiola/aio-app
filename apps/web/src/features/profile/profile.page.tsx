@@ -1,17 +1,17 @@
 import { FC, useCallback } from 'react';
 import { Loader, Stack, Text, Title } from '@mantine/core';
 
-import { api } from '@/common/api';
+import { useAuth } from '@/core/auth';
+import { api } from '@/shared/api';
 
-import { useAuth } from '../../../core/auth';
 import {
   DeleteAccountButton,
   PasswordForm,
   ProfilePhotoSection,
   ProfileSectionCard,
   ProfileSettingsForm,
-} from '../components';
-import { useProfile } from '../hooks';
+  useProfile,
+} from './modules';
 
 export const ProfilePage: FC = () => {
   const { profile, isLoading, isMutating, updateProfile, updatePreferences } = useProfile();

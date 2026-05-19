@@ -1,8 +1,8 @@
 import { RouteObject } from 'react-router-dom';
 
-import { ProfilePage } from '../pages/Profile';
+import { ProfilePage } from './profile.page';
 
 export const profileRoute: RouteObject = {
-  path: 'profile',
+  path: '/profile',
   element: <ProfilePage />,
 };
