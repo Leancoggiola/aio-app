@@ -20,4 +20,9 @@ describe('HomePage', () => {
     renderWithProviders(<HomePage />);
     expect(screen.getByText('María')).toBeInTheDocument();
   });
+
+  it('muestra un saludo según la hora', () => {
+    renderWithProviders(<HomePage />);
+    expect(screen.getByText(/Buenos días|Buenas tardes|Buenas noches/)).toBeInTheDocument();
+  });
 });
