@@ -1,5 +1,6 @@
-import { useAuth } from '@/app/core/auth';
 import { AppShell, Burger, Group, Text } from '@mantine/core';
+
+import { useAuth } from '@/app/core/auth';
 
 import { ColorSchemeToggle } from '../ColorSchemeToggle';
 import { LogoAvatar } from '../LogoAvatar';

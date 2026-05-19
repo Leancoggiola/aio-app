@@ -2,8 +2,8 @@ import { Avatar } from '@mantine/core';
 
 import Logo from '@/assets/logo.svg?react';
 
-import type { FC } from 'react';
 import type { MantineSize } from '@mantine/core';
+import type { FC } from 'react';
 
 interface LogoAvatarProps {
   size?: MantineSize | number;

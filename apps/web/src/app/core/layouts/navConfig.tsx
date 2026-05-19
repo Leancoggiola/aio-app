@@ -1,3 +1,5 @@
+import type { ReactNode } from 'react';
+
 import {
   BarbellIcon,
   DesktopIcon,
@@ -9,8 +11,6 @@ import {
   UsersThreeIcon,
   WalletIcon,
 } from '@phosphor-icons/react';
-
-import type { ReactNode } from 'react';
 
 const iconSize = '1.25rem';
 

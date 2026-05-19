@@ -1,7 +1,7 @@
-import { ActionIcon, AppShell, Burger, Divider, Group, NavLink, Paper, ScrollArea, Stack, Text } from '@mantine/core';
-import { SignOutIcon } from '@phosphor-icons/react';
 import { useCallback } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
+import { ActionIcon, AppShell, Burger, Divider, Group, NavLink, Paper, ScrollArea, Stack, Text } from '@mantine/core';
+
 import { useAuth } from '@/app/core/auth';
 import { ADMIN_NAV_ITEMS, MAIN_NAV_ITEMS } from '@/app/core/layouts/navConfig';
 
@@ -9,8 +9,10 @@ import { ColorSchemeToggle } from '../ColorSchemeToggle';
 import { LogoAvatar } from '../LogoAvatar';
 import { UserAvatar } from '../UserAvatar';
 
-import type { FC } from 'react';
 import type { NavItemConfig } from '@/app/core/layouts/navConfig';
+import type { FC } from 'react';
+
+import { SignOutIcon } from '@phosphor-icons/react';
 
 interface NavbarProps {
   onClose: () => void;

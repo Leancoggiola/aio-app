@@ -1,11 +1,12 @@
 import { ActionIcon, Group, Paper, Skeleton, Stack, Text } from '@mantine/core';
-import { SparkleIcon } from '@phosphor-icons/react';
 
 import { useAuth } from '@/app/core/auth';
 
 import { getTimeGreeting } from '../utils/getTimeGreeting';
 
 import type { FC } from 'react';
+
+import { SparkleIcon } from '@phosphor-icons/react';
 
 export const HomeGreetingCard: FC = () => {
   const { user, isLoading } = useAuth();

@@ -1,11 +1,10 @@
 import { useCallback } from 'react';
+import { useSWRConfig } from 'swr';
 import useSWRImmutable from 'swr/immutable';
 import useSWRMutation from 'swr/mutation';
-import { useSWRConfig } from 'swr';
 
 import { api, SWR_KEYS } from '@/common/api';
 
-import { toSessionUser } from '@aio-app/shared/auth';
 import type { ProfileResponse } from '@aio-app/shared/auth';
 import type {
   UpdatePreferencesPayload,
@@ -13,6 +12,8 @@ import type {
   UserPreferences,
   UserProfile,
 } from '@aio-app/shared/users';
+
+import { toSessionUser } from '@aio-app/shared/auth';
 
 export function useProfile() {
   const { mutate: globalMutate } = useSWRConfig();

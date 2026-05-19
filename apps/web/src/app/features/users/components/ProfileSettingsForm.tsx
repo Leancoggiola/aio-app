@@ -1,4 +1,4 @@
-import { useForm } from '@mantine/form';
+import { useState } from 'react';
 import {
   Button,
   Group,
@@ -11,20 +11,20 @@ import {
   useMantineColorScheme,
 } from '@mantine/core';
 import { DatePickerInput } from '@mantine/dates';
-import { CalendarBlankIcon, EnvelopeSimpleIcon, FloppyDiskIcon, PhoneIcon, UserIcon } from '@phosphor-icons/react';
-import { useState } from 'react';
+import { useForm } from '@mantine/form';
 
-import type { ProfileTheme, UpdatePreferencesPayload, UpdateProfilePayload, UserProfile } from '@aio-app/shared/users';
-
-import { ProfileSectionCard } from './ProfileSectionCard';
 import {
   buildPreferencesUpdates,
   buildProfileUpdates,
-  toProfileFormValues,
   type ProfileFormValues,
+  toProfileFormValues,
 } from '../utils/profileForm';
+import { ProfileSectionCard } from './ProfileSectionCard';
 
+import type { ProfileTheme, UpdatePreferencesPayload, UpdateProfilePayload, UserProfile } from '@aio-app/shared/users';
 import type { FC } from 'react';
+
+import { CalendarBlankIcon, EnvelopeSimpleIcon, FloppyDiskIcon, PhoneIcon, UserIcon } from '@phosphor-icons/react';
 
 const THEME_OPTIONS = [
   { value: 'light', label: 'Claro' },

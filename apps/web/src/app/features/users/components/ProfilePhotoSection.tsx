@@ -1,12 +1,13 @@
-import { FileButton, Group, Stack, Text, UnstyledButton } from '@mantine/core';
-import { CameraIcon } from '@phosphor-icons/react';
 import { useState } from 'react';
+import { FileButton, Group, Stack, Text, UnstyledButton } from '@mantine/core';
 
 import { UserAvatar } from '@/app/core/layouts/components/UserAvatar';
 
 import { ProfileSectionCard } from './ProfileSectionCard';
 
 import type { FC } from 'react';
+
+import { CameraIcon } from '@phosphor-icons/react';
 
 const MAX_AVATAR_SIZE_BYTES = 5 * 1024 * 1024;
 const ACCEPTED_AVATAR_TYPES = 'image/jpeg,image/png,image/gif';

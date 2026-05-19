@@ -1,6 +1,8 @@
 import { NavLink, Paper, PasswordInput, TextInput } from '@mantine/core';
-import { CaretRightIcon } from '@phosphor-icons/react';
+
 import { componentOverrides } from './components.overrides';
+
+import { CaretRightIcon } from '@phosphor-icons/react';
 
 export const ComponentsOverride = {
   Paper: Paper.extend({

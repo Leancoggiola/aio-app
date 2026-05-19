@@ -1,8 +1,9 @@
 import { ActionIcon } from '@mantine/core';
 import { useComputedColorScheme, useMantineColorScheme } from '@mantine/core';
-import { MoonIcon, SunIcon } from '@phosphor-icons/react';
 
 import type { FC } from 'react';
+
+import { MoonIcon, SunIcon } from '@phosphor-icons/react';
 
 export const ColorSchemeToggle: FC = () => {
   const { setColorScheme } = useMantineColorScheme();

@@ -1,7 +1,7 @@
 import { Avatar } from '@mantine/core';
 
-import type { FC } from 'react';
 import type { MantineSize } from '@mantine/core';
+import type { FC } from 'react';
 
 interface UserAvatarProps {
   name: string;
