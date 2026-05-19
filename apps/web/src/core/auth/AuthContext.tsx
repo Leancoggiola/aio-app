@@ -1,7 +1,7 @@
 import { createContext, FC, PropsWithChildren, useCallback, useContext, useMemo } from 'react';
 import useSWRImmutable from 'swr/immutable';
 
-import { api, ApiError, SWR_KEYS } from '@/common/api';
+import { api, ApiError, SWR_KEYS } from '@/shared/api';
 
 import type { SessionUser } from '@aio-app/shared/auth';
 import type { ProfileResponse } from '@aio-app/shared/auth';
