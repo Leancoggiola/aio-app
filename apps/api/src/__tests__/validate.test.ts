@@ -1,5 +1,5 @@
 import { describe, it, expect, vi } from 'vitest';
-import { validate } from '../common/utils';
+import { validate } from '../common/utils/validate';
 import { z } from 'zod';
 import type { Request, Response } from 'express';
 

@@ -1,5 +1,5 @@
 import type { Request, Response, NextFunction } from 'express';
-import { getConfig } from '../../config';
+import { config } from '../../config';
 import { logger } from './logger';
 
 export interface AppError {
@@ -15,7 +15,6 @@ export function errorHandler(err: AppError, _req: Request, res: Response, _next:
     logger.error(err, 'Unhandled error');
   }
 
-  const config = getConfig();
   const message =
     status === 500 && config.isProduction
       ? 'Error interno del servidor'

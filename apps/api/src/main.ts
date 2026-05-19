@@ -1,4 +1,4 @@
-import { getConfig } from './config';
+import { config } from './config';
 import express from 'express';
 import cors from 'cors';
 import helmet from 'helmet';
@@ -7,9 +7,8 @@ import passport from 'passport';
 import pinoHttp from 'pino-http';
 import rateLimit from 'express-rate-limit';
 
-// Import and initialize passport strategies
-import { initializeJwtStrategy } from './auth/strategies/jwt.strategy';
-import { initializeJwtRefreshStrategy } from './auth/strategies/jwt-refresh.strategy';
+import './auth/strategies/jwt.strategy';
+import './auth/strategies/jwt-refresh.strategy';
 import './auth/strategies/local.strategy';
 
 import router from './router';
@@ -17,12 +16,6 @@ import { errorHandler, logger } from './common/utils';
 import { prisma } from './common/db';
 
 async function bootstrap() {
-  const config = getConfig();
-
-  // Initialize Passport JWT strategies
-  initializeJwtStrategy();
-  initializeJwtRefreshStrategy();
-
   await prisma.$connect();
   logger.info('Connected to PostgreSQL');
 

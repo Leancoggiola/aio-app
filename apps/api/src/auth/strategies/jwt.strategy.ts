@@ -1,7 +1,7 @@
 import passport from 'passport';
 import { Strategy as JwtStrategy, ExtractJwt } from 'passport-jwt';
 import { Request } from 'express';
-import { getConfig } from '../../config';
+import { config } from '../../config';
 
 export interface JwtPayload {
   sub: string;
@@ -9,24 +9,20 @@ export interface JwtPayload {
   role: string;
 }
 
-export function initializeJwtStrategy() {
-  const config = getConfig();
-
-  passport.use(
-    'jwt',
-    new JwtStrategy(
-      {
-        jwtFromRequest: ExtractJwt.fromExtractors([(req: Request) => req?.cookies?.access_token ?? null]),
-        ignoreExpiration: false,
-        secretOrKey: config.jwt.accessSecret,
-      },
-      (payload: JwtPayload, done) => {
-        return done(null, {
-          userId: payload.sub,
-          username: payload.username,
-          role: payload.role,
-        });
-      }
-    )
-  );
-}
+passport.use(
+  'jwt',
+  new JwtStrategy(
+    {
+      jwtFromRequest: ExtractJwt.fromExtractors([(req: Request) => req?.cookies?.access_token ?? null]),
+      ignoreExpiration: false,
+      secretOrKey: config.jwt.accessSecret,
+    },
+    (payload: JwtPayload, done) => {
+      return done(null, {
+        userId: payload.sub,
+        username: payload.username,
+        role: payload.role,
+      });
+    }
+  )
+);
