@@ -1,7 +1,7 @@
 // ── Domain types ──────────────────────────────────────────────
 
-export type MediaType = "movie" | "tv";
-export type MediaStatus = "to_watch" | "watching" | "watched";
+export type MediaType = 'movie' | 'tv';
+export type MediaStatus = 'to_watch' | 'watching' | 'watched';
 
 /** Shape returned by GET /api/media/list (lean doc → JSON) */
 export interface MediaItem {

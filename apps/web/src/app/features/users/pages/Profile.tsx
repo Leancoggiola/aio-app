@@ -1,34 +1,55 @@
-import { FC, useCallback } from "react";
-import { Stack, Title, Loader, Divider } from "@mantine/core";
-import { useProfile, usePreferences } from "../hooks";
+import { FC, useCallback } from 'react';
+import { Loader, Stack, Text, Title } from '@mantine/core';
+
+import { api } from '@/common/api';
+
+import { useAuth } from '../../../core/auth';
 import {
-  ProfileForm,
-  PasswordForm,
-  PreferencesForm,
   DeleteAccountButton,
-} from "../components";
-import { api } from "../../../../lib/api";
-import { useAuth } from "../../../core/auth";
+  PasswordForm,
+  ProfilePhotoSection,
+  ProfileSectionCard,
+  ProfileSettingsForm,
+} from '../components';
+import { useProfile } from '../hooks';
 
 export const ProfilePage: FC = () => {
-  const { profile, isLoading: profileLoading, updateProfile } = useProfile();
-  const {
-    preferences,
-    isLoading: prefsLoading,
-    updatePreferences,
-  } = usePreferences();
+  const { profile, isLoading, isMutating, updateProfile, updatePreferences } = useProfile();
   const { logout } = useAuth();
 
   const handleChangePassword = useCallback(async (newPassword: string) => {
-    await api.patch("/api/users/password", { newPassword });
+    await api.patch('/api/users/password', { newPassword });
   }, []);
 
   const handleDeleteAccount = useCallback(async () => {
-    await api.delete("/api/users/account");
+    await api.delete('/api/users/account');
     await logout();
   }, [logout]);
 
-  if (profileLoading || prefsLoading) {
+  const handleSave = useCallback(
+    async ({
+      profile: profileUpdates,
+      preferences: preferencesUpdates,
+    }: {
+      profile: Parameters<typeof updateProfile>[0];
+      preferences: Parameters<typeof updatePreferences>[0];
+      theme: 'light' | 'dark' | 'auto';
+    }) => {
+      const tasks: Promise<unknown>[] = [];
+
+      if (Object.keys(profileUpdates).length > 0) {
+        tasks.push(updateProfile(profileUpdates));
+      }
+      if (Object.keys(preferencesUpdates).length > 0) {
+        tasks.push(updatePreferences(preferencesUpdates));
+      }
+
+      await Promise.all(tasks);
+    },
+    [updateProfile, updatePreferences]
+  );
+
+  if (isLoading) {
     return <Loader />;
   }
 
@@ -38,40 +59,22 @@ export const ProfilePage: FC = () => {
 
   return (
     <Stack gap="xl">
-      <Title order={2}>Profile</Title>
-
-      <Stack gap="lg">
-        <Title order={4}>Personal Information</Title>
-        <ProfileForm profile={profile} onSubmit={updateProfile} />
+      <Stack gap="2xs">
+        <Title order={2}>Mi Perfil</Title>
+        <Text c="dimmed">Gestiona tu información personal y preferencias</Text>
       </Stack>
 
-      <Divider />
+      <ProfilePhotoSection name={profile.name} avatarUrl={profile.avatarUrl} />
 
-      {preferences && (
-        <>
-          <Stack gap="lg">
-            <Title order={4}>Preferences</Title>
-            <PreferencesForm
-              preferences={preferences}
-              onUpdate={updatePreferences}
-            />
-          </Stack>
+      <ProfileSettingsForm key={profile.updatedAt} profile={profile} isSaving={isMutating} onSave={handleSave} />
 
-          <Divider />
-        </>
-      )}
-
-      <Stack gap="lg">
-        <Title order={4}>Change Password</Title>
+      <ProfileSectionCard title="Cambiar contraseña" subtitle="Actualiza la contraseña de tu cuenta">
         <PasswordForm onSubmit={handleChangePassword} />
-      </Stack>
+      </ProfileSectionCard>
 
-      <Divider />
-
-      <Stack gap="lg">
-        <Title order={4}>Danger Zone</Title>
+      <ProfileSectionCard title="Zona de peligro" subtitle="Acciones irreversibles sobre tu cuenta">
         <DeleteAccountButton onDelete={handleDeleteAccount} />
-      </Stack>
+      </ProfileSectionCard>
     </Stack>
   );
 };

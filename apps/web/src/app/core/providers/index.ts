@@ -1,1 +1,1 @@
-export { SWRProvider } from "./SWRProvider";
+export { SWRProvider } from './SWRProvider';

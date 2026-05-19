@@ -1,13 +1,11 @@
-import { FC, useState } from "react";
-import { Button, Modal, Text, Stack } from "@mantine/core";
+import { FC, useState } from 'react';
+import { Button, Modal, Stack, Text } from '@mantine/core';
 
 interface DeleteAccountButtonProps {
   onDelete: () => Promise<void>;
 }
 
-export const DeleteAccountButton: FC<DeleteAccountButtonProps> = ({
-  onDelete,
-}) => {
+export const DeleteAccountButton: FC<DeleteAccountButtonProps> = ({ onDelete }) => {
   const [opened, setOpened] = useState(false);
   const [loading, setLoading] = useState(false);
 
@@ -24,30 +22,20 @@ export const DeleteAccountButton: FC<DeleteAccountButtonProps> = ({
   return (
     <>
       <Button color="red" variant="outline" onClick={() => setOpened(true)}>
-        Delete Account
+        Eliminar cuenta
       </Button>
 
-      <Modal
-        opened={opened}
-        onClose={() => setOpened(false)}
-        title="Delete Account"
-        centered
-      >
+      <Modal opened={opened} onClose={() => setOpened(false)} title="Eliminar cuenta" centered>
         <Stack gap="md">
           <Text>
-            Are you sure you want to delete your account? This action cannot be
-            undone. All your data will be permanently removed.
+            ¿Seguro que quieres eliminar tu cuenta? Esta acción no se puede deshacer. Se borrarán todos tus datos de
+            forma permanente.
           </Text>
-          <Button
-            color="red"
-            loading={loading}
-            onClick={handleDelete}
-            fullWidth
-          >
-            Yes, delete my account
+          <Button color="red" loading={loading} onClick={handleDelete} fullWidth>
+            Sí, eliminar mi cuenta
           </Button>
           <Button variant="default" onClick={() => setOpened(false)} fullWidth>
-            Cancel
+            Cancelar
           </Button>
         </Stack>
       </Modal>

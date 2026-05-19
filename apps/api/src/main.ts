@@ -1,25 +1,23 @@
-import { config } from "./config";
-import express from "express";
-import cors from "cors";
-import helmet from "helmet";
-import cookieParser from "cookie-parser";
-import passport from "passport";
-import pinoHttp from "pino-http";
-import rateLimit from "express-rate-limit";
+import { config } from './config';
+import express from 'express';
+import cors from 'cors';
+import helmet from 'helmet';
+import cookieParser from 'cookie-parser';
+import passport from 'passport';
+import pinoHttp from 'pino-http';
+import rateLimit from 'express-rate-limit';
 
-// Register passport strategies (side-effect imports)
-import "./auth/strategies/local.strategy";
-import "./auth/strategies/jwt.strategy";
-import "./auth/strategies/jwt-refresh.strategy";
+import './auth/strategies/jwt.strategy';
+import './auth/strategies/jwt-refresh.strategy';
+import './auth/strategies/local.strategy';
 
-import router from "./router";
-import { errorHandler } from "./common/error-handler";
-import { logger } from "./common/logger";
-import { prisma } from "./common/prisma";
+import router from './router';
+import { errorHandler, logger } from './common/utils';
+import { prisma } from './common/db';
 
 async function bootstrap() {
   await prisma.$connect();
-  logger.info("Connected to PostgreSQL");
+  logger.info('Connected to PostgreSQL');
 
   const app = express();
 
@@ -28,7 +26,7 @@ async function bootstrap() {
     cors({
       origin: config.corsOrigin,
       credentials: true,
-    }),
+    })
   );
 
   // Global rate limiter: 100 requests per 15 minutes per IP
@@ -40,9 +38,9 @@ async function bootstrap() {
       legacyHeaders: false,
       message: {
         statusCode: 429,
-        message: "Demasiadas solicitudes, intenta de nuevo más tarde",
+        message: 'Demasiadas solicitudes, intenta de nuevo más tarde',
       },
-    }),
+    })
   );
 
   app.use(express.json());
@@ -50,20 +48,20 @@ async function bootstrap() {
   app.use(passport.initialize());
   app.use(pinoHttp({ logger }));
 
-  app.get("/api/health", (_req, res) => {
-    res.json({ status: "ok" });
+  app.get('/api/health', (_req, res) => {
+    res.json({ status: 'ok' });
   });
 
-  app.use("/api", router);
+  app.use('/api', router);
 
   app.use(errorHandler);
 
-  app.listen(config.port, "0.0.0.0", () => {
+  app.listen(config.port, '0.0.0.0', () => {
     logger.info(`API running on http://0.0.0.0:${config.port}`);
   });
 }
 
-bootstrap().catch((err) => {
-  logger.fatal(err, "Failed to start");
+bootstrap().catch(err => {
+  logger.fatal(err, 'Failed to start');
   process.exit(1);
 });

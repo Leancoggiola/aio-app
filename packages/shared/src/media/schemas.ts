@@ -1,10 +1,10 @@
-import { z } from "zod";
-import { MEDIA_TYPES, MEDIA_STATUSES, SEARCH_TYPES } from "./constants";
+import { z } from 'zod';
+import { MEDIA_TYPES, MEDIA_STATUSES, SEARCH_TYPES } from './constants';
 
 export const addMediaItemSchema = z.object({
   tmdbId: z.number().int(),
   mediaType: z.enum(MEDIA_TYPES),
-  status: z.enum(MEDIA_STATUSES).default("to_watch"),
+  status: z.enum(MEDIA_STATUSES).default('to_watch'),
 });
 export type AddMediaItemPayload = z.infer<typeof addMediaItemSchema>;
 
@@ -16,7 +16,7 @@ export type UpdateMediaItemPayload = z.infer<typeof updateMediaItemSchema>;
 export const searchMediaSchema = z.object({
   query: z.string(),
   page: z.coerce.number().int().min(1).default(1),
-  type: z.enum(SEARCH_TYPES).default("multi"),
+  type: z.enum(SEARCH_TYPES).default('multi'),
 });
 export type SearchMediaParams = z.infer<typeof searchMediaSchema>;
 

@@ -1,20 +1,19 @@
-import { Loader } from "@mantine/core";
-import { Suspense } from "react";
-import { createBrowserRouter, RouteObject } from "react-router-dom";
-import { RootLayout, AuthLayout } from "./core/layouts";
-import { ProtectedRoute, GuestRoute } from "./core/guards";
-import { protectedRoutes, guestRoutes } from "./routes";
+import { Suspense } from 'react';
+import { createBrowserRouter, RouteObject } from 'react-router-dom';
+import { Loader } from '@mantine/core';
+
+import { GuestRoute, ProtectedRoute } from './core/guards';
+import { AuthLayout, RootLayout } from './core/layouts';
+import { guestRoutes, protectedRoutes } from './routes';
 
 const withSuspense = (routes: RouteObject[]): RouteObject[] =>
   routes.map(
-    (route) =>
+    route =>
       ({
         ...route,
-        element: route.element ? (
-          <Suspense fallback={<Loader />}>{route.element}</Suspense>
-        ) : undefined,
+        element: route.element ? <Suspense fallback={<Loader />}>{route.element}</Suspense> : undefined,
         children: route.children ? withSuspense(route.children) : undefined,
-      }) as RouteObject,
+      }) as RouteObject
   );
 
 export const router = createBrowserRouter([

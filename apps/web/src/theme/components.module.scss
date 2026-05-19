@@ -1,0 +1,19 @@
+.navlink_root {
+  padding: var(--mantine-spacing-sm) var(--mantine-spacing-md);
+
+  border-radius: var(--mantine-radius-lg);
+
+  &[data-active] {
+    color: var(--mantine-color-white);
+    background-image: linear-gradient(to right, var(--mantine-color-primary-5), var(--mantine-color-primary-7));
+  }
+  &:hover {
+    background-color: var(--mantine-color-primary-2);
+  }
+  /* NavLink root styles */
+}
+
+.navlink_label {
+  font-size: 1rem;
+  font-weight: 600;
+}

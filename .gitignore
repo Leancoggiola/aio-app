@@ -68,3 +68,7 @@ postman-collection.json
 
 # MCPs
 .playwright-mcp
+.playwright-output/
+*.playwright-*.md
+*.playwright-*.png
+*.playwright-*.log

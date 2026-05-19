@@ -1,7 +1,7 @@
-import passport from "passport";
-import { Strategy as JwtStrategy, ExtractJwt } from "passport-jwt";
-import { Request } from "express";
-import { config } from "../../config";
+import passport from 'passport';
+import { Strategy as JwtStrategy, ExtractJwt } from 'passport-jwt';
+import { Request } from 'express';
+import { config } from '../../config';
 
 export interface JwtPayload {
   sub: string;
@@ -10,12 +10,10 @@ export interface JwtPayload {
 }
 
 passport.use(
-  "jwt",
+  'jwt',
   new JwtStrategy(
     {
-      jwtFromRequest: ExtractJwt.fromExtractors([
-        (req: Request) => req?.cookies?.access_token ?? null,
-      ]),
+      jwtFromRequest: ExtractJwt.fromExtractors([(req: Request) => req?.cookies?.access_token ?? null]),
       ignoreExpiration: false,
       secretOrKey: config.jwt.accessSecret,
     },
@@ -25,6 +23,6 @@ passport.use(
         username: payload.username,
         role: payload.role,
       });
-    },
-  ),
+    }
+  )
 );

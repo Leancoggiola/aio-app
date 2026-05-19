@@ -1,10 +1,10 @@
-import { defineConfig } from "tsup";
+import { defineConfig } from 'tsup';
 
 export default defineConfig({
-  entry: ["src/main.ts"],
-  format: ["esm"],
-  target: "node22",
-  outDir: "dist",
+  entry: ['src/main.ts'],
+  format: ['esm'],
+  target: 'node22',
+  outDir: 'dist',
   clean: true,
   sourcemap: true,
   noExternal: [/generated\/prisma/, /@aio-app\/shared/],

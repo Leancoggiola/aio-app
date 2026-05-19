@@ -11,12 +11,12 @@ updates:
       security-npm:
         applies-to: security-updates
         patterns:
-          - "*"
+          - '*'
     labels:
       - dependencies
       - security
     commit-message:
-      prefix: "fix(deps)"
+      prefix: 'fix(deps)'
 
   - package-ecosystem: github-actions
     directory: /
@@ -28,9 +28,9 @@ updates:
       security-actions:
         applies-to: security-updates
         patterns:
-          - "*"
+          - '*'
     labels:
       - ci
       - security
     commit-message:
-      prefix: "fix(ci)"
+      prefix: 'fix(ci)'

@@ -1,13 +1,11 @@
-import useSWR from "swr";
-import type { MediaItem, MediaFilters } from "../types";
+import useSWR from 'swr';
+
+import { buildQueryString, SWR_KEYS } from '@/common/api';
+
+import type { MediaFilters, MediaItem } from '../types';
 
 export function useMyMediaList(filters: MediaFilters = {}) {
-  const params = new URLSearchParams();
-  if (filters.status) params.set("status", filters.status);
-  if (filters.mediaType) params.set("mediaType", filters.mediaType);
-
-  const queryString = params.toString();
-  const key = `/api/media/list${queryString ? `?${queryString}` : ""}`;
+  const key = `${SWR_KEYS.media.list}${buildQueryString({ mediaType: filters.mediaType, status: filters.status })}`;
 
   return useSWR<MediaItem[]>(key);
 }

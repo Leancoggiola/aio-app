@@ -1,19 +1,14 @@
-import type {
-  MediaType,
-  AddMediaItemPayload,
-  FilterMediaParams,
-  UpdateMediaItemPayload,
-} from "@aio-app/shared/media";
+import type { MediaType, AddMediaItemPayload, FilterMediaParams, UpdateMediaItemPayload } from '@aio-app/shared/media';
 
-import { prisma } from "../common/prisma";
-import * as tmdbService from "./tmdb.service";
-import { recalculateStats } from "../users/stats.service";
+import { prisma } from '../common/db';
+import * as tmdbService from './tmdb.service';
+import { recalculateStats } from '../users/stats.service';
 
 export async function search(query: string, page: number, type: string) {
   switch (type) {
-    case "movie":
+    case 'movie':
       return tmdbService.searchMovies(query, page);
-    case "tv":
+    case 'tv':
       return tmdbService.searchTv(query, page);
     default:
       return tmdbService.searchMulti(query, page);
@@ -21,7 +16,7 @@ export async function search(query: string, page: number, type: string) {
 }
 
 export async function getTmdbDetail(type: MediaType, tmdbId: number) {
-  if (type === "movie") {
+  if (type === 'movie') {
     return tmdbService.getMovieDetail(tmdbId);
   }
   return tmdbService.getTvDetail(tmdbId);
@@ -39,13 +34,13 @@ export async function addToList(userId: string, dto: AddMediaItemPayload) {
   });
 
   if (existing) {
-    throw { status: 409, message: "Este elemento ya está en tu lista" };
+    throw { status: 409, message: 'Este elemento ya está en tu lista' };
   }
 
   let title: string;
   let posterPath: string | null;
 
-  if (dto.mediaType === "movie") {
+  if (dto.mediaType === 'movie') {
     const detail = await tmdbService.getMovieDetail(dto.tmdbId);
     title = detail.title;
     posterPath = detail.poster_path;
@@ -62,7 +57,7 @@ export async function addToList(userId: string, dto: AddMediaItemPayload) {
       mediaType: dto.mediaType,
       title,
       posterPath,
-      status: dto.status || "to_watch",
+      status: dto.status || 'to_watch',
     },
   });
 
@@ -78,21 +73,17 @@ export async function getList(userId: string, filters: FilterMediaParams) {
       ...(filters.status && { status: filters.status }),
       ...(filters.mediaType && { mediaType: filters.mediaType }),
     },
-    orderBy: { createdAt: "desc" },
+    orderBy: { createdAt: 'desc' },
   });
 }
 
-export async function updateStatus(
-  userId: string,
-  itemId: string,
-  dto: UpdateMediaItemPayload,
-) {
+export async function updateStatus(userId: string, itemId: string, dto: UpdateMediaItemPayload) {
   const item = await prisma.mediaItem.findFirst({
     where: { id: itemId, userId },
   });
 
   if (!item) {
-    throw { status: 404, message: "Elemento no encontrado" };
+    throw { status: 404, message: 'Elemento no encontrado' };
   }
 
   const updated = await prisma.mediaItem.update({
@@ -105,16 +96,13 @@ export async function updateStatus(
   return updated;
 }
 
-export async function removeFromList(
-  userId: string,
-  itemId: string,
-): Promise<void> {
+export async function removeFromList(userId: string, itemId: string): Promise<void> {
   const item = await prisma.mediaItem.findFirst({
     where: { id: itemId, userId },
   });
 
   if (!item) {
-    throw { status: 404, message: "Elemento no encontrado" };
+    throw { status: 404, message: 'Elemento no encontrado' };
   }
 
   await prisma.mediaItem.delete({ where: { id: itemId } });

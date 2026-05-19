@@ -1,7 +1,8 @@
-import type { RouteObject } from "react-router-dom";
-import { Login } from "../pages/Login";
+import { Login } from '../pages/Login';
+
+import type { RouteObject } from 'react-router-dom';
 
 export const loginRoute: RouteObject = {
-  path: "login",
+  path: 'login',
   element: <Login />,
 };
