@@ -1,44 +1,59 @@
 import { ActionIcon, AppShell, Burger, Divider, Group, NavLink, Paper, ScrollArea, Stack, Text } from '@mantine/core';
-import { FilmSlateIcon, HouseIcon, SignOutIcon } from '@phosphor-icons/react';
+import { SignOutIcon } from '@phosphor-icons/react';
 import { useCallback } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { useAuth } from '@/app/core/auth';
+import { ADMIN_NAV_ITEMS, MAIN_NAV_ITEMS } from '@/app/core/layouts/navConfig';
 
 import { ColorSchemeToggle } from '../ColorSchemeToggle';
 import { LogoAvatar } from '../LogoAvatar';
 import { UserAvatar } from '../UserAvatar';
 
 import type { FC } from 'react';
+import type { NavItemConfig } from '@/app/core/layouts/navConfig';
 
 interface NavbarProps {
   onClose: () => void;
   toggle: () => void;
 }
 
-const NAV_ITEMS = [
-  { label: 'Inicio', path: '/', icon: <HouseIcon size="1.25rem" /> },
-  { label: 'Películas', path: '/media', icon: <FilmSlateIcon size="1.25rem" /> },
-];
-
 export const Navbar: FC<NavbarProps> = ({ onClose, toggle }) => {
   const location = useLocation();
   const navigate = useNavigate();
   const { user, logout } = useAuth();
-
-  const handleNavigate = (path: string) => {
-    navigate(path);
-    onClose();
-  };
 
   const handleLogout = useCallback(async () => {
     await logout();
     navigate('/login');
   }, [logout, navigate]);
 
+  const handleNavigate = useCallback(
+    (path: string) => {
+      navigate(path);
+      onClose();
+    },
+    [navigate, onClose]
+  );
+
   const isActive = useCallback(
     (path: string) => (path === '/' ? location.pathname === '/' : location.pathname.startsWith(path)),
     [location.pathname]
   );
+
+  const renderNavItem = (item: NavItemConfig) => {
+    const isDisabled = item.disabled || !item.path;
+
+    return (
+      <NavLink
+        key={item.label}
+        label={item.label}
+        leftSection={item.icon}
+        active={!isDisabled && item.path ? isActive(item.path) : false}
+        disabled={isDisabled}
+        onClick={isDisabled || !item.path ? undefined : () => handleNavigate(item.path!)}
+      />
+    );
+  };
 
   return (
     <AppShell.Navbar px="md" py="xl">
@@ -59,15 +74,15 @@ export const Navbar: FC<NavbarProps> = ({ onClose, toggle }) => {
       <Divider />
       <AppShell.Section grow my="md" component={ScrollArea}>
         <Stack gap="2xs">
-          {NAV_ITEMS.map(item => (
-            <NavLink
-              key={item.path}
-              label={item.label}
-              active={isActive(item.path)}
-              onClick={() => handleNavigate(item.path)}
-              leftSection={item.icon}
-            />
-          ))}
+          {MAIN_NAV_ITEMS.map(renderNavItem)}
+          {user?.role === 'ADMIN' && (
+            <>
+              <Text size="xs" tt="uppercase" c="primary.5" fw={600} mt="sm" mb="2xs" px="sm">
+                Admin
+              </Text>
+              {ADMIN_NAV_ITEMS.map(renderNavItem)}
+            </>
+          )}
         </Stack>
       </AppShell.Section>
       <Divider />
