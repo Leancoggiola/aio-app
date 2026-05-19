@@ -1,4 +1,4 @@
-import { config } from './config';
+import { getConfig } from './config';
 import express from 'express';
 import cors from 'cors';
 import helmet from 'helmet';
@@ -17,6 +17,8 @@ import { errorHandler, logger } from './common/utils';
 import { prisma } from './common/db';
 
 async function bootstrap() {
+  const config = getConfig();
+
   await prisma.$connect();
   logger.info('Connected to PostgreSQL');
 
