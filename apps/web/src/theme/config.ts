@@ -1,60 +1,33 @@
-import { createTheme, virtualColor } from '@mantine/core';
+import { createTheme } from '@mantine/core';
 
 import { ComponentsOverride } from './components';
+import { GRADIENTS } from './gradients';
+import { brandPalette, grayPalette, redPalette } from './palettes';
+import { RADIUS, SHADOWS } from './tokens';
 
 export const THEME = createTheme({
   fontFamily: "'ui-sans-serif', 'Open Sans', sans-serif",
-  primaryColor: 'primary',
-  primaryShade: 6,
+  primaryColor: 'brand',
+  primaryShade: { light: 7, dark: 5 },
 
   cursorType: 'pointer',
-
-  // Colors
   autoContrast: true,
-  black: '#1F1413',
+  black: '#0a0a0a',
+  white: '#ffffff',
+
   colors: {
-    lightPalette: [
-      '#FFF4E2', // 0
-      '#FDE4BC', // 1
-      '#E8C9A2', // 2
-      '#D3AB80', // 3
-      '#B89379', // 4
-      '#96786F', // 5
-      '#6B4A45', // 6
-      '#472825', // 7
-      '#3A211F', // 8
-      '#2E1A18', // 9
-    ],
-    darkPalette: [
-      '#FFF4E2', // 0
-      '#FDE4BC', // 1
-      '#E8C9A2', // 2
-      '#D3AB80', // 3
-      '#B89379', // 4
-      '#96786F', // 5
-      '#6B4A45', // 6
-      '#472825', // 7
-      '#3A211F', // 8
-      '#2E1A18', // 9
-    ],
-    primary: virtualColor({
-      name: 'primary',
-      light: 'lightPalette',
-      dark: 'darkPalette',
-    }),
+    brand: brandPalette,
+    gray: grayPalette,
+    red: redPalette,
+  },
+
+  defaultGradient: GRADIENTS.brand,
+  other: {
+    gradients: GRADIENTS,
   },
 
   defaultRadius: 'md',
-  radius: {
-    none: '0',
-    xs: '0.125rem',
-    sm: '0.25rem',
-    md: '0.5rem',
-    lg: '1rem',
-    xl: '1.5rem',
-    '2xl': '2rem',
-    full: '60rem',
-  },
+  radius: RADIUS,
 
   spacing: {
     none: '0',
@@ -69,6 +42,7 @@ export const THEME = createTheme({
     '3xl': '3rem',
     '4xl': '4rem',
   },
+
   breakpoints: {
     xs: '30em',
     sm: '48em',
@@ -77,12 +51,6 @@ export const THEME = createTheme({
     xl: '90em',
   },
 
-  shadows: {
-    xs: '0px 3px 5px 0px rgba(0, 0, 0, 0.02), 0px 3px 12px 0px rgba(0, 0, 0, 0.03)',
-    sm: '0px 4px 6px 0px rgba(0, 0, 0, 0.02), 0px 5px 20px 0px rgba(0, 0, 0, 0.05)',
-    md: '0px 4px 8px 0px rgba(0, 0, 0, 0.05), 0px 5px 30px 0px rgba(0, 0, 0, 0.1)',
-    lg: '0px 8px 10px 0px rgba(0, 0, 0, 0.08), 0px 8px 30px 0px rgba(0, 0, 0, 0.12)',
-    xl: '0px 8px 10px 0px rgba(0, 0, 0, 0.08), 0px 8px 30px 0px rgba(0, 0, 0, 0.12)',
-  },
+  shadows: SHADOWS,
   components: ComponentsOverride,
 });

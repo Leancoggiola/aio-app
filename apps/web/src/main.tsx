@@ -8,6 +8,7 @@ import { router } from '@/app/router';
 import { AuthProvider } from '@/core/auth';
 import { SWRProvider } from '@/core/providers';
 import { THEME } from '@/theme/config';
+import { cssVariablesResolver } from '@/theme/css-variables';
 
 import '@mantine/core/styles.layer.css';
 import '@mantine/dates/styles.layer.css';
@@ -17,7 +18,7 @@ import 'dayjs/locale/es';
 
 createRoot(document.getElementById('app')!).render(
   <StrictMode>
-    <MantineProvider theme={THEME}>
+    <MantineProvider theme={THEME} cssVariablesResolver={cssVariablesResolver}>
       <DatesProvider settings={{ locale: 'es', firstDayOfWeek: 1 }}>
         <SWRProvider>
           <AuthProvider>

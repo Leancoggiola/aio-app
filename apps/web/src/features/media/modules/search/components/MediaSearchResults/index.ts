@@ -1,0 +1,1 @@
+export { MediaSearchResults } from './MediaSearchResults';

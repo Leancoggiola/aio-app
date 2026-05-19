@@ -1,0 +1,1 @@
+export { getTimeGreeting } from './getTimeGreeting';
