@@ -26,7 +26,7 @@ export const RootLayout: FC = () => {
       <Header opened={opened} onToggle={toggle} />
       <Navbar onClose={close} toggle={toggle} />
 
-      <AppShell.Main bg="primary.1">
+      <AppShell.Main>
         <Container>
           <Overlay hiddenFrom="md" hidden={!opened} color="#000" backgroundOpacity={0.69} blur={2} zIndex={100} />
           <Outlet />

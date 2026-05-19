@@ -2,14 +2,14 @@ import { useCallback } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { ActionIcon, AppShell, Burger, Divider, Group, NavLink, Paper, ScrollArea, Stack, Text } from '@mantine/core';
 
-import { useAuth } from '@/app/core/auth';
-import { ADMIN_NAV_ITEMS, MAIN_NAV_ITEMS } from '@/app/core/layouts/navConfig';
+import { ADMIN_NAV_ITEMS, MAIN_NAV_ITEMS } from '@/app/navigation/nav-registry';
+import { useAuth } from '@/core/auth';
+import { UserAvatar } from '@/shared/ui';
 
 import { ColorSchemeToggle } from '../ColorSchemeToggle';
 import { LogoAvatar } from '../LogoAvatar';
-import { UserAvatar } from '../UserAvatar';
 
-import type { NavItemConfig } from '@/app/core/layouts/navConfig';
+import type { NavItemConfig } from '@/layouts/navConfig';
 import type { FC } from 'react';
 
 import { SignOutIcon } from '@phosphor-icons/react';
@@ -63,10 +63,10 @@ export const Navbar: FC<NavbarProps> = ({ onClose, toggle }) => {
         <Group>
           <LogoAvatar />
           <Stack gap="none">
-            <Text c="primary.7" size="lg">
+            <Text c="brand.7" size="lg" fw={600}>
               AIO App
             </Text>
-            <Text c="primary.5" size="xs">
+            <Text c="brand.5" size="xs">
               All-in-One
             </Text>
           </Stack>
@@ -79,7 +79,7 @@ export const Navbar: FC<NavbarProps> = ({ onClose, toggle }) => {
           {MAIN_NAV_ITEMS.map(renderNavItem)}
           {user?.role === 'ADMIN' && (
             <>
-              <Text size="xs" tt="uppercase" c="primary.5" fw={600} mt="sm" mb="2xs" px="sm">
+              <Text size="xs" tt="uppercase" c="brand.5" fw={600} mt="sm" mb="2xs" px="sm">
                 Admin
               </Text>
               {ADMIN_NAV_ITEMS.map(renderNavItem)}
@@ -90,14 +90,14 @@ export const Navbar: FC<NavbarProps> = ({ onClose, toggle }) => {
       <Divider />
 
       <AppShell.Section mt="md">
-        <Paper p="sm" bg="primary.0" withBorder={false}>
+        <Paper p="sm" bg="brand.0">
           <Group gap="sm" wrap="nowrap">
             <UserAvatar name={user?.name ?? ''} src={user?.avatarUrl} />
             <Stack gap="none">
-              <Text size="sm" fw={600} c="primary.7">
+              <Text size="sm" fw={600} c="brand.7">
                 {user?.name ?? '—'}
               </Text>
-              <Text size="xs" c="primary.5">
+              <Text size="xs" c="brand.5">
                 {user?.email ?? '—'}
               </Text>
             </Stack>

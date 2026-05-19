@@ -2,8 +2,9 @@ import { Suspense } from 'react';
 import { createBrowserRouter, RouteObject } from 'react-router-dom';
 import { Loader } from '@mantine/core';
 
-import { GuestRoute, ProtectedRoute } from './core/guards';
-import { AuthLayout, RootLayout } from './core/layouts';
+import { GuestRoute, ProtectedRoute } from '@/core/guards';
+import { AuthLayout, RootLayout } from '@/layouts';
+
 import { guestRoutes, protectedRoutes } from './routes';
 
 const withSuspense = (routes: RouteObject[]): RouteObject[] =>

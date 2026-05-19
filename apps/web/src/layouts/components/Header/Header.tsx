@@ -1,10 +1,10 @@
 import { AppShell, Burger, Group, Text } from '@mantine/core';
 
-import { useAuth } from '@/app/core/auth';
+import { useAuth } from '@/core/auth';
+import { UserAvatar } from '@/shared/ui';
 
 import { ColorSchemeToggle } from '../ColorSchemeToggle';
 import { LogoAvatar } from '../LogoAvatar';
-import { UserAvatar } from '../UserAvatar';
 
 import type { FC } from 'react';
 
@@ -17,12 +17,12 @@ export const Header: FC<HeaderProps> = ({ opened, onToggle }) => {
   const { user } = useAuth();
 
   return (
-    <AppShell.Header bg="primary.0" hiddenFrom="md" px="md" py="sm">
+    <AppShell.Header hiddenFrom="md" px="md" py="sm">
       <Group align="center" justify="space-between">
         <Burger opened={opened} onClick={onToggle} size="md" />
         <Group gap="xs">
           <LogoAvatar size={32} />
-          <Text c="primary.7" fw={600}>
+          <Text c="brand.7" fw={600}>
             AIO App
           </Text>
         </Group>

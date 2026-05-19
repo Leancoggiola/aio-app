@@ -10,7 +10,7 @@ interface LogoAvatarProps {
 }
 
 export const LogoAvatar: FC<LogoAvatarProps> = ({ size = 'md' }) => (
-  <Avatar size={size} variant="filled" color="primary.2" radius="md" style={{ boxShadow: 'var(--mantine-shadow-lg)' }}>
+  <Avatar size={size} variant="filled" color="brand.2" radius="md" style={{ boxShadow: 'var(--mantine-shadow-brand)' }}>
     <Logo style={{ padding: '0.25rem' }} />
   </Avatar>
 );
