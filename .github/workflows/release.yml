@@ -52,6 +52,9 @@ jobs:
       - name: Sync develop with main
         if: steps.release.outputs.new_release == 'true'
         run: |
+          git config --global user.name "github-actions[bot]"
+          git config --global user.email "github-actions[bot]@users.noreply.github.com"
+
           git checkout develop
           git merge main --no-ff -m "chore(release): sync develop with main [skip ci]"
           git push origin develop

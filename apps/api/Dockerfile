@@ -45,10 +45,11 @@ COPY --from=builder --chown=appuser:appgroup /app/deployed/node_modules ./node_m
 COPY --from=builder --chown=appuser:appgroup /app/deployed/package.json ./package.json
 COPY --from=builder --chown=appuser:appgroup /app/apps/api/prisma.config.ts ./prisma.config.ts
 COPY --from=builder --chown=appuser:appgroup /app/apps/api/src/generated ./src/generated
+COPY --from=pruner --chown=appuser:appgroup --chmod=755 /app/apps/api/docker-entrypoint.sh ./docker-entrypoint.sh
 
 ENV NODE_ENV=production
 EXPOSE 3000
 
 USER appuser
 
-CMD ["sh", "-c", "npx prisma migrate deploy && node dist/main.js"]
+CMD ["./docker-entrypoint.sh"]

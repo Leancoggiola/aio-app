@@ -48,10 +48,10 @@ La infraestructura está declarada en [`render.yaml`](../render.yaml) (IaC).
 ### Comando de inicio
 
 ```sh
-npx prisma migrate deploy && node dist/main.js
+./docker-entrypoint.sh
 ```
 
-Al arrancar el contenedor, primero aplica las migraciones pendientes y luego inicia el servidor.
+El script valida que `DIRECT_URL` esté configurada, aplica las migraciones pendientes con Prisma y luego inicia el servidor. Si falta `DIRECT_URL`, el contenedor falla de inmediato con un mensaje claro en lugar de colgarse esperando el pooler de Supabase.
 
 ---
 
@@ -59,17 +59,18 @@ Al arrancar el contenedor, primero aplica las migraciones pendientes y luego ini
 
 Se configuran manualmente en el dashboard de Render (no se sincronizan automáticamente desde `render.yaml` por seguridad — `sync: false`):
 
-| Variable             | Dónde obtenerla                                                        |
-| -------------------- | ---------------------------------------------------------------------- |
-| `DATABASE_URL`       | Supabase → Project Settings → Database (Transaction pooler)            |
-| `JWT_ACCESS_SECRET`  | Generar: `openssl rand -base64 32`                                     |
-| `JWT_REFRESH_SECRET` | Generar: `openssl rand -base64 32`                                     |
-| `TMDB_API_KEY`       | [themoviedb.org/settings/api](https://www.themoviedb.org/settings/api) |
-| `CORS_ORIGIN`        | URL del frontend en producción                                         |
-| `ADMIN_USERNAME`     | A elección                                                             |
-| `ADMIN_PASSWORD`     | A elección (usar password seguro)                                      |
+| Variable             | Dónde obtenerla                                                          |
+| -------------------- | ------------------------------------------------------------------------ |
+| `DATABASE_URL`       | Supabase → Project Settings → Database (Transaction pooler, puerto 6543) |
+| `DIRECT_URL`         | Supabase → Project Settings → Database (Direct connection, puerto 5432)  |
+| `JWT_ACCESS_SECRET`  | Generar: `openssl rand -base64 32`                                       |
+| `JWT_REFRESH_SECRET` | Generar: `openssl rand -base64 32`                                       |
+| `TMDB_API_KEY`       | [themoviedb.org/settings/api](https://www.themoviedb.org/settings/api)   |
+| `CORS_ORIGIN`        | URL del frontend en producción                                           |
+| `ADMIN_USERNAME`     | A elección                                                               |
+| `ADMIN_PASSWORD`     | A elección (usar password seguro)                                        |
 
-> `DIRECT_URL` no es necesaria en producción porque el contenedor solo corre `migrate deploy` (que puede usar la URL directa), pero actualmente `DATABASE_URL` apunta al pooler. Si hay problemas con migraciones en producción, agregar `DIRECT_URL` con la conexión directa de Supabase.
+> **Importante:** `DIRECT_URL` es obligatoria en Render. Sin ella, `prisma migrate deploy` usa el pooler (`DATABASE_URL`) y el contenedor se cuelga; Render termina el deploy por timeout de puerto.
 
 ---
 

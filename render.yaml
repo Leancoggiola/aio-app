@@ -4,14 +4,16 @@ services:
     runtime: docker
     repo: https://github.com/Leancoggiola/aio-app
     branch: main
-    dockerfilePath: Dockerfile
-    dockerContext: apps/api
+    dockerfilePath: ./apps/api/Dockerfile
+    dockerContext: .
     plan: free
     healthCheckPath: /api/health
     envVars:
       - key: NODE_ENV
         value: production
       - key: DATABASE_URL
+        sync: false
+      - key: DIRECT_URL
         sync: false
       - key: JWT_ACCESS_SECRET
         sync: false
