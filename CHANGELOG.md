@@ -1,3 +1,10 @@
+## [1.0.1](https://github.com/Leancoggiola/aio-app/compare/v1.0.0...v1.0.1) (2026-05-19)
+
+
+### Bug Fixes
+
+* deploys y back merge ([6808079](https://github.com/Leancoggiola/aio-app/commit/6808079fec6fe272b9dfd7b427a87eaf4f48ab10))
+
 # 1.0.0 (2026-05-19)
 
 
