@@ -1,14 +1,20 @@
 import { FC, useCallback } from 'react';
-import { Divider, Loader, Stack, Title } from '@mantine/core';
+import { Loader, Stack, Text, Title } from '@mantine/core';
 
 import { api } from '@/common/api';
 
 import { useAuth } from '../../../core/auth';
-import { DeleteAccountButton, PasswordForm, PreferencesForm, ProfileForm } from '../components';
+import {
+  DeleteAccountButton,
+  PasswordForm,
+  ProfilePhotoSection,
+  ProfileSectionCard,
+  ProfileSettingsForm,
+} from '../components';
 import { useProfile } from '../hooks';
 
 export const ProfilePage: FC = () => {
-  const { profile, isLoading, updateProfile, updatePreferences } = useProfile();
+  const { profile, isLoading, isMutating, updateProfile, updatePreferences } = useProfile();
   const { logout } = useAuth();
 
   const handleChangePassword = useCallback(async (newPassword: string) => {
@@ -20,6 +26,29 @@ export const ProfilePage: FC = () => {
     await logout();
   }, [logout]);
 
+  const handleSave = useCallback(
+    async ({
+      profile: profileUpdates,
+      preferences: preferencesUpdates,
+    }: {
+      profile: Parameters<typeof updateProfile>[0];
+      preferences: Parameters<typeof updatePreferences>[0];
+      theme: 'light' | 'dark' | 'auto';
+    }) => {
+      const tasks: Promise<unknown>[] = [];
+
+      if (Object.keys(profileUpdates).length > 0) {
+        tasks.push(updateProfile(profileUpdates));
+      }
+      if (Object.keys(preferencesUpdates).length > 0) {
+        tasks.push(updatePreferences(preferencesUpdates));
+      }
+
+      await Promise.all(tasks);
+    },
+    [updateProfile, updatePreferences]
+  );
+
   if (isLoading) {
     return <Loader />;
   }
@@ -28,41 +57,24 @@ export const ProfilePage: FC = () => {
     return null;
   }
 
-  const preferences = profile.preferences;
-
   return (
     <Stack gap="xl">
-      <Title order={2}>Perfil</Title>
-
-      <Stack gap="lg">
-        <Title order={4}>Información personal</Title>
-        <ProfileForm profile={profile} onSubmit={updateProfile} />
+      <Stack gap="2xs">
+        <Title order={2}>Mi Perfil</Title>
+        <Text c="dimmed">Gestiona tu información personal y preferencias</Text>
       </Stack>
 
-      <Divider />
+      <ProfilePhotoSection name={profile.name} avatarUrl={profile.avatarUrl} />
 
-      {preferences && (
-        <>
-          <Stack gap="lg">
-            <Title order={4}>Preferencias</Title>
-            <PreferencesForm preferences={preferences} onUpdate={updatePreferences} />
-          </Stack>
+      <ProfileSettingsForm key={profile.updatedAt} profile={profile} isSaving={isMutating} onSave={handleSave} />
 
-          <Divider />
-        </>
-      )}
-
-      <Stack gap="lg">
-        <Title order={4}>Cambiar contraseña</Title>
+      <ProfileSectionCard title="Cambiar contraseña" subtitle="Actualiza la contraseña de tu cuenta">
         <PasswordForm onSubmit={handleChangePassword} />
-      </Stack>
+      </ProfileSectionCard>
 
-      <Divider />
-
-      <Stack gap="lg">
-        <Title order={4}>Zona de peligro</Title>
+      <ProfileSectionCard title="Zona de peligro" subtitle="Acciones irreversibles sobre tu cuenta">
         <DeleteAccountButton onDelete={handleDeleteAccount} />
-      </Stack>
+      </ProfileSectionCard>
     </Stack>
   );
 };
