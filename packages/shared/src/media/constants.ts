@@ -11,9 +11,9 @@ export const MEDIA_TYPE_LABELS: Record<MediaType, string> = {
 };
 
 export const MEDIA_STATUS_LABELS: Record<MediaStatus, string> = {
-  to_watch: 'Quiero Ver',
+  to_watch: 'Quiero ver',
   watching: 'Viendo',
-  watched: 'Ya Vi',
+  watched: 'Vista',
 };
 
 export const TMDB_IMAGE_BASE = 'https://image.tmdb.org/t/p';

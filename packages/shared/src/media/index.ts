@@ -3,6 +3,7 @@ export type {
   MediaStatus,
   MediaItem,
   MediaFilters,
+  AddMediaFormValues,
   TmdbMediaResult,
   TmdbSearchResponse,
   TmdbMovieDetail,
@@ -17,5 +18,11 @@ export {
   TMDB_IMAGE_BASE,
   TMDB_POSTER_W300,
 } from './constants';
-export { addMediaItemSchema, updateMediaItemSchema, searchMediaSchema, filterMediaSchema } from './schemas';
+export {
+  addMediaItemSchema,
+  addMediaFormSchema,
+  updateMediaItemSchema,
+  searchMediaSchema,
+  filterMediaSchema,
+} from './schemas';
 export type { AddMediaItemPayload, UpdateMediaItemPayload, SearchMediaParams, FilterMediaParams } from './schemas';
