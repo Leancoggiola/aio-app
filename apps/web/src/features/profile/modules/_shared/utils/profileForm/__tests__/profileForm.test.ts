@@ -60,11 +60,18 @@ describe('profileForm utils', () => {
 
   it('builds birthDate update when changed', () => {
     const values = toProfileFormValues(baseProfile);
-    values.birthDate = new Date('1990-05-15T12:00:00.000Z');
+    values.birthDate = new Date(1990, 4, 15);
 
     expect(buildProfileUpdates(baseProfile, values)).toEqual({
-      birthDate: values.birthDate.toISOString(),
+      birthDate: '1990-05-15T00:00:00.000Z',
     });
+  });
+
+  it('does not update birthDate when calendar day is unchanged', () => {
+    const profileWithBirthDate = { ...baseProfile, birthDate: '1990-05-15T03:00:00.000Z' };
+    const values = toProfileFormValues(profileWithBirthDate);
+
+    expect(buildProfileUpdates(profileWithBirthDate, values)).toEqual({});
   });
 
   it('clears phone when emptied', () => {

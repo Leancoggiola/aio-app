@@ -15,6 +15,7 @@ import { DatePickerInput } from '@mantine/dates';
 import { useForm } from '@mantine/form';
 
 import { getErrorMessage, notifySuccess } from '@/shared/ui';
+import { DISPLAY_DATE_FORMAT } from '@/shared/dates';
 
 import { ProfileSectionCard } from '../../../_shared/components/ProfileSectionCard';
 import {
@@ -106,7 +107,7 @@ export const ProfileSettingsForm: FC<ProfileSettingsFormProps> = ({ profile, isS
             <DatePickerInput
               label="Fecha de Nacimiento"
               placeholder="dd/mm/aaaa"
-              valueFormat="DD/MM/YYYY"
+              valueFormat={DISPLAY_DATE_FORMAT}
               leftSection={<CalendarBlankIcon {...inputIconProps} />}
               {...form.getInputProps('birthDate')}
             />
