@@ -10,6 +10,8 @@ pnpm web:new-feature gym --path /gym --register-route --register-nav
 
 Ver [web-tooling.md](./web-tooling.md) para flags y detalles.
 
+**Prompts para Cursor:** [web-agent-prompt-template.md](./web-agent-prompt-template.md)
+
 ## 2. Estructura mínima
 
 ```

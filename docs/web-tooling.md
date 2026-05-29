@@ -1,5 +1,7 @@
 # Web — tooling (rules y scripts)
 
+**Plantillas de prompt para agentes:** [web-agent-prompt-template.md](./web-agent-prompt-template.md)
+
 ## Cursor rules
 
 | Archivo                                                                           | Rol                                             |
