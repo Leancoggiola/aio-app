@@ -11,7 +11,8 @@
     "test:watch": "vitest",
     "test:coverage": "vitest run --coverage",
     "preview": "vite preview",
-    "lint": "eslint \"src/**/*.{ts,tsx}\""
+    "lint": "eslint \"src/**/*.{ts,tsx}\"",
+    "check-api-paths": "node scripts/check-api-paths.mjs"
   },
   "dependencies": {
     "@aio-app/shared": "workspace:*",

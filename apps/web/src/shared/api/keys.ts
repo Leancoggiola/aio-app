@@ -1,14 +1,19 @@
 export const SWR_KEYS = {
   auth: {
     profile: '/api/auth/profile',
+    login: '/api/auth/login',
+    logout: '/api/auth/logout',
   },
   users: {
     profile: '/api/users/profile',
     preferences: '/api/users/preferences',
+    password: '/api/users/password',
+    account: '/api/users/account',
   },
   media: {
     list: '/api/media/list',
     search: '/api/media/search',
+    listItem: (id: string) => `/api/media/list/${id}`,
   },
 } as const;
 

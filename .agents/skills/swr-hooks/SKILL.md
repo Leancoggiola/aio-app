@@ -133,18 +133,22 @@ Auth cache uses bound mutate from `useSWRImmutable` inside `AuthContext`:
 ## Where to place hooks
 
 ```
-apps/web/src/app/
+apps/web/src/
 ├── core/
-│   └── auth/          ← useAuth (via AuthContext), auth-related hooks
+│   └── auth/                    ← useAuth (AuthContext), auth-related hooks
 └── features/
     └── <feature>/
-        └── hooks/     ← all feature hooks here
-            ├── useMyMediaList.ts
-            ├── useMediaSearch.ts
-            └── useMediaMutations.ts
+        └── modules/
+            ├── <module>/
+            │   └── hooks/
+            │       └── useX/
+            │           ├── useX.ts
+            │           └── index.ts
+            └── _shared/
+                └── hooks/       ← hooks shared across modules in the feature
 ```
 
-One hook per file. Name must match the exported function (`useProfile.ts` → `export function useProfile`).
+One hook per folder. Exported function name must match folder (`useProfile/` → `export function useProfile`).
 
 ---
 
