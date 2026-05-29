@@ -1,44 +1,36 @@
 import { FC, useState } from 'react';
-import { Button, Modal, Stack, Text } from '@mantine/core';
+import { Button } from '@mantine/core';
+
+import { confirm } from '@/shared/ui';
 
 interface DeleteAccountButtonProps {
   onDelete: () => Promise<void>;
 }
 
 export const DeleteAccountButton: FC<DeleteAccountButtonProps> = ({ onDelete }) => {
-  const [opened, setOpened] = useState(false);
   const [loading, setLoading] = useState(false);
 
-  const handleDelete = async () => {
+  const handleClick = async () => {
+    const confirmed = await confirm({
+      title: 'Eliminar cuenta',
+      description:
+        '¿Seguro que quieres eliminar tu cuenta? Esta acción no se puede deshacer. Se borrarán todos tus datos de forma permanente.',
+      confirmLabel: 'Sí, eliminar mi cuenta',
+    });
+
+    if (!confirmed) return;
+
     setLoading(true);
     try {
       await onDelete();
-    } catch {
+    } finally {
       setLoading(false);
-      setOpened(false);
     }
   };
 
   return (
-    <>
-      <Button color="red" variant="outline" onClick={() => setOpened(true)}>
-        Eliminar cuenta
-      </Button>
-
-      <Modal opened={opened} onClose={() => setOpened(false)} title="Eliminar cuenta" centered>
-        <Stack gap="md">
-          <Text>
-            ¿Seguro que quieres eliminar tu cuenta? Esta acción no se puede deshacer. Se borrarán todos tus datos de
-            forma permanente.
-          </Text>
-          <Button color="red" loading={loading} onClick={handleDelete} fullWidth>
-            Sí, eliminar mi cuenta
-          </Button>
-          <Button variant="default" onClick={() => setOpened(false)} fullWidth>
-            Cancelar
-          </Button>
-        </Stack>
-      </Modal>
-    </>
+    <Button color="red" variant="outline" loading={loading} onClick={handleClick}>
+      Eliminar cuenta
+    </Button>
   );
 };
