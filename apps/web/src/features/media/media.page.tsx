@@ -1,49 +1,46 @@
-import { FC, useCallback, useState } from 'react';
-import { Stack, Tabs, Title } from '@mantine/core';
+import { FC, useCallback, useMemo, useState } from 'react';
+import { Stack } from '@mantine/core';
 
-import { getErrorMessage, notifyError, notifySuccess } from '@/shared/ui';
+import { confirm, getErrorMessage, notifyError, notifySuccess } from '@/shared/ui';
 
 import {
-  MediaSearchBar,
-  MediaSearchResults,
+  AddMediaModal,
+  buildMediaTmdbKey,
+  MediaListToolbar,
+  MediaPageHeader,
   MyMediaList,
   useMediaMutations,
-  useMediaSearch,
   useMyMediaList,
 } from './modules';
 
-import type { MediaFilters, MediaStatus, MediaType } from './modules';
+import type { MediaFilters, MediaItem, MediaStatus, MediaType } from './modules';
 
 export const MediaPage: FC = () => {
-  const [searchQuery, setSearchQuery] = useState('');
-  const [searchType, setSearchType] = useState('multi');
-  const { data: searchData, isLoading: searchLoading } = useMediaSearch(searchQuery, 1, searchType);
+  const [searchText, setSearchText] = useState('');
+  const [statusFilter, setStatusFilter] = useState<MediaStatus | 'all'>('all');
+  const [typeFilter, setTypeFilter] = useState<MediaType | 'all'>('all');
+  const [addOpened, setAddOpened] = useState(false);
 
-  const [filters, setFilters] = useState<MediaFilters>({});
+  const filters = useMemo<MediaFilters>(
+    () => ({
+      ...(statusFilter !== 'all' && { status: statusFilter }),
+      ...(typeFilter !== 'all' && { mediaType: typeFilter }),
+    }),
+    [statusFilter, typeFilter]
+  );
+
   const { data: listData, isLoading: listLoading } = useMyMediaList(filters);
-
   const { addToList, updateStatus, removeFromList } = useMediaMutations();
 
-  const [activeTab, setActiveTab] = useState<string | null>('list');
-
-  const existingTmdbIds = new Set<string>();
-  if (listData) {
-    listData.forEach(item => existingTmdbIds.add(`${item.mediaType}-${item.tmdbId}`));
-  }
-
-  const handleSearch = useCallback((query: string, type: string) => {
-    setSearchQuery(query);
-    setSearchType(type);
-  }, []);
+  const existingTmdbIds = useMemo(() => {
+    const set = new Set<string>();
+    listData?.forEach(item => set.add(buildMediaTmdbKey(item.mediaType, item.tmdbId)));
+    return set;
+  }, [listData]);
 
   const handleAdd = useCallback(
-    async (tmdbId: number, mediaType: MediaType, status: MediaStatus) => {
-      try {
-        await addToList(tmdbId, mediaType, status);
-        notifySuccess('Agregado a tu lista');
-      } catch (err) {
-        notifyError(getErrorMessage(err, 'No se pudo agregar a la lista'));
-      }
+    async (tmdbId: number, mediaType: MediaType, status: MediaStatus, streamingReleaseDate?: string | null) => {
+      await addToList(tmdbId, mediaType, status, streamingReleaseDate);
     },
     [addToList]
   );
@@ -60,10 +57,18 @@ export const MediaPage: FC = () => {
     [updateStatus]
   );
 
-  const handleRemove = useCallback(
-    async (id: string) => {
+  const handleDelete = useCallback(
+    async (item: MediaItem) => {
+      const confirmed = await confirm({
+        title: '¿Eliminar?',
+        description: 'Esta acción no se puede deshacer.',
+        confirmLabel: 'Eliminar',
+      });
+
+      if (!confirmed) return;
+
       try {
-        await removeFromList(id);
+        await removeFromList(item.id);
         notifySuccess('Eliminado de tu lista');
       } catch (err) {
         notifyError(getErrorMessage(err, 'No se pudo eliminar de la lista'));
@@ -74,39 +79,32 @@ export const MediaPage: FC = () => {
 
   return (
     <Stack gap="lg">
-      <Title order={2}>Películas y series</Title>
+      <MediaPageHeader onAdd={() => setAddOpened(true)} />
 
-      <Tabs value={activeTab} onChange={setActiveTab}>
-        <Tabs.List>
-          <Tabs.Tab value="list">Mi Lista</Tabs.Tab>
-          <Tabs.Tab value="search">Buscar</Tabs.Tab>
-        </Tabs.List>
+      <MediaListToolbar
+        searchText={searchText}
+        onSearchTextChange={setSearchText}
+        statusFilter={statusFilter}
+        onStatusFilterChange={setStatusFilter}
+        typeFilter={typeFilter}
+        onTypeFilterChange={setTypeFilter}
+      />
 
-        <Tabs.Panel value="search" pt="md">
-          <Stack gap="md">
-            <MediaSearchBar onSearch={handleSearch} />
-            {searchQuery.trim() && (
-              <MediaSearchResults
-                results={searchData?.results ?? []}
-                isLoading={searchLoading}
-                existingTmdbIds={existingTmdbIds}
-                onAdd={handleAdd}
-              />
-            )}
-          </Stack>
-        </Tabs.Panel>
+      <MyMediaList
+        items={listData}
+        isLoading={listLoading}
+        searchText={searchText}
+        onAdd={() => setAddOpened(true)}
+        onStatusChange={handleStatusChange}
+        onDelete={handleDelete}
+      />
 
-        <Tabs.Panel value="list" pt="md">
-          <MyMediaList
-            items={listData}
-            isLoading={listLoading}
-            filters={filters}
-            onFiltersChange={setFilters}
-            onStatusChange={handleStatusChange}
-            onRemove={handleRemove}
-          />
-        </Tabs.Panel>
-      </Tabs>
+      <AddMediaModal
+        opened={addOpened}
+        onClose={() => setAddOpened(false)}
+        onSubmit={handleAdd}
+        existingTmdbIds={existingTmdbIds}
+      />
     </Stack>
   );
 };

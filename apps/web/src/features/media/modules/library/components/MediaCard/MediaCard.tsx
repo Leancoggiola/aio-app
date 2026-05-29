@@ -1,76 +1,81 @@
-import { FC } from 'react';
-import { ActionIcon, Badge, Card, Group, Image, Menu, Stack, Text } from '@mantine/core';
+import { memo } from 'react';
+import { ActionIcon, Badge, Box, Card, Group, Image, Select, Stack, Text } from '@mantine/core';
+
+import { formatIsoDateStringForDisplay } from '@/shared/dates';
 
 import type { MediaItem, MediaStatus } from '../../../_shared/types';
 
-import { MEDIA_STATUS_LABELS, MEDIA_TYPE_LABELS, TMDB_POSTER_W300 } from '@aio-app/shared/media';
+import { MEDIA_STATUS_LABELS, MEDIA_STATUSES, MEDIA_TYPE_LABELS, TMDB_POSTER_W300 } from '@aio-app/shared/media';
+import { TrashIcon } from '@phosphor-icons/react';
+
+const STATUS_SELECT_DATA = MEDIA_STATUSES.map(value => ({
+  value,
+  label: MEDIA_STATUS_LABELS[value],
+}));
 
 interface MediaCardProps {
   item: MediaItem;
   onStatusChange: (id: string, status: MediaStatus) => void;
-  onRemove: (id: string) => void;
+  onDelete: (item: MediaItem) => void | Promise<void>;
 }
 
-export const MediaCard: FC<MediaCardProps> = ({ item, onStatusChange, onRemove }) => {
+export const MediaCard = memo(function MediaCard({ item, onStatusChange, onDelete }: MediaCardProps) {
   return (
-    <Card shadow="sm" padding="sm" radius="md" withBorder h="100%">
-      <Card.Section>
+    <Card shadow="sm" p="none" radius="md" withBorder h="100%" style={{ overflow: 'hidden' }}>
+      <Card.Section pos="relative">
         <Image
           src={item.posterPath ? `${TMDB_POSTER_W300}${item.posterPath}` : undefined}
-          h={'19rem'}
+          h="17.5rem"
           alt={item.title}
           fallbackSrc="https://placehold.co/300x450?text=Sin+imagen"
         />
+        <Badge
+          pos="absolute"
+          top="0.5rem"
+          left="0.5rem"
+          size="sm"
+          variant="filled"
+          color="dark"
+          style={{ backgroundColor: 'rgb(0 0 0 / 0.65)' }}
+        >
+          {MEDIA_TYPE_LABELS[item.mediaType]}
+        </Badge>
+        <ActionIcon
+          pos="absolute"
+          top="0.5rem"
+          right="0.5rem"
+          variant="filled"
+          color="dark"
+          aria-label="Eliminar"
+          onClick={() => void onDelete(item)}
+          style={{ backgroundColor: 'rgb(0 0 0 / 0.65)' }}
+        >
+          <TrashIcon size="1rem" />
+        </ActionIcon>
       </Card.Section>
 
-      <Stack gap="xs" mt="sm" style={{ flex: 1 }}>
-        <Group justify="space-between" align="flex-start" wrap="nowrap">
-          <Text fw={600} size="sm" lineClamp={2} style={{ flex: 1 }}>
-            {item.title}
-          </Text>
-          <Badge
-            size="xs"
-            variant="light"
-            color={item.mediaType === 'movie' ? 'blue' : 'violet'}
-            style={{ flexShrink: 0 }}
-          >
-            {MEDIA_TYPE_LABELS[item.mediaType]}
-          </Badge>
-        </Group>
+      <Stack gap="xs" p="sm" style={{ flex: 1 }}>
+        <Text fw={600} size="sm" lineClamp={2}>
+          {item.title}
+        </Text>
 
         {item.streamingReleaseDate && (
-          <Text size="xs" c="dimmed">
-            En streaming: {new Date(item.streamingReleaseDate).toLocaleDateString('es')}
-          </Text>
+          <Group gap="0.25rem">
+            <Text size="xs" c="dimmed">
+              {formatIsoDateStringForDisplay(item.streamingReleaseDate)}
+            </Text>
+          </Group>
         )}
+
+        <Box mt="auto">
+          <Select
+            data={STATUS_SELECT_DATA}
+            value={item.status}
+            onChange={val => val && onStatusChange(item.id, val as MediaStatus)}
+            size="sm"
+          />
+        </Box>
       </Stack>
-
-      <Group justify="space-between" mt="sm">
-        <Badge
-          size="sm"
-          variant="light"
-          color={item.status === 'watched' ? 'teal' : item.status === 'watching' ? 'orange' : 'yellow'}
-        >
-          {MEDIA_STATUS_LABELS[item.status]}
-        </Badge>
-
-        <Menu shadow="md" width={160}>
-          <Menu.Target>
-            <ActionIcon variant="subtle" color="gray">
-              ⋯
-            </ActionIcon>
-          </Menu.Target>
-          <Menu.Dropdown>
-            <Menu.Item onClick={() => onStatusChange(item.id, 'to_watch')}>{MEDIA_STATUS_LABELS.to_watch}</Menu.Item>
-            <Menu.Item onClick={() => onStatusChange(item.id, 'watching')}>{MEDIA_STATUS_LABELS.watching}</Menu.Item>
-            <Menu.Item onClick={() => onStatusChange(item.id, 'watched')}>{MEDIA_STATUS_LABELS.watched}</Menu.Item>
-            <Menu.Divider />
-            <Menu.Item color="red" onClick={() => onRemove(item.id)}>
-              Eliminar de la lista
-            </Menu.Item>
-          </Menu.Dropdown>
-        </Menu>
-      </Group>
     </Card>
   );
-};
+});

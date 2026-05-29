@@ -15,11 +15,17 @@ export function useMediaMutations() {
   }, [mutate]);
 
   const addToList = useCallback(
-    async (tmdbId: number, mediaType: MediaType, status: MediaStatus = 'to_watch') => {
+    async (
+      tmdbId: number,
+      mediaType: MediaType,
+      status: MediaStatus = 'to_watch',
+      streamingReleaseDate?: string | null
+    ) => {
       const item = await api.post<MediaItem>(SWR_KEYS.media.list, {
         tmdbId,
         mediaType,
         status,
+        ...(streamingReleaseDate ? { streamingReleaseDate } : {}),
       });
       await invalidateList();
       return item;
