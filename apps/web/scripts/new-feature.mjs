@@ -27,6 +27,10 @@ if (!name || !/^[a-z][a-z0-9-]*$/.test(name)) {
 const routePath = getFlagValue('--path') ?? `/${name}`;
 const moduleName = getFlagValue('--module') ?? 'main';
 const navKey = getFlagValue('--nav-key') ?? name;
+if (!/^[a-z][a-z0-9-]*$/.test(navKey)) {
+  console.error(`Invalid --nav-key value: "${navKey}". Must match [a-z][a-z0-9-]*`);
+  process.exit(1);
+}
 const swrDomain = getFlagValue('--swr-domain');
 const registerRoute = flags.has('--register-route');
 const registerNav = flags.has('--register-nav');
@@ -141,6 +145,10 @@ if (!registerRoute) console.log('  3. Register route in app/routes.ts');
 if (!registerNav && !noNav) console.log('  4. Register nav: --register-nav --nav-key', navKey);
 console.log('  5. pnpm --filter web check-types && pnpm --filter web test && pnpm --filter web check-api-paths');
 
+function escapeRegExp(str) {
+  return str.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+}
+
 function getFlagValue(flag) {
   const i = args.indexOf(flag);
   return i >= 0 ? args[i + 1] : undefined;
@@ -193,7 +201,7 @@ function appendNavRegistry(name, camel, key) {
       `$1  '${key}': ${camel}NavItem,\n$2`
     );
   } else {
-    const entryPattern = new RegExp(`(${key.replace(/-/g, '\\-')}:\\s*)[^,\\n]+`);
+    const entryPattern = new RegExp(`(${escapeRegExp(key)}:\\s*)[^,\\n]+`);
     content = content.replace(entryPattern, `$1${camel}NavItem`);
   }
 
