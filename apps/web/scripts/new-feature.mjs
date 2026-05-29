@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 /**
  * Scaffold a new web feature. Usage:
- *   pnpm web:new-feature gym --register-route --register-nav
+ *   pnpm web:new-feature gym --register-route --register-nav --nav-key gym --swr-domain gym
  */
 import fs from 'node:fs';
 import path from 'node:path';
@@ -19,13 +19,15 @@ const positional = args.filter(a => !a.startsWith('--'));
 const name = positional[0];
 if (!name || !/^[a-z][a-z0-9-]*$/.test(name)) {
   console.error(
-    'Usage: pnpm web:new-feature <kebab-name> [--path /x] [--module main] [--register-route] [--register-nav] [--no-nav]'
+    'Usage: pnpm web:new-feature <kebab-name> [--path /x] [--module main] [--register-route] [--register-nav] [--nav-key gym] [--swr-domain gym] [--no-nav]'
   );
   process.exit(1);
 }
 
 const routePath = getFlagValue('--path') ?? `/${name}`;
 const moduleName = getFlagValue('--module') ?? 'main';
+const navKey = getFlagValue('--nav-key') ?? name;
+const swrDomain = getFlagValue('--swr-domain');
 const registerRoute = flags.has('--register-route');
 const registerNav = flags.has('--register-nav');
 const noNav = flags.has('--no-nav');
@@ -125,16 +127,19 @@ if (registerRoute) {
   appendRoute(name, camel);
 }
 if (registerNav && !noNav) {
-  console.log('\nRemember to add the feature key to MAIN_NAV_ORDER in app/navigation/nav-registry.tsx');
+  appendNavRegistry(name, camel, navKey);
+}
+if (swrDomain) {
+  appendSwrStub(swrDomain);
 }
 
 console.log(`\nCreated feature: src/features/${name}/`);
 console.log('\nNext steps:');
-console.log('  1. Add SWR keys in shared/api/keys.ts if needed');
+if (!swrDomain) console.log('  1. Add SWR keys in shared/api/keys.ts if needed');
 console.log('  2. Update icon/label in', `${name}.nav.tsx`);
 if (!registerRoute) console.log('  3. Register route in app/routes.ts');
-if (!registerNav && !noNav) console.log('  4. Register nav in app/navigation/nav-registry.tsx');
-console.log('  5. pnpm --filter web check-types && pnpm --filter web test');
+if (!registerNav && !noNav) console.log('  4. Register nav: --register-nav --nav-key', navKey);
+console.log('  5. pnpm --filter web check-types && pnpm --filter web test && pnpm --filter web check-api-paths');
 
 function getFlagValue(flag) {
   const i = args.indexOf(flag);
@@ -169,4 +174,44 @@ function appendRoute(name, camel) {
   }
   fs.writeFileSync(routesFile, content, 'utf8');
   console.log('Updated app/routes.ts');
+}
+
+function appendNavRegistry(name, camel, key) {
+  const navFile = path.join(srcRoot, 'app', 'navigation', 'nav-registry.tsx');
+  let content = fs.readFileSync(navFile, 'utf8');
+  const importLine = `import { ${camel}NavItem } from '@/features/${name}';`;
+
+  if (!content.includes(importLine)) {
+    content = content.replace(/(import \{ profileNavItem \} from '@\/features\/profile';)/, `$1\n${importLine}`);
+  }
+
+  const keyInOrder = content.includes(`'${key}'`);
+  if (!keyInOrder) {
+    content = content.replace(/(  'split-expenses',\n)(  'profile',)/, `$1  '${key}',\n$2`);
+    content = content.replace(
+      /(  'split-expenses': PLACEHOLDER_NAV_ITEMS\[4\],\n)(};)/,
+      `$1  '${key}': ${camel}NavItem,\n$2`
+    );
+  } else {
+    const entryPattern = new RegExp(`(${key.replace(/-/g, '\\-')}:\\s*)[^,\\n]+`);
+    content = content.replace(entryPattern, `$1${camel}NavItem`);
+  }
+
+  fs.writeFileSync(navFile, content, 'utf8');
+  console.log(`Updated app/navigation/nav-registry.tsx (key: ${key})`);
+}
+
+function appendSwrStub(domain) {
+  const keysFile = path.join(srcRoot, 'shared', 'api', 'keys.ts');
+  let content = fs.readFileSync(keysFile, 'utf8');
+  const stub = `  ${domain}: {\n    // list: '/api/${domain}/list',\n  },`;
+
+  if (content.includes(`${domain}:`)) {
+    console.log(`SWR_KEYS already contains domain: ${domain}`);
+    return;
+  }
+
+  content = content.replace(/\n} as const;/, `\n${stub}\n} as const;`);
+  fs.writeFileSync(keysFile, content, 'utf8');
+  console.log(`Added SWR_KEYS stub for domain: ${domain}`);
 }

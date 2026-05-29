@@ -59,5 +59,14 @@ pnpm --filter web lint
 
 ## Referencia
 
-- Patrón completo: `features/media` (módulos `search`, `library`, `_shared`)
-- Feature simple: `features/home` (módulo `greeting`)
+| Feature   | Cuándo copiar                                                        |
+| --------- | -------------------------------------------------------------------- |
+| `home`    | Feature simple, un módulo, sin SWR                                   |
+| `media`   | Multi-módulo (`search`, `library`, `_shared`), hooks SWR + mutations |
+| `profile` | Forms Mantine, PATCH utils, `useProfile`, security actions           |
+
+## Verificación adicional
+
+```bash
+pnpm --filter web check-api-paths
+```
