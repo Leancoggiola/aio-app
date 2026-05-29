@@ -27,14 +27,14 @@ export const AuthProvider: FC<PropsWithChildren> = ({ children }) => {
 
   const login = useCallback(
     async (username: string, password: string) => {
-      const res = await api.post<ProfileResponse>('/api/auth/login', { username, password });
+      const res = await api.post<ProfileResponse>(SWR_KEYS.auth.login, { username, password });
       await mutate(res, { revalidate: false });
     },
     [mutate]
   );
 
   const logout = useCallback(async () => {
-    await api.post('/api/auth/logout');
+    await api.post(SWR_KEYS.auth.logout);
     await mutate(undefined, { revalidate: false });
   }, [mutate]);
 

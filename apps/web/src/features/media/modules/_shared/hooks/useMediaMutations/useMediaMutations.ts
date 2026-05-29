@@ -29,7 +29,7 @@ export function useMediaMutations() {
 
   const updateStatus = useCallback(
     async (itemId: string, status: MediaStatus) => {
-      const item = await api.patch<MediaItem>(`/api/media/list/${itemId}`, {
+      const item = await api.patch<MediaItem>(SWR_KEYS.media.listItem(itemId), {
         status,
       });
       await invalidateList();
@@ -40,7 +40,7 @@ export function useMediaMutations() {
 
   const removeFromList = useCallback(
     async (itemId: string) => {
-      await api.delete(`/api/media/list/${itemId}`);
+      await api.delete(SWR_KEYS.media.listItem(itemId));
       await invalidateList();
     },
     [invalidateList]

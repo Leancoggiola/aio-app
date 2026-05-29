@@ -2,7 +2,6 @@ import { FC, useCallback } from 'react';
 import { Loader, Stack, Text, Title } from '@mantine/core';
 
 import { useAuth } from '@/core/auth';
-import { api } from '@/shared/api';
 
 import {
   DeleteAccountButton,
@@ -10,21 +9,26 @@ import {
   ProfilePhotoSection,
   ProfileSectionCard,
   ProfileSettingsForm,
+  useAccountActions,
   useProfile,
 } from './modules';
 
 export const ProfilePage: FC = () => {
   const { profile, isLoading, isMutating, updateProfile, updatePreferences } = useProfile();
+  const { changePassword, deleteAccount } = useAccountActions();
   const { logout } = useAuth();
 
-  const handleChangePassword = useCallback(async (newPassword: string) => {
-    await api.patch('/api/users/password', { newPassword });
-  }, []);
+  const handleChangePassword = useCallback(
+    async (newPassword: string) => {
+      await changePassword(newPassword);
+    },
+    [changePassword]
+  );
 
   const handleDeleteAccount = useCallback(async () => {
-    await api.delete('/api/users/account');
+    await deleteAccount();
     await logout();
-  }, [logout]);
+  }, [deleteAccount, logout]);
 
   const handleSave = useCallback(
     async ({

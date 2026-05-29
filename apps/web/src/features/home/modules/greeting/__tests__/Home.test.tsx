@@ -1,19 +1,15 @@
-import { MantineProvider } from '@mantine/core';
 import { describe, expect, it, vi } from 'vitest';
+
+import { createMockAuthValue, renderWithProviders } from '@/__tests__/helpers';
 
 import { HomePage } from '../../../home.page';
 
-import { render, screen } from '@testing-library/react';
+import { screen } from '@testing-library/react';
 
 vi.mock('@/core/auth', () => ({
-  useAuth: () => ({
-    user: { name: 'María', username: 'maria', email: null, role: 'USER', avatarUrl: null },
-  }),
+  useAuth: () =>
+    createMockAuthValue({ user: { name: 'María', username: 'maria', email: null, role: 'USER', avatarUrl: null } }),
 }));
-
-function renderWithProviders(ui: React.ReactElement) {
-  return render(<MantineProvider>{ui}</MantineProvider>);
-}
 
 describe('HomePage', () => {
   it('muestra el nombre del usuario autenticado', () => {
