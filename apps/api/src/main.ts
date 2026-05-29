@@ -13,11 +13,21 @@ import './auth/strategies/local.strategy';
 
 import router from './router';
 import { errorHandler, logger } from './common/utils';
-import { prisma } from './common/db';
+import { checkDatabaseConnection, prisma } from './common/db';
 
 async function bootstrap() {
   await prisma.$connect();
-  logger.info('Connected to PostgreSQL');
+
+  if (config.isProduction) {
+    logger.info('Connected to PostgreSQL');
+  } else {
+    const dbOk = await checkDatabaseConnection();
+    if (dbOk) {
+      logger.info('PostgreSQL: conexión verificada');
+    } else {
+      logger.warn('La API arrancó sin conexión a la base de datos');
+    }
+  }
 
   const app = express();
 
