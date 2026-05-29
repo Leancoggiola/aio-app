@@ -3,6 +3,7 @@ import { createRoot } from 'react-dom/client';
 import { RouterProvider } from 'react-router-dom';
 import { MantineProvider } from '@mantine/core';
 import { DatesProvider } from '@mantine/dates';
+import { Notifications } from '@mantine/notifications';
 
 import { router } from '@/app/router';
 import { AuthProvider } from '@/core/auth';
@@ -20,6 +21,7 @@ createRoot(document.getElementById('app')!).render(
   <StrictMode>
     <MantineProvider theme={THEME} cssVariablesResolver={cssVariablesResolver}>
       <DatesProvider settings={{ locale: 'es', firstDayOfWeek: 1 }}>
+        <Notifications />
         <SWRProvider>
           <AuthProvider>
             <RouterProvider router={router} />

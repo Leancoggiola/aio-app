@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import {
+  Alert,
   Button,
   Group,
   Select,
@@ -12,6 +13,8 @@ import {
 } from '@mantine/core';
 import { DatePickerInput } from '@mantine/dates';
 import { useForm } from '@mantine/form';
+
+import { getErrorMessage, notifySuccess } from '@/shared/ui';
 
 import { ProfileSectionCard } from '../../../_shared/components/ProfileSectionCard';
 import {
@@ -67,8 +70,9 @@ export const ProfileSettingsForm: FC<ProfileSettingsFormProps> = ({ profile, isS
     try {
       await onSave({ profile: profileUpdates, preferences: preferencesUpdates, theme: values.theme });
       setColorScheme(values.theme);
+      notifySuccess('Cambios guardados correctamente');
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'No se pudieron guardar los cambios');
+      setError(getErrorMessage(err, 'No se pudieron guardar los cambios'));
     }
   });
 
@@ -131,9 +135,9 @@ export const ProfileSettingsForm: FC<ProfileSettingsFormProps> = ({ profile, isS
         </ProfileSectionCard>
 
         {error && (
-          <Text c="red" size="sm">
+          <Alert color="red" variant="light">
             {error}
-          </Text>
+          </Alert>
         )}
 
         <Group justify="flex-end">

@@ -1,6 +1,8 @@
 import { FC, useCallback, useState } from 'react';
 import { Stack, Tabs, Title } from '@mantine/core';
 
+import { getErrorMessage, notifyError, notifySuccess } from '@/shared/ui';
+
 import {
   MediaSearchBar,
   MediaSearchResults,
@@ -38,8 +40,9 @@ export const MediaPage: FC = () => {
     async (tmdbId: number, mediaType: MediaType, status: MediaStatus) => {
       try {
         await addToList(tmdbId, mediaType, status);
-      } catch {
-        // Error handled by ApiError
+        notifySuccess('Agregado a tu lista');
+      } catch (err) {
+        notifyError(getErrorMessage(err, 'No se pudo agregar a la lista'));
       }
     },
     [addToList]
@@ -49,8 +52,9 @@ export const MediaPage: FC = () => {
     async (id: string, status: MediaStatus) => {
       try {
         await updateStatus(id, status);
-      } catch {
-        // Error handled by ApiError
+        notifySuccess('Estado actualizado');
+      } catch (err) {
+        notifyError(getErrorMessage(err, 'No se pudo actualizar el estado'));
       }
     },
     [updateStatus]
@@ -60,8 +64,9 @@ export const MediaPage: FC = () => {
     async (id: string) => {
       try {
         await removeFromList(id);
-      } catch {
-        // Error handled by ApiError
+        notifySuccess('Eliminado de tu lista');
+      } catch (err) {
+        notifyError(getErrorMessage(err, 'No se pudo eliminar de la lista'));
       }
     },
     [removeFromList]

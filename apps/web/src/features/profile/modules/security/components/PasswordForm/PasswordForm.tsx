@@ -1,63 +1,80 @@
-import { FC, useState } from 'react';
-import { Button, PasswordInput, Stack } from '@mantine/core';
+import { useState } from 'react';
+import { Alert, Button, PasswordInput, Stack } from '@mantine/core';
+import { useForm } from '@mantine/form';
+
+import { getErrorMessage, notifySuccess } from '@/shared/ui';
+
+import type { FC } from 'react';
+
+import { changePasswordSchema } from '@aio-app/shared/users';
+
+interface PasswordFormValues {
+  newPassword: string;
+  confirmPassword: string;
+}
 
 interface PasswordFormProps {
   onSubmit: (newPassword: string) => Promise<void>;
 }
 
 export const PasswordForm: FC<PasswordFormProps> = ({ onSubmit }) => {
-  const [newPassword, setNewPassword] = useState('');
-  const [confirmPassword, setConfirmPassword] = useState('');
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
-  const [success, setSuccess] = useState(false);
 
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    setError(null);
-    setSuccess(false);
+  const form = useForm<PasswordFormValues>({
+    mode: 'uncontrolled',
+    initialValues: {
+      newPassword: '',
+      confirmPassword: '',
+    },
+    validate: {
+      newPassword: value => {
+        const parsed = changePasswordSchema.safeParse({ newPassword: value });
+        if (!parsed.success) {
+          return parsed.error.issues[0]?.message ?? 'Contraseña inválida';
+        }
+        return null;
+      },
+      confirmPassword: (value, values) => {
+        if (value.length < 8) {
+          return 'La contraseña debe tener al menos 8 caracteres';
+        }
+        if (value !== values.newPassword) {
+          return 'Las contraseñas no coinciden';
+        }
+        return null;
+      },
+    },
+  });
 
-    if (newPassword !== confirmPassword) {
-      setError('Las contraseñas no coinciden');
-      return;
-    }
-
+  const handleSubmit = async (values: PasswordFormValues) => {
     setLoading(true);
+    setError(null);
     try {
-      await onSubmit(newPassword);
-      setNewPassword('');
-      setConfirmPassword('');
-      setSuccess(true);
+      await onSubmit(values.newPassword);
+      form.reset();
+      notifySuccess('Contraseña actualizada correctamente');
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'No se pudo cambiar la contraseña');
+      setError(getErrorMessage(err, 'No se pudo cambiar la contraseña'));
     } finally {
       setLoading(false);
     }
   };
 
   return (
-    <form onSubmit={handleSubmit}>
+    <form onSubmit={form.onSubmit(handleSubmit)}>
       <Stack gap="sm">
-        <PasswordInput
-          label="Nueva contraseña"
-          value={newPassword}
-          onChange={e => setNewPassword(e.currentTarget.value)}
-          required
-          minLength={8}
-        />
+        {error && (
+          <Alert color="red" variant="light">
+            {error}
+          </Alert>
+        )}
+        <PasswordInput label="Nueva contraseña" key={form.key('newPassword')} {...form.getInputProps('newPassword')} />
         <PasswordInput
           label="Confirmar contraseña"
-          value={confirmPassword}
-          onChange={e => setConfirmPassword(e.currentTarget.value)}
-          required
-          minLength={8}
+          key={form.key('confirmPassword')}
+          {...form.getInputProps('confirmPassword')}
         />
-        {error && <div style={{ color: 'var(--mantine-color-red-6)', fontSize: 14 }}>{error}</div>}
-        {success && (
-          <div style={{ color: 'var(--mantine-color-green-6)', fontSize: 14 }}>
-            Contraseña actualizada correctamente
-          </div>
-        )}
         <Button type="submit" loading={loading}>
           Cambiar contraseña
         </Button>
