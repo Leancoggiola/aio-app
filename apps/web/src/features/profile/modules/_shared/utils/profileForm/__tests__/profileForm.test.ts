@@ -51,4 +51,29 @@ describe('profileForm utils', () => {
       theme: 'dark',
     });
   });
+
+  it('returns empty updates when nothing changed', () => {
+    const values = toProfileFormValues(baseProfile);
+    expect(buildProfileUpdates(baseProfile, values)).toEqual({});
+    expect(buildPreferencesUpdates(baseProfile, values)).toEqual({});
+  });
+
+  it('builds birthDate update when changed', () => {
+    const values = toProfileFormValues(baseProfile);
+    values.birthDate = new Date('1990-05-15T12:00:00.000Z');
+
+    expect(buildProfileUpdates(baseProfile, values)).toEqual({
+      birthDate: values.birthDate.toISOString(),
+    });
+  });
+
+  it('clears phone when emptied', () => {
+    const profileWithPhone = { ...baseProfile, phone: '+34 600 000 000' };
+    const values = toProfileFormValues(profileWithPhone);
+    values.phone = '';
+
+    expect(buildProfileUpdates(profileWithPhone, values)).toEqual({
+      phone: null,
+    });
+  });
 });

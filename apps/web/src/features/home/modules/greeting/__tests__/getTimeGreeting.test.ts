@@ -14,4 +14,8 @@ describe('getTimeGreeting', () => {
   it('returns Buenas noches at night', () => {
     expect(getTimeGreeting(new Date('2024-01-01T22:00:00'))).toBe('Buenas noches');
   });
+
+  it('returns Buenas noches before morning', () => {
+    expect(getTimeGreeting(new Date('2024-01-01T05:00:00'))).toBe('Buenas noches');
+  });
 });

@@ -74,6 +74,8 @@ jobs:
 
       - run: pnpm turbo lint
 
+      - run: pnpm --filter web check-api-paths
+
   audit:
     name: Security Audit
     needs: [install]
