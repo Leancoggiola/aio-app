@@ -58,6 +58,7 @@ export async function addToList(userId: string, dto: AddMediaItemPayload) {
       title,
       posterPath,
       status: dto.status || 'to_watch',
+      streamingReleaseDate: dto.streamingReleaseDate ?? null,
     },
   });
 
