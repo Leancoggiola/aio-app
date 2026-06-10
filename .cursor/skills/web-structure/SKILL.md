@@ -7,14 +7,14 @@ description: Folder structure and import conventions for apps/web (feature-based
 
 ## Layers
 
-| Path | Purpose |
-|------|---------|
-| `apps/web/src/app/` | `router.tsx`, `routes.ts`, `navigation/nav-registry.tsx` |
-| `apps/web/src/features/<name>/` | Product domain |
-| `apps/web/src/shared/api/` | HTTP client, fetcher, `SWR_KEYS` |
-| `apps/web/src/shared/ui/` | Cross-feature UI |
-| `apps/web/src/core/` | `auth`, `guards`, `providers` |
-| `apps/web/src/layouts/` | App shell |
+| Path                            | Purpose                                                  |
+| ------------------------------- | -------------------------------------------------------- |
+| `apps/web/src/app/`             | `router.tsx`, `routes.ts`, `navigation/nav-registry.tsx` |
+| `apps/web/src/features/<name>/` | Product domain                                           |
+| `apps/web/src/shared/api/`      | HTTP client, fetcher, `SWR_KEYS`                         |
+| `apps/web/src/shared/ui/`       | Cross-feature UI                                         |
+| `apps/web/src/core/`            | `auth`, `guards`, `providers`                            |
+| `apps/web/src/layouts/`         | App shell                                                |
 
 ## Feature template
 

@@ -6,6 +6,23 @@ alwaysApply: false
 
 # Web — forms y feedback
 
+## Formularios (`@mantine/form`)
+
+Todo formulario en `apps/web` (páginas, modales, drawers) debe usar **`useForm`** de `@mantine/form`, no un conjunto suelto de `useState` por campo.
+
+- Envolver campos en `<form onSubmit={form.onSubmit(handler)}>`.
+- Conectar inputs con `form.getInputProps('campo')` (o `form.key('campo')` en modo `uncontrolled`).
+- Validación en `validate`, `schemaResolver` (Zod de `@aio-app/shared`) o `.refine()` en el feature.
+- Reset al cerrar modal / cambiar entidad: `form.reset()` (p. ej. en `useEffect` cuando `opened === false`).
+- Skill de referencia: `.agents/skills/mantine-form/SKILL.md`.
+
+**Excepciones** (no requieren `useForm` completo):
+
+- Búsqueda sin submit (solo filtra en vivo).
+- Campos custom (Combobox TMDB, etc.): el resto del formulario sigue en `useForm`; el campo custom actualiza con `form.setFieldValue` / `form.setValues`.
+
+Referencia modal: `features/media/modules/library/components/AddMediaModal/`.
+
 ## Validación
 
 - Usar schemas de `@aio-app/shared` cuando existan.

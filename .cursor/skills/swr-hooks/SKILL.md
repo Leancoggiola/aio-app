@@ -78,7 +78,7 @@ export function useProfile() {
     SWR_KEYS.users.profile,
     (_url: string, { arg }: { arg: UpdateProfilePayload }) =>
       api.patch<{ user: UserProfile }>(SWR_KEYS.users.profile, arg),
-    { populateCache: true, revalidate: false },
+    { populateCache: true, revalidate: false }
   );
 
   return { profile: data?.user ?? null, isLoading, isMutating, error, updateProfile };
@@ -100,11 +100,9 @@ export function useMediaMutations() {
   const { mutate } = useSWRConfig();
 
   const invalidateList = useCallback(() => {
-    mutate(
-      (key: unknown) => typeof key === 'string' && key.startsWith(SWR_KEYS.media.list),
-      undefined,
-      { revalidate: true },
-    );
+    mutate((key: unknown) => typeof key === 'string' && key.startsWith(SWR_KEYS.media.list), undefined, {
+      revalidate: true,
+    });
   }, [mutate]);
 }
 ```
@@ -118,17 +116,16 @@ Auth cache uses bound mutate from `useSWRImmutable` inside `AuthContext`:
 
 ### Auth vs profile — two caches, two shapes
 
-| Hook / context | SWR key | Type | When it loads |
-|---|---|---|---|
-| `useAuth` | `SWR_KEYS.auth.profile` | `SessionUser` (no `id`) | App shell, guards, login |
-| `useProfile` | `SWR_KEYS.users.profile` | `UserProfile` (with `id`, `preferences`) | Profile page only |
+| Hook / context | SWR key                  | Type                                     | When it loads            |
+| -------------- | ------------------------ | ---------------------------------------- | ------------------------ |
+| `useAuth`      | `SWR_KEYS.auth.profile`  | `SessionUser` (no `id`)                  | App shell, guards, login |
+| `useProfile`   | `SWR_KEYS.users.profile` | `UserProfile` (with `id`, `preferences`) | Profile page only        |
 
 - Do **not** call `useProfile` in layout/shell — use `useAuth` for `name`, `email`, `avatarUrl`.
 - After `updateProfile`, sync auth cache with `toSessionUser(profile)` via `useSWRConfig().mutate(SWR_KEYS.auth.profile, …)`.
 - `updatePreferences` patches `SWR_KEYS.users.preferences` and merges into the profile cache. There is no `GET /api/users/preferences` — preferences come from `GET /api/users/profile`.
 
 ---
-
 
 ## Where to place hooks
 
@@ -154,13 +151,13 @@ One hook per folder. Exported function name must match folder (`useProfile/` →
 
 ## Return shape conventions
 
-| Field | Type | When |
-|---|---|---|
-| `data` (or domain alias, e.g. `profile`) | `T \| null` | always |
-| `isLoading` | `boolean` | always |
-| `isMutating` | `boolean` | only when hook includes `useSWRMutation` |
-| `error` | `ApiError \| undefined` | always |
-| `trigger` (aliased to verb, e.g. `updateProfile`) | `function` | only for mutations |
+| Field                                             | Type                    | When                                     |
+| ------------------------------------------------- | ----------------------- | ---------------------------------------- |
+| `data` (or domain alias, e.g. `profile`)          | `T \| null`             | always                                   |
+| `isLoading`                                       | `boolean`               | always                                   |
+| `isMutating`                                      | `boolean`               | only when hook includes `useSWRMutation` |
+| `error`                                           | `ApiError \| undefined` | always                                   |
+| `trigger` (aliased to verb, e.g. `updateProfile`) | `function`              | only for mutations                       |
 
 ---
 
