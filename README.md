@@ -11,6 +11,11 @@ Monorepo con **Turborepo** para gestionar una aplicación de media tracking pers
 | **Shared**   | Zod schemas, tipos TypeScript compartidos                                   |
 | **Tooling**  | Turborepo, pnpm, ESLint, Prettier, tsup                                     |
 
+## Desarrollo con agentes (Cursor)
+
+- [AGENTS.md](./AGENTS.md) — índice del proyecto (reglas de oro, skills, verificación)
+- [docs/codegraph.md](./docs/codegraph.md) — exploración del código (`pnpm codegraph:init`, MCP **codegraph**)
+
 ## Estructura del monorepo
 
 ```
@@ -22,6 +27,12 @@ packages/
   ui/               → Componentes UI reutilizables (Mantine-based)
   eslint-config/    → Configuración compartida de ESLint
   typescript-config/ → tsconfig bases compartidos
+docs/                 → Arquitectura y guías
+AGENTS.md             → Guía para agentes de IA
+.cursor/rules/        → Convenciones Cursor (incl. AGENTS.md)
+.cursor/skills/       → Skills del proyecto (SWR, API, shared)
+.agents/skills/       → Skills de terceros (Mantine, Supabase)
+.codegraph/           → Índice CodeGraph (local)
 ```
 
 ## Requisitos previos

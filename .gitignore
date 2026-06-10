@@ -72,3 +72,11 @@ postman-collection.json
 *.playwright-*.md
 *.playwright-*.png
 *.playwright-*.log
+
+# CodeGraph — índice local (commitear solo README + .gitignore aquí)
+.codegraph/*
+!.codegraph/README.md
+!.codegraph/.gitignore
+
+# Artefactos locales de exploración (no fuente)
+media-full-list.yml

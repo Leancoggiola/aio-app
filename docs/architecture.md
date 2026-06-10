@@ -2,6 +2,8 @@
 
 Monorepo con **pnpm workspaces** y **Turborepo**. Ambas apps siguen la misma convención de estructura de carpetas para facilitar el onboarding.
 
+**Agentes:** [AGENTS.md](../AGENTS.md) · [web-tooling.md](./web-tooling.md) · [codegraph.md](./codegraph.md).
+
 ---
 
 ## Estructura del monorepo
@@ -16,6 +18,11 @@ aio-app/
     eslint-config/
     typescript-config/
   docs/         ← Esta carpeta
+  AGENTS.md       ← Índice para agentes de IA
+  .cursor/rules/  ← Convenciones automáticas (web, api, project-agents)
+  .cursor/skills/ ← Skills del proyecto (SWR, API, shared, web-structure)
+  .agents/skills/ ← Skills de terceros (Mantine, Supabase; npx skills)
+  .codegraph/     ← Índice CodeGraph (local, no commitear *.db)
 ```
 
 ---
