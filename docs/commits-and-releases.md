@@ -2,6 +2,8 @@
 
 Este proyecto usa **Conventional Commits** + **semantic-release** para automatizar el versionado y el CHANGELOG.
 
+> PoC marker: línea temporal para simular bump major accidental (eliminar tras recuperación).
+
 ---
 
 ## Formato de commits
