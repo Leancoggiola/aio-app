@@ -1,3 +1,11 @@
+## [1.0.2](https://github.com/Leancoggiola/aio-app/compare/v1.0.1...v1.0.2) (2026-06-19)
+
+
+### Bug Fixes
+
+* **ci:** validate semantic-release recovery after PoC ([693a33f](https://github.com/Leancoggiola/aio-app/commit/693a33fc981e0f2c5833f47776dda80efc56a5f1))
+* **ci:** validate semantic-release recovery after PoC ([#25](https://github.com/Leancoggiola/aio-app/issues/25)) ([bb2f0ab](https://github.com/Leancoggiola/aio-app/commit/bb2f0ab163f6d28e4300dce0a7c5b42cd452701f))
+
 ## [1.0.1](https://github.com/Leancoggiola/aio-app/compare/v1.0.0...v1.0.1) (2026-05-19)
 
 
