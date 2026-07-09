@@ -14,8 +14,8 @@ import {
 import { DatePickerInput } from '@mantine/dates';
 import { useForm } from '@mantine/form';
 
-import { getErrorMessage, notifySuccess } from '@/shared/ui';
 import { DISPLAY_DATE_FORMAT } from '@/shared/dates';
+import { getErrorMessage, notifySuccess } from '@/shared/ui';
 
 import { ProfileSectionCard } from '../../../_shared/components/ProfileSectionCard';
 import {

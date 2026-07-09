@@ -1,6 +1,5 @@
-import type { DefaultMantineSize } from '@mantine/core';
-
 import type { GRADIENTS } from './gradients';
+import type { DefaultMantineSize } from '@mantine/core';
 
 type AppSpacing = 'none' | '3xs' | '2xs' | '4xl' | DefaultMantineSize;
 

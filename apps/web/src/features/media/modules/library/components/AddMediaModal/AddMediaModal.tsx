@@ -18,12 +18,13 @@ import { DatePickerInput } from '@mantine/dates';
 import { schemaResolver, useForm } from '@mantine/form';
 import { useDebouncedValue } from '@mantine/hooks';
 
-import { getErrorMessage, notifySuccess } from '@/shared/ui';
 import { DISPLAY_DATE_FORMAT } from '@/shared/dates';
+import { getErrorMessage, notifySuccess } from '@/shared/ui';
 
 import { getTmdbResultKey, getTmdbResultTitle, resolveMediaType } from '../../../_shared/utils/tmdb';
 import { useMediaSearch } from '../../../search/hooks/useMediaSearch';
 import { INITIAL_ADD_MEDIA_FORM_VALUES, toStreamingReleaseDateString } from '../../utils/addMediaForm';
+import { TmdbSearchOption } from './TmdbSearchOption';
 
 import type { MediaStatus, MediaType } from '../../../_shared/types';
 import type { AddMediaFormValues } from '@omni/shared/media';
@@ -35,8 +36,6 @@ import {
   MEDIA_TYPE_LABELS,
   TMDB_POSTER_W300,
 } from '@omni/shared/media';
-
-import { TmdbSearchOption } from './TmdbSearchOption';
 
 interface AddMediaModalProps {
   opened: boolean;

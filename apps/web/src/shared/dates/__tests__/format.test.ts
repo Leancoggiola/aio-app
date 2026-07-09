@@ -1,7 +1,6 @@
 import { describe, expect, it } from 'vitest';
 
 import '@/shared/dates/dayjs';
-
 import { DISPLAY_DATE_FORMAT } from '../constants';
 import {
   extractIsoDateKey,

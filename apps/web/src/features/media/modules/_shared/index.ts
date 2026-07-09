@@ -1,5 +1,4 @@
 export { useMediaMutations } from './hooks';
-export { buildMediaTmdbKey, getTmdbResultKey, getTmdbResultTitle, resolveMediaType } from './utils';
 export type {
   MediaFilters,
   MediaItem,
@@ -10,3 +9,4 @@ export type {
   TmdbSearchResponse,
   TmdbTvDetail,
 } from './types';
+export { buildMediaTmdbKey, getTmdbResultKey, getTmdbResultTitle, resolveMediaType } from './utils';

@@ -1,6 +1,6 @@
-import type { ProfileTheme, UpdatePreferencesPayload, UpdateProfilePayload, UserProfile } from '@omni/shared/users';
-
 import { extractIsoDateKey, formatDateToIsoDateTime, parseIsoDateStringToDate } from '@/shared/dates';
+
+import type { ProfileTheme, UpdatePreferencesPayload, UpdateProfilePayload, UserProfile } from '@omni/shared/users';
 
 export interface ProfileFormValues {
   phone: string;
