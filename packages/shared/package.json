@@ -1,5 +1,5 @@
 {
-  "name": "@aio-app/shared",
+  "name": "@omni/shared",
   "version": "1.0.0",
   "private": true,
   "type": "module",
@@ -31,7 +31,7 @@
     "zod": "4.4.3"
   },
   "devDependencies": {
-    "@aio-app/eslint-config": "workspace:*",
+    "@omni/eslint-config": "workspace:*",
     "@repo/typescript-config": "workspace:*",
     "typescript": "6.0.3"
   }

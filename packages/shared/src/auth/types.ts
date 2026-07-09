@@ -12,3 +12,10 @@ export interface SessionUser {
 export interface ProfileResponse {
   user: SessionUser;
 }
+
+/** Respuesta de login/refresh: cookies (web) + tokens en body (mobile). */
+export interface AuthTokensResponse {
+  user: SessionUser;
+  accessToken: string;
+  refreshToken: string;
+}
