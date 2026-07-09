@@ -1,6 +1,6 @@
-# Web — AIO App
+# Web — Omni
 
-Frontend SPA para media tracking y módulos All-in-One.
+Frontend SPA para media tracking y módulos Omni.
 
 ## Stack
 

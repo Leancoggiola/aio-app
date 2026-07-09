@@ -6,7 +6,7 @@ import { getErrorMessage, notifySuccess } from '@/shared/ui';
 
 import type { FC } from 'react';
 
-import { changePasswordSchema } from '@aio-app/shared/users';
+import { changePasswordSchema } from '@omni/shared/users';
 
 interface PasswordFormValues {
   newPassword: string;

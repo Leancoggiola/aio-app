@@ -1,5 +1,5 @@
 import { config } from '../config';
-import type { TmdbSearchResponse, TmdbMediaResult, TmdbMovieDetail, TmdbTvDetail } from '@aio-app/shared/media';
+import type { TmdbSearchResponse, TmdbMediaResult, TmdbMovieDetail, TmdbTvDetail } from '@omni/shared/media';
 
 export type { TmdbSearchResponse, TmdbMediaResult, TmdbMovieDetail, TmdbTvDetail };
 

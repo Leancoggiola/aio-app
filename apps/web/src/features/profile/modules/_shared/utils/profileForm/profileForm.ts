@@ -1,4 +1,4 @@
-import type { ProfileTheme, UpdatePreferencesPayload, UpdateProfilePayload, UserProfile } from '@aio-app/shared/users';
+import type { ProfileTheme, UpdatePreferencesPayload, UpdateProfilePayload, UserProfile } from '@omni/shared/users';
 
 import { extractIsoDateKey, formatDateToIsoDateTime, parseIsoDateStringToDate } from '@/shared/dates';
 

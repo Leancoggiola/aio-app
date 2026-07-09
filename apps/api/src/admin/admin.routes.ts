@@ -1,6 +1,6 @@
 import { Router } from 'express';
 import type { Request, Response, NextFunction } from 'express';
-import { createUserSchema } from '@aio-app/shared/auth';
+import { createUserSchema } from '@omni/shared/auth';
 import { validate } from '../common/utils';
 import { authenticateJwt } from '../auth/middleware/auth.middleware';
 import { requireAdmin } from '../auth/middleware/admin.guard';

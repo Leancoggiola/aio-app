@@ -3,7 +3,7 @@ import { Group, Paper, Select, Stack, Tabs, TextInput } from '@mantine/core';
 
 import type { MediaStatus, MediaType } from '../../../_shared/types';
 
-import { MEDIA_STATUS_LABELS, MEDIA_TYPE_LABELS } from '@aio-app/shared/media';
+import { MEDIA_STATUS_LABELS, MEDIA_TYPE_LABELS } from '@omni/shared/media';
 import { MagnifyingGlassIcon } from '@phosphor-icons/react';
 
 const TYPE_FILTER_OPTIONS = [

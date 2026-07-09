@@ -1,4 +1,4 @@
-# AIO App (All-In-One)
+# Omni
 
 Monorepo con **Turborepo** para gestionar una aplicación de media tracking personal. Permite buscar películas y series (vía TMDB), agregarlas a tu lista y hacer seguimiento de su estado.
 
@@ -22,9 +22,9 @@ Monorepo con **Turborepo** para gestionar una aplicación de media tracking pers
 apps/
   api/              → API REST (Express + Prisma + PostgreSQL)
   web/              → Frontend SPA (React + Vite + Mantine)
+  mobile/           → App Android (Expo + Tamagui)
 packages/
-  shared/           → Schemas Zod, tipos y constantes compartidas entre API y Web
-  ui/               → Componentes UI reutilizables (Mantine-based)
+  shared/           → Schemas Zod, tipos y constantes compartidas
   eslint-config/    → Configuración compartida de ESLint
   typescript-config/ → tsconfig bases compartidos
 docs/                 → Arquitectura y guías
@@ -46,7 +46,7 @@ AGENTS.md             → Guía para agentes de IA
 
 ```bash
 # 1. Clonar e instalar dependencias
-git clone <repo-url> && cd aio-app
+git clone <repo-url> && cd omni
 pnpm install
 
 # 2. Configurar variables de entorno

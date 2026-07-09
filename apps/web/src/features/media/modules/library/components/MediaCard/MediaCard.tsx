@@ -5,7 +5,7 @@ import { formatIsoDateStringForDisplay } from '@/shared/dates';
 
 import type { MediaItem, MediaStatus } from '../../../_shared/types';
 
-import { MEDIA_STATUS_LABELS, MEDIA_STATUSES, MEDIA_TYPE_LABELS, TMDB_POSTER_W300 } from '@aio-app/shared/media';
+import { MEDIA_STATUS_LABELS, MEDIA_STATUSES, MEDIA_TYPE_LABELS, TMDB_POSTER_W300 } from '@omni/shared/media';
 import { TrashIcon } from '@phosphor-icons/react';
 
 const STATUS_SELECT_DATA = MEDIA_STATUSES.map(value => ({

@@ -5,15 +5,10 @@ import useSWRMutation from 'swr/mutation';
 
 import { api, SWR_KEYS } from '@/shared/api';
 
-import type { ProfileResponse } from '@aio-app/shared/auth';
-import type {
-  UpdatePreferencesPayload,
-  UpdateProfilePayload,
-  UserPreferences,
-  UserProfile,
-} from '@aio-app/shared/users';
+import type { ProfileResponse } from '@omni/shared/auth';
+import type { UpdatePreferencesPayload, UpdateProfilePayload, UserPreferences, UserProfile } from '@omni/shared/users';
 
-import { toSessionUser } from '@aio-app/shared/auth';
+import { toSessionUser } from '@omni/shared/auth';
 
 export function useProfile() {
   const { mutate: globalMutate } = useSWRConfig();

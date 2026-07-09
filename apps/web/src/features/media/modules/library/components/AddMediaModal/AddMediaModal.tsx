@@ -26,7 +26,7 @@ import { useMediaSearch } from '../../../search/hooks/useMediaSearch';
 import { INITIAL_ADD_MEDIA_FORM_VALUES, toStreamingReleaseDateString } from '../../utils/addMediaForm';
 
 import type { MediaStatus, MediaType } from '../../../_shared/types';
-import type { AddMediaFormValues } from '@aio-app/shared/media';
+import type { AddMediaFormValues } from '@omni/shared/media';
 
 import {
   addMediaFormSchema,
@@ -34,7 +34,7 @@ import {
   MEDIA_STATUSES,
   MEDIA_TYPE_LABELS,
   TMDB_POSTER_W300,
-} from '@aio-app/shared/media';
+} from '@omni/shared/media';
 
 import { TmdbSearchOption } from './TmdbSearchOption';
 

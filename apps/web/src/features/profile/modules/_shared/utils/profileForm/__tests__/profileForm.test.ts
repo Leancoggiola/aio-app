@@ -2,7 +2,7 @@ import { describe, expect, it } from 'vitest';
 
 import { buildPreferencesUpdates, buildProfileUpdates, toProfileFormValues } from '../profileForm';
 
-import type { UserProfile } from '@aio-app/shared/users';
+import type { UserProfile } from '@omni/shared/users';
 
 const baseProfile: UserProfile = {
   id: '1',

@@ -1,4 +1,4 @@
-import type { AddMediaFormValues } from '@aio-app/shared/media';
+import type { AddMediaFormValues } from '@omni/shared/media';
 
 import { formatDateToIsoDateString } from '@/shared/dates';
 

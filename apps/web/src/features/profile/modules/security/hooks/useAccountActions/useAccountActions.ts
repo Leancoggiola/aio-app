@@ -2,7 +2,7 @@ import { useCallback, useState } from 'react';
 
 import { api, SWR_KEYS } from '@/shared/api';
 
-import type { ChangePasswordPayload } from '@aio-app/shared/users';
+import type { ChangePasswordPayload } from '@omni/shared/users';
 
 export function useAccountActions() {
   const [isMutating, setIsMutating] = useState(false);

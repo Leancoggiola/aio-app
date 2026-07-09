@@ -5,7 +5,7 @@ import { getTmdbResultKey, getTmdbResultTitle, resolveMediaType } from '../../..
 
 import type { TmdbMediaResult } from '../../../_shared/types';
 
-import { MEDIA_TYPE_LABELS, TMDB_POSTER_W300 } from '@aio-app/shared/media';
+import { MEDIA_TYPE_LABELS, TMDB_POSTER_W300 } from '@omni/shared/media';
 
 interface TmdbSearchOptionProps {
   item: TmdbMediaResult;

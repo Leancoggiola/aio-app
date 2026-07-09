@@ -7,5 +7,5 @@ export default defineConfig({
   outDir: 'dist',
   clean: true,
   sourcemap: true,
-  noExternal: [/generated\/prisma/, /@aio-app\/shared/],
+  noExternal: [/generated\/prisma/, /@omni\/shared/],
 });
