@@ -38,6 +38,7 @@ Definidos en `commitlint.config.ts`:
 | --------------- | ------------------------------ |
 | `api`           | `apps/api`                     |
 | `web`           | `apps/web`                     |
+| `mobile`        | `apps/mobile`                  |
 | `shared`        | `packages/shared`              |
 | `eslint-config` | `packages/eslint-config`       |
 | `ts-config`     | `packages/typescript-config`   |

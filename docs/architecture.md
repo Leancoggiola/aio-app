@@ -9,18 +9,19 @@ Monorepo con **pnpm workspaces** y **Turborepo**. Ambas apps siguen la misma con
 ## Estructura del monorepo
 
 ```
-aio-app/
+omni/
   apps/
     api/        ← Express API (Node.js + TypeScript)
     web/        ← React SPA (Vite + TypeScript)
+    mobile/     ← Expo Android (Router + Tamagui)
   packages/
-    shared/     ← Tipos y schemas compartidos entre api y web
+    shared/     ← Tipos y schemas compartidos (@omni/shared)
     eslint-config/
     typescript-config/
   docs/         ← Esta carpeta
   AGENTS.md       ← Índice para agentes de IA
-  .cursor/rules/  ← Convenciones automáticas (web, api, project-agents)
-  .cursor/skills/ ← Skills del proyecto (SWR, API, shared, web-structure)
+  .cursor/rules/  ← Convenciones automáticas (web, mobile, api, project-agents)
+  .cursor/skills/ ← Skills del proyecto (web, mobile, API, shared)
   .agents/skills/ ← Skills de terceros (Mantine, Supabase; npx skills)
   .codegraph/     ← Índice CodeGraph (local, no commitear *.db)
 ```
@@ -131,7 +132,7 @@ Cada feature usa `modules/<nombre>/` (sub-dominios), carpetas por componente/hoo
 | `@/theme/*`    | `src/theme/*`    |
 | `@/assets/*`   | `src/assets/*`   |
 
-> `@/shared` (frontend) ≠ `@aio-app/shared` (paquete monorepo de tipos/schemas).
+> `@/shared` (frontend) ≠ `@omni/shared` (paquete monorepo de tipos/schemas).
 
 ---
 
@@ -143,7 +144,20 @@ Cada feature usa `modules/<nombre>/` (sub-dominios), carpetas por componente/hoo
 | Módulos de producto    | `auth/`, `media/`, `users/`                 | `features/auth/`, `features/media/`, `features/profile/` |
 | Setup global           | `config.ts`, `main.ts`                      | `core/`, `layouts/`, `main.tsx`                          |
 | Servicios              | `*.service.ts`                              | hooks en `features/*/modules/*/hooks/`                   |
-| Validación             | `common/utils/validate.ts` (Zod middleware) | Schemas de `@aio-app/shared`                             |
+| Validación             | `common/utils/validate.ts` (Zod middleware) | Schemas de `@omni/shared`                                |
+| Auth                   | Cookie **o** Bearer JWT                     | Cookies `httpOnly` + `credentials: 'include'`            |
+
+### Auth dual (web + mobile)
+
+`POST /api/auth/login` y `POST /api/auth/refresh`:
+
+- Siempre setean cookies (compat web).
+- Siempre incluyen `accessToken` y `refreshToken` en el JSON (`AuthTokensResponse` en `@omni/shared/auth`).
+- Rutas protegidas: Passport acepta cookie `access_token` **o** header `Authorization: Bearer`.
+- Refresh: cookie `refresh_token`, Bearer, o body `{ refreshToken }` (`refreshTokenBodySchema`).
+- Logout: access por cookie/Bearer; refresh a revocar por cookie o body.
+
+Web ignora los tokens del body. Mobile los guarda (SecureStore) y no depende de cookies.
 
 ---
 
@@ -175,7 +189,7 @@ Hooks cross-feature (si aparecen) → `shared/hooks/` (crear cuando haga falta).
 
 ## `packages/shared/`
 
-Tipos y schemas compartidos entre API y Web. Ambas apps importan desde `@aio-app/shared`.
+Tipos y schemas compartidos entre API, Web y Mobile. Importan desde `@omni/shared`.
 
 ```
 shared/src/

@@ -12,7 +12,7 @@ Todo formulario en `apps/web` (páginas, modales, drawers) debe usar **`useForm`
 
 - Envolver campos en `<form onSubmit={form.onSubmit(handler)}>`.
 - Conectar inputs con `form.getInputProps('campo')` (o `form.key('campo')` en modo `uncontrolled`).
-- Validación en `validate`, `schemaResolver` (Zod de `@aio-app/shared`) o `.refine()` en el feature.
+- Validación en `validate`, `schemaResolver` (Zod de `@omni/shared`) o `.refine()` en el feature.
 - Reset al cerrar modal / cambiar entidad: `form.reset()` (p. ej. en `useEffect` cuando `opened === false`).
 - Skill de referencia: `.agents/skills/mantine-form/SKILL.md`.
 
@@ -25,7 +25,7 @@ Referencia modal: `features/media/modules/library/components/AddMediaModal/`.
 
 ## Validación
 
-- Usar schemas de `@aio-app/shared` cuando existan.
+- Usar schemas de `@omni/shared` cuando existan.
 - `schemaResolver(schema, { sync: true })` + `useForm` de `@mantine/form`.
 - Validación solo cliente (ej. confirmar contraseña): `.extend()` + `.refine()` en el feature, no en shared API.
 

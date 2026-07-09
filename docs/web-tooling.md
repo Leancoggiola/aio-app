@@ -24,9 +24,9 @@ Se aplican automáticamente al editar archivos bajo `apps/web/**` (salvo `always
 
 ## Cursor rules (`apps/api`)
 
-| Rule                                                        | Rol                                             |
-| ----------------------------------------------------------- | ----------------------------------------------- |
-| [api-conventions.mdc](../.cursor/rules/api-conventions.mdc) | Features, `validate`, `@aio-app/shared`, router |
+| Rule                                                        | Rol                                          |
+| ----------------------------------------------------------- | -------------------------------------------- |
+| [api-conventions.mdc](../.cursor/rules/api-conventions.mdc) | Features, `validate`, `@omni/shared`, router |
 
 ## Skills del proyecto (`.cursor/skills/`)
 
@@ -71,7 +71,9 @@ pnpm web:new-test src/features/.../profileForm.ts
 pnpm --filter web check-api-paths
 ```
 
-## Testing (web)
+## Relación con mobile
+
+Tooling paralelo: [mobile-tooling.md](./mobile-tooling.md). Contratos compartidos en `@omni/shared`.
 
 | Prioridad | Target                                            |
 | --------- | ------------------------------------------------- |

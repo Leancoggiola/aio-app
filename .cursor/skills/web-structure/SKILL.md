@@ -3,7 +3,7 @@ name: web-structure
 description: Folder structure and import conventions for apps/web (feature-based architecture with modules). Use when creating or moving files under apps/web/src/features, apps/web/src/shared, apps/web/src/core, or apps/web/src/layouts. Triggers on new feature, modules/, shared/ui, nav-registry, or web:new-feature scaffold.
 ---
 
-# Web structure — aio-app
+# Web structure — omni
 
 ## Layers
 

@@ -1,6 +1,6 @@
 ---
 name: swr-hooks
-description: Patterns for creating and refactoring SWR hooks in this project (aio-app). Use automatically when creating, modifying, or reviewing any hook under apps/web/src/features/*/modules/*/hooks/ or apps/web/src/core/auth/. Triggers on useSWR, useSWRImmutable, useSWRMutation, SWR_KEYS, buildQueryString, useProfile, useAuth, useMyMediaList, useMediaMutations, useMediaSearch, or any new API data-fetching hook. When a new pattern is established that is not covered here, update this skill before finishing the task.
+description: Patterns for creating and refactoring SWR hooks in this project (omni). Use automatically when creating, modifying, or reviewing any hook under apps/web/src/features/*/modules/*/hooks/ or apps/web/src/core/auth/. Triggers on useSWR, useSWRImmutable, useSWRMutation, SWR_KEYS, buildQueryString, useProfile, useAuth, useMyMediaList, useMediaMutations, useMediaSearch, or any new API data-fetching hook. When a new pattern is established that is not covered here, update this skill before finishing the task.
 ---
 
 # SWR Hooks — Project Patterns

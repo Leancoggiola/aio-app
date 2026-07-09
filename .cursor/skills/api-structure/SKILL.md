@@ -3,7 +3,7 @@ name: api-structure
 description: Folder structure and conventions for apps/api (Express features, Prisma, validation). Use when creating or modifying routes, services, or features under apps/api/src. Triggers on auth.routes, media.service, router.ts, validate middleware, or new API feature.
 ---
 
-# API structure — aio-app
+# API structure — omni
 
 ## Layout
 
@@ -38,6 +38,13 @@ Features actuales: `auth`, `media`, `users`, `admin`.
 Schema: `apps/api/prisma/schema.prisma`. Cliente: `import { prisma } from '../common/db'`. No editar `src/generated/`.
 
 Migraciones desde `apps/api/`: `pnpm db:migrate`. Ver `docs/prisma.md`.
+
+## Auth (web + mobile)
+
+- **Web:** cookies `httpOnly` (`access_token`, `refresh_token`) + `credentials: 'include'`.
+- **Mobile:** mismos endpoints; usa `accessToken` / `refreshToken` del body de login/refresh; guarda en SecureStore; manda `Authorization: Bearer <access>`.
+- Passport JWT lee cookie **o** Bearer. Refresh también acepta body `{ refreshToken }`.
+- Tipos: `AuthTokensResponse`, `refreshTokenBodySchema` en `@omni/shared/auth`.
 
 ## Rate limiting
 

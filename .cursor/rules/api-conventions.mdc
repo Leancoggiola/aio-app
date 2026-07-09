@@ -21,10 +21,10 @@ Registrar en [`router.ts`](apps/api/src/router.ts). Utilidades transversales en 
 ```ts
 import { prisma } from '../common/db';
 import { validate, logger } from '../common/utils';
-import { someSchema } from '@aio-app/shared/<domain>';
+import { someSchema } from '@omni/shared/<domain>';
 ```
 
-No redefinir schemas Zod en la API si ya existen en `@aio-app/shared`.
+No redefinir schemas Zod en la API si ya existen en `@omni/shared`.
 
 ## Validación
 
@@ -36,7 +36,11 @@ router.post('/list', validate(addMediaItemSchema), async (req, res, next) => { .
 
 ## Auth
 
-Rutas protegidas: `authenticateJwt`. Admin: `authenticateJwt` + `requireAdmin`.
+Rutas protegidas: `authenticateJwt` (cookie `access_token` **o** `Authorization: Bearer`).
+
+Login/refresh: setean cookies (web) **y** devuelven `accessToken` + `refreshToken` en el JSON (mobile). Refresh acepta token por cookie, Bearer o body `{ refreshToken }`. Logout: access por cookie/Bearer; refresh a revocar por cookie o body.
+
+Admin: `authenticateJwt` + `requireAdmin`.
 
 ## Errores
 

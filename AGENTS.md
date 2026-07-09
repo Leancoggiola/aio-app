@@ -1,108 +1,105 @@
-# AIO App — guía para agentes
+# Omni — guía para agentes
 
-Monorepo de **media tracking** (películas/series vía TMDB). Stack: Express + Prisma + PostgreSQL (Supabase), React + Vite + Mantine + SWR.
+Monorepo de **media tracking** (películas/series vía TMDB). Clientes: **web** (React + Vite + Mantine + SWR) y **mobile** (Expo + Tamagui + SWR). API: Express + Prisma + PostgreSQL (Supabase).
 
-**Leé este archivo al inicio de cualquier tarea no trivial** (feature, refactor, bug transversal, cambio de contrato API↔web).
+**Leé este archivo al inicio de cualquier tarea no trivial** (feature, refactor, bug transversal, cambio de contrato API↔clientes).
 
 ---
 
 ## Mapa del repositorio
 
-| Ruta               | Rol                                                   |
-| ------------------ | ----------------------------------------------------- |
-| `apps/api/`        | REST — `auth`, `media`, `users`, `admin`              |
-| `apps/web/`        | SPA — `auth`, `home`, `media`, `profile`              |
-| `packages/shared/` | Zod + tipos (`@aio-app/shared`)                       |
-| `docs/`            | Arquitectura y guías — índice en `docs/README.md`     |
-| `.cursor/rules/`   | Leyes automáticas (web + api)                         |
-| `.cursor/skills/`  | Skills del proyecto (SWR, API, shared, web-structure) |
-| `.agents/skills/`  | Skills de terceros (`npx skills`: Mantine, Supabase)  |
-| `.cursor/mcp.json` | MCP CodeGraph (exploración del código)                |
+| Ruta               | Rol                                                    |
+| ------------------ | ------------------------------------------------------ |
+| `apps/api/`        | REST — `auth`, `media`, `users`, `admin`               |
+| `apps/web/`        | SPA — `auth`, `home`, `media`, `profile`               |
+| `apps/mobile/`     | Expo Android — paridad con web                         |
+| `packages/shared/` | Zod + tipos (`@omni/shared`)                           |
+| `docs/`            | Índice en `docs/README.md`                             |
+| `.cursor/rules/`   | Laws por glob (`web-*`, `mobile-*`, `api-conventions`) |
+| `.cursor/skills/`  | Skills proyecto (web, mobile, api, shared)             |
+| `.agents/skills/`  | Skills terceros (Mantine, Supabase)                    |
+| `.cursor/mcp.json` | MCP CodeGraph                                          |
 
-> `@/shared` (web) ≠ `@aio-app/shared` (paquete monorepo).
+> `@/shared` (alias del cliente) ≠ `@omni/shared` (paquete monorepo).
 
 ---
 
 ## Reglas de oro
 
-1. **Un feature web no importa otro** — UI compartida → `apps/web/src/shared/ui/`.
-2. **URLs HTTP solo en** `apps/web/src/shared/api/keys.ts` (`SWR_KEYS`).
-3. **Contrato compartido** — schemas en `packages/shared/`; API usa `validate()`, web usa los mismos Zod en forms.
-4. **Orden full-stack** — `packages/shared` → `apps/api` → `SWR_KEYS` + hooks → UI web.
-5. **Referencias web** — `home` (simple), `media` (SWR + mutations), `profile` (forms).
-6. **Exploración transversal** — usar **CodeGraph MCP** antes de leer muchos archivos (callers, impact, context).
+1. **Un feature no importa otro** del mismo cliente — UI compartida en `shared/ui` (web) o componentes locales (mobile).
+2. **URLs HTTP centralizadas** — web: `SWR_KEYS`; mobile: `API_KEYS`. Nunca literales `/api/` en features.
+3. **Contrato compartido** — `packages/shared`; API `validate()`; clientes mismos Zod/tipos.
+4. **Orden full-stack** — `shared` → `api` → hooks + UI del cliente (web y/o mobile).
+5. **Auth** — web: cookies; mobile: Bearer + SecureStore. Mismos endpoints; login/refresh también devuelven tokens en el body.
+6. **Referencias** — web: `home` / `media` / `profile`; mobile: mismas features bajo `apps/mobile/src/features/`.
+7. **Exploración transversal** — CodeGraph MCP antes de leer muchos archivos.
 
 ---
 
 ## Cursor rules (automáticas)
 
-| Glob          | Rules                                                                                      |
-| ------------- | ------------------------------------------------------------------------------------------ |
-| `apps/web/**` | `web-structure`, `web-api-paths`, `web-swr-hooks`, `web-forms-feedback`, `web-style-props` |
-| `apps/api/**` | `api-conventions`                                                                          |
+| Glob             | Rules                                                                                      |
+| ---------------- | ------------------------------------------------------------------------------------------ |
+| `apps/web/**`    | `web-structure`, `web-api-paths`, `web-swr-hooks`, `web-forms-feedback`, `web-style-props` |
+| `apps/mobile/**` | `mobile-structure`, `mobile-api-paths`, `mobile-auth`                                      |
+| `apps/api/**`    | `api-conventions`                                                                          |
 
-Detalle: [docs/web-tooling.md](docs/web-tooling.md).
+Detalle: [docs/web-tooling.md](docs/web-tooling.md) · [docs/mobile-tooling.md](docs/mobile-tooling.md).
 
 ---
 
-## Skills (pedir o usar según tarea)
+## Skills
 
-| Tarea                    | Skill                                          |
-| ------------------------ | ---------------------------------------------- |
-| Carpetas / features web  | `web-structure`                                |
-| Hooks SWR                | `swr-hooks`                                    |
-| API routes / services    | `api-structure`                                |
-| `packages/shared`        | `shared-contracts`                             |
-| Forms Mantine            | `mantine-form`                                 |
-| Combobox / select custom | `mantine-combobox`                             |
-| DB Supabase              | `supabase`, `supabase-postgres-best-practices` |
+| Tarea            | Skill                                          |
+| ---------------- | ---------------------------------------------- |
+| Features web     | `web-structure`                                |
+| Hooks SWR web    | `swr-hooks`                                    |
+| Features mobile  | `mobile-structure`                             |
+| Hooks SWR mobile | `mobile-data-hooks`                            |
+| API              | `api-structure`                                |
+| Shared           | `shared-contracts`                             |
+| Forms Mantine    | `mantine-form`                                 |
+| Supabase         | `supabase`, `supabase-postgres-best-practices` |
 
 ---
 
 ## CodeGraph
 
-Índice local del código (símbolos, callers, rutas). **No reemplaza** las rules ni `docs/architecture.md`.
+| Cuándo            | Tool                                    |
+| ----------------- | --------------------------------------- |
+| Callers / impacto | `codegraph_callers`, `codegraph_impact` |
+| Flujo             | `codegraph_context`                     |
+| Buscar símbolo    | `codegraph_search`                      |
 
-| Cuándo                                   | Herramienta MCP                         |
-| ---------------------------------------- | --------------------------------------- |
-| ¿Quién llama a X? / impacto de un cambio | `codegraph_callers`, `codegraph_impact` |
-| Entender un flujo (login, add media)     | `codegraph_context`                     |
-| Buscar símbolo por nombre                | `codegraph_search`                      |
-
-Setup: [docs/codegraph.md](docs/codegraph.md) · `pnpm codegraph:init` (una vez por máquina).
+Setup: [docs/codegraph.md](docs/codegraph.md).
 
 ---
 
-## Documentación humana
+## Documentación
 
-| Doc                                                                    | Uso                    |
-| ---------------------------------------------------------------------- | ---------------------- |
-| [docs/architecture.md](docs/architecture.md)                           | Dónde va cada archivo  |
-| [docs/web-new-feature.md](docs/web-new-feature.md)                     | Nuevo feature web      |
-| [docs/web-agent-prompt-template.md](docs/web-agent-prompt-template.md) | Prompts listos         |
-| [docs/web-tooling.md](docs/web-tooling.md)                             | Rules, skills, scripts |
+| Doc                                                                                                      | Uso                    |
+| -------------------------------------------------------------------------------------------------------- | ---------------------- |
+| [docs/architecture.md](docs/architecture.md)                                                             | Estructura + auth dual |
+| [docs/web-tooling.md](docs/web-tooling.md) / [mobile-tooling.md](docs/mobile-tooling.md)                 | Rules/skills           |
+| [docs/web-new-feature.md](docs/web-new-feature.md) / [mobile-new-feature.md](docs/mobile-new-feature.md) | Checklists             |
+| [docs/rename-omni-externals.md](docs/rename-omni-externals.md)                                           | Rename externos        |
 
 ---
 
-## Verificación antes de terminar
+## Verificación
 
 ```bash
-# Web
-pnpm --filter web check-types
-pnpm --filter web lint
-pnpm --filter web check-api-paths
-pnpm --filter web test
-
-# API (si tocaste apps/api)
-pnpm --filter api test
+pnpm --filter web check-types && pnpm --filter web lint && pnpm --filter web check-api-paths && pnpm --filter web test
+pnpm --filter mobile check-types && pnpm --filter mobile lint
+pnpm --filter api test   # si tocaste API
 ```
 
 ---
 
-## Jerarquía si hay duda
+## Jerarquía
 
-1. Este `AGENTS.md` (índice y reglas de oro)
-2. `.cursor/rules/` (leyes por glob)
-3. `docs/architecture.md` (estructura)
-4. `.cursor/skills/` y `.agents/skills/` (cómo implementar)
-5. CodeGraph (cableado actual del código)
+1. Este `AGENTS.md`
+2. `.cursor/rules/`
+3. `docs/architecture.md`
+4. `.cursor/skills/` / `.agents/skills/`
+5. CodeGraph

@@ -25,13 +25,27 @@ push/merge a main
 
 ---
 
+## URLs de producción
+
+| Servicio     | URL                                             |
+| ------------ | ----------------------------------------------- |
+| API (Render) | `https://omni-api-gwer.onrender.com`            |
+| Web (Vercel) | `https://omni-nest.vercel.app`                  |
+| Health       | `https://omni-api-gwer.onrender.com/api/health` |
+
+`CORS_ORIGIN` en Render debe incluir la URL de Vercel (`https://omni-nest.vercel.app`).
+
+---
+
 ## Render
 
 La infraestructura está declarada en [`render.yaml`](../render.yaml) (IaC).
 
 - **Tipo:** Web Service (Docker)
+- **Name / blueprint:** `omni-api` (hostname actual: `omni-api-gwer.onrender.com`)
+- **Repo:** `https://github.com/Leancoggiola/omni`
 - **Dockerfile:** `apps/api/Dockerfile`
-- **Branch:** `main`
+- **Branch:** `main` (el servicio puede estar en `develop` hasta alinearlo)
 - **Health check:** `GET /api/health`
 - **Plan:** Free
 
@@ -66,7 +80,7 @@ Se configuran manualmente en el dashboard de Render (no se sincronizan automáti
 | `JWT_ACCESS_SECRET`  | Generar: `openssl rand -base64 32`                                       |
 | `JWT_REFRESH_SECRET` | Generar: `openssl rand -base64 32`                                       |
 | `TMDB_API_KEY`       | [themoviedb.org/settings/api](https://www.themoviedb.org/settings/api)   |
-| `CORS_ORIGIN`        | URL del frontend en producción                                           |
+| `CORS_ORIGIN`        | URL del frontend en producción (ej. `https://omni-nest.vercel.app`)      |
 | `ADMIN_USERNAME`     | A elección                                                               |
 | `ADMIN_PASSWORD`     | A elección (usar password seguro)                                        |
 

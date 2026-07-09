@@ -3,12 +3,12 @@ description: Índice del proyecto — seguir AGENTS.md en tareas no triviales
 alwaysApply: true
 ---
 
-# Proyecto aio-app
+# Proyecto Omni
 
 Al planificar o implementar cambios que no sean un fix de una línea:
 
 1. Leé y seguí [AGENTS.md](../../AGENTS.md) (reglas de oro, orden full-stack, verificación).
 2. Para exploración o impacto en el monorepo, usá **CodeGraph MCP** antes de abrir muchos archivos (ver `docs/codegraph.md`).
-3. Las rules `web-*` y `api-conventions` aplican por glob; los detalles viven en `.cursor/skills/` (proyecto) y `.agents/skills/` (terceros).
+3. Rules por glob: `web-*`, `mobile-*`, `api-conventions`. Detalle en `.cursor/skills/` y `.agents/skills/`.
 
-No inventes rutas `/api/` en web: solo `SWR_KEYS` en `shared/api/keys.ts`.
+No inventes rutas `/api/`: web → `SWR_KEYS`; mobile → `API_KEYS`.
