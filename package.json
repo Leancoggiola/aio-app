@@ -5,6 +5,7 @@
     "dev": "turbo run dev",
     "dev:api": "turbo run dev --filter=api",
     "dev:web": "turbo run dev --filter=web",
+    "dev:mobile": "turbo run dev --filter=mobile",
     "web:new-feature": "node apps/web/scripts/new-feature.mjs",
     "web:new-hook": "node apps/web/scripts/new-hook.mjs",
     "web:new-component": "node apps/web/scripts/new-component.mjs",
@@ -33,7 +34,7 @@
     "turbo": "2.9.14",
     "vitest": "^4.1.6"
   },
-  "name": "all-in-one-app",
+  "name": "omni",
   "packageManager": "pnpm@10.11.0",
   "version": "1.0.2"
 }
