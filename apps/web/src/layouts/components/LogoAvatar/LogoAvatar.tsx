@@ -1,6 +1,6 @@
 import { Avatar } from '@mantine/core';
 
-import Logo from '@/assets/logo.svg?react';
+import logoUrl from '@/assets/logo.png';
 
 import type { MantineSize } from '@mantine/core';
 import type { FC } from 'react';
@@ -10,7 +10,14 @@ interface LogoAvatarProps {
 }
 
 export const LogoAvatar: FC<LogoAvatarProps> = ({ size = 'md' }) => (
-  <Avatar size={size} variant="filled" color="brand.2" radius="md" style={{ boxShadow: 'var(--mantine-shadow-brand)' }}>
-    <Logo style={{ padding: '0.25rem' }} />
-  </Avatar>
+  <Avatar
+    src={logoUrl}
+    alt="Omni"
+    size={size}
+    variant="filled"
+    color="brand.2"
+    radius="md"
+    imageProps={{ style: { objectFit: 'contain', padding: '15%' } }}
+    style={{ boxShadow: 'var(--mantine-shadow-brand)' }}
+  />
 );

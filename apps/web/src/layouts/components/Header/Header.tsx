@@ -23,7 +23,7 @@ export const Header: FC<HeaderProps> = ({ opened, onToggle }) => {
         <Group gap="xs">
           <LogoAvatar size={32} />
           <Text c="brand.7" fw={600}>
-            AIO App
+            Omni
           </Text>
         </Group>
         <Group>

@@ -64,10 +64,10 @@ export const Navbar: FC<NavbarProps> = ({ onClose, toggle }) => {
           <LogoAvatar />
           <Stack gap="none">
             <Text c="brand.7" size="lg" fw={600}>
-              AIO App
+              Omni
             </Text>
             <Text c="brand.5" size="xs">
-              All-in-One
+              Hub personal
             </Text>
           </Stack>
           <Burger opened onClick={toggle} hiddenFrom="md" size="sm" ml="auto" />

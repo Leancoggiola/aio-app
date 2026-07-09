@@ -7,10 +7,10 @@ import { useAuth } from '@/core/auth';
 
 import { AuthCard } from './components/AuthCard';
 
-import type { LoginPayload } from '@aio-app/shared/auth';
+import type { LoginPayload } from '@omni/shared/auth';
 import type { FC } from 'react';
 
-import { loginSchema } from '@aio-app/shared/auth';
+import { loginSchema } from '@omni/shared/auth';
 
 export const LoginPage: FC = () => {
   const navigate = useNavigate();
@@ -46,7 +46,7 @@ export const LoginPage: FC = () => {
     <AuthCard
       title={
         <>
-          ¡Te damos la bienvenida a<br /> All in One!
+          ¡Te damos la bienvenida a<br /> Omni!
         </>
       }
     >
