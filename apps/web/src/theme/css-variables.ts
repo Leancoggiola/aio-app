@@ -1,6 +1,6 @@
-import { SEMANTIC } from './tokens';
-
 import type { CSSVariablesResolver } from '@mantine/core';
+
+import { SEMANTIC } from '@omni/shared/theme';
 
 export const cssVariablesResolver: CSSVariablesResolver = () => ({
   variables: {},
