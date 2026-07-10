@@ -12,6 +12,7 @@ packages/shared/src/
   auth/       schemas + types (login, session, createUser)
   media/      MEDIA_TYPES, MEDIA_STATUSES, add/update/search schemas
   users/      profile, password, preferences
+  theme/      BRAND, SEMANTIC, GRAY, success/destructive (web + mobile)
   index.ts    re-exports
 ```
 
@@ -22,6 +23,7 @@ packages/shared/src/
 3. **Validación solo de un cliente** (ej. confirmar contraseña en web): `.extend()` / `.refine()` en ese feature, no en shared.
 4. Cambio breaking → actualizar API + clientes afectados + tests en el mismo PR.
 5. **Auth dual:** login/refresh responden `AuthTokensResponse` (user + tokens). Web ignora tokens (cookies); mobile los persiste.
+6. **Colores de marca** — solo en `@omni/shared/theme`. Web (Mantine) y mobile (Tamagui) mapean; no hex de marca sueltos en features.
 
 ## Orden de implementación
 

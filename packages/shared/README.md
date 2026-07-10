@@ -6,11 +6,13 @@ Es un **Just-in-Time Package** — exporta TypeScript directo sin paso de build.
 
 ## Exports
 
-| Path                 | Contenido                                                                                                                                                                                |
-| -------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `@omni/shared`       | Re-export de todo                                                                                                                                                                        |
-| `@omni/shared/auth`  | `loginSchema`, `registerSchema` + tipos `LoginPayload`, `RegisterPayload`                                                                                                                |
-| `@omni/shared/media` | Schemas de media (add, update, search, filter) + tipos (`MediaType`, `MediaStatus`, `MediaItem`, `TmdbMediaResult`, etc.) + constantes (`MEDIA_TYPES`, `MEDIA_STATUSES`, `SEARCH_TYPES`) |
+| Path                 | Contenido                                                                                                  |
+| -------------------- | ---------------------------------------------------------------------------------------------------------- |
+| `@omni/shared`       | Re-export de todo                                                                                          |
+| `@omni/shared/auth`  | `loginSchema`, `registerSchema` + tipos `LoginPayload`, `RegisterPayload`                                  |
+| `@omni/shared/media` | Schemas de media (add, update, search, filter) + tipos (`MediaItem`, etc.) + constantes                    |
+| `@omni/shared/theme` | `BRAND`, `SEMANTIC`, `GRAY`, `SUCCESS`, `DESTRUCTIVE`, `OVERLAY` — fuente única de color para web y mobile |
+| `@omni/shared/users` | Profile / preferences schemas                                                                              |
 
 ## Uso
 
