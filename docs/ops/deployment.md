@@ -39,13 +39,13 @@ push/merge a main
 
 ## Render
 
-La infraestructura está declarada en [`render.yaml`](../render.yaml) (IaC).
+La infraestructura está declarada en [`render.yaml`](../../render.yaml) (IaC).
 
 - **Tipo:** Web Service (Docker)
 - **Name / blueprint:** `omni-api` (hostname actual: `omni-api-gwer.onrender.com`)
 - **Repo:** `https://github.com/Leancoggiola/omni`
 - **Dockerfile:** `apps/api/Dockerfile`
-- **Branch:** `main` (el servicio puede estar en `develop` hasta alinearlo)
+- **Branch:** `main`
 - **Health check:** `GET /api/health`
 - **Plan:** Free
 

@@ -44,7 +44,7 @@ Monorepo de **media tracking** (películas/series vía TMDB). Clientes: **web** 
 | `apps/mobile/**` | `mobile-structure`, `mobile-api-paths`, `mobile-auth`                                      |
 | `apps/api/**`    | `api-conventions`                                                                          |
 
-Detalle: [docs/web-tooling.md](docs/web-tooling.md) · [docs/mobile-tooling.md](docs/mobile-tooling.md).
+Detalle: [docs/web/tooling.md](docs/web/tooling.md) · [docs/mobile/tooling.md](docs/mobile/tooling.md).
 
 ---
 
@@ -61,7 +61,7 @@ Detalle: [docs/web-tooling.md](docs/web-tooling.md) · [docs/mobile-tooling.md](
 | Forms Mantine    | `mantine-form`                                 |
 | Supabase         | `supabase`, `supabase-postgres-best-practices` |
 
-Web usa **Mantine 9.4.1** con `deduplicateInlineStyles`. Skills `mantinedev/skills` se actualizan con CLI, no a mano. React Compiler: backlog documentado en [docs/web-tooling.md](docs/web-tooling.md) (no activar sin spike).
+Web usa **Mantine 9.4.1** con `deduplicateInlineStyles`. Skills `mantinedev/skills` se actualizan con CLI, no a mano. React Compiler: no activado ([#29](https://github.com/Leancoggiola/omni/issues/29)).
 
 ---
 
@@ -73,7 +73,7 @@ Web usa **Mantine 9.4.1** con `deduplicateInlineStyles`. Skills `mantinedev/skil
 | Flujo             | `codegraph_context`                     |
 | Buscar símbolo    | `codegraph_search`                      |
 
-Setup: [docs/codegraph.md](docs/codegraph.md).
+Setup: [docs/tooling/codegraph.md](docs/tooling/codegraph.md).
 
 ---
 
@@ -81,10 +81,11 @@ Setup: [docs/codegraph.md](docs/codegraph.md).
 
 | Doc                                                                                                      | Uso                    |
 | -------------------------------------------------------------------------------------------------------- | ---------------------- |
+| [docs/README.md](docs/README.md)                                                                         | Índice por carpetas    |
 | [docs/architecture.md](docs/architecture.md)                                                             | Estructura + auth dual |
-| [docs/web-tooling.md](docs/web-tooling.md) / [mobile-tooling.md](docs/mobile-tooling.md)                 | Rules/skills           |
-| [docs/web-new-feature.md](docs/web-new-feature.md) / [mobile-new-feature.md](docs/mobile-new-feature.md) | Checklists             |
-| [docs/rename-omni-externals.md](docs/rename-omni-externals.md)                                           | Rename externos        |
+| [docs/web/tooling.md](docs/web/tooling.md) / [mobile/tooling.md](docs/mobile/tooling.md)                 | Rules/skills           |
+| [docs/web/new-feature.md](docs/web/new-feature.md) / [mobile/new-feature.md](docs/mobile/new-feature.md) | Checklists             |
+| [docs/product/project-management.md](docs/product/project-management.md)                                 | Omni Roadmap / issues  |
 
 ---
 

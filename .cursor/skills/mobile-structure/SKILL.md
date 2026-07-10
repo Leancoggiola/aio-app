@@ -29,4 +29,4 @@ apps/mobile/
 
 ## Docs
 
-`docs/mobile-tooling.md` · `docs/mobile-new-feature.md`
+`docs/mobile/tooling.md` · `docs/mobile/new-feature.md`

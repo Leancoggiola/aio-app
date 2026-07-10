@@ -56,7 +56,7 @@ Ejemplo: `feat/#12-marcar-visto`.
 
 ## Orden full-stack
 
-Si la historia toca contrato API↔clientes: **`shared` → `api` → web y/o mobile** (ver [AGENTS.md](../AGENTS.md)).
+Si la historia toca contrato API↔clientes: **`shared` → `api` → web y/o mobile** (ver [AGENTS.md](../../AGENTS.md)).
 
 ## Checklist de relevamiento (antes de Listo)
 
@@ -88,11 +88,6 @@ gh project item-add 1 --owner Leancoggiola --url https://github.com/Leancoggiola
 # PR ligado al ticket
 gh pr create --title "feat(#N): ..." --body "Closes #N"
 ```
-
-## Fases siguientes
-
-- **Fase 2** — backlog inicial de producto (epics/historias) tras relevamiento.
-- **Fase 3** — evaluar migración selectiva a GitHub Wiki (sin mover tooling de agentes fuera del repo).
 
 ## Regla PM
 

@@ -30,7 +30,7 @@ pnpm prisma migrate deploy
 
 ### `pnpm prisma migrate reset`
 
-⚠️ **Destructivo.** Elimina toda la BD y re-aplica todas las migraciones.
+**Destructivo.** Elimina toda la BD y re-aplica todas las migraciones.
 
 ```bash
 pnpm prisma migrate reset

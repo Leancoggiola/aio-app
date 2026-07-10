@@ -12,18 +12,18 @@ cp apps/api/.env.example apps/api/.env
 
 | Variable                 | Requerida | Descripción                                                                                                            |
 | ------------------------ | --------- | ---------------------------------------------------------------------------------------------------------------------- |
-| `DATABASE_URL`           | ✅        | URL de Supabase con pgbouncer. Usada por la app en runtime.                                                            |
-| `DIRECT_URL`             | ✅        | URL de Supabase sin pooler. Usada por la CLI de Prisma (migraciones, seed).                                            |
-| `JWT_ACCESS_SECRET`      | ✅        | Secret para firmar access tokens. Generar con `openssl rand -base64 32`.                                               |
-| `JWT_REFRESH_SECRET`     | ✅        | Secret para firmar refresh tokens. Generar con `openssl rand -base64 32`.                                              |
+| `DATABASE_URL`           | Sí        | URL de Supabase con pgbouncer. Usada por la app en runtime.                                                            |
+| `DIRECT_URL`             | Sí        | URL de Supabase sin pooler. Usada por la CLI de Prisma (migraciones, seed).                                            |
+| `JWT_ACCESS_SECRET`      | Sí        | Secret para firmar access tokens. Generar con `openssl rand -base64 32`.                                               |
+| `JWT_REFRESH_SECRET`     | Sí        | Secret para firmar refresh tokens. Generar con `openssl rand -base64 32`.                                              |
 | `JWT_ACCESS_EXPIRES_IN`  | —         | Expiración del access token. Default: `15m`.                                                                           |
 | `JWT_REFRESH_EXPIRES_IN` | —         | Expiración del refresh token. Default: `7d`.                                                                           |
 | `COOKIE_REFRESH_MAX_AGE` | —         | Max-age de la cookie del refresh token en **segundos**. Default: `604800` (7 días).                                    |
 | `PORT`                   | —         | Puerto del servidor. Default: `3000`.                                                                                  |
 | `CORS_ORIGIN`            | —         | Origen permitido (ej: `http://localhost:5173`). Si no se define, permite `localhost:5173`.                             |
-| `TMDB_API_KEY`           | ✅        | API key de TMDB (JWT Bearer token). Obtener en [themoviedb.org/settings/api](https://www.themoviedb.org/settings/api). |
-| `ADMIN_USERNAME`         | ✅        | Username del usuario admin inicial. Usado por `prisma db seed`.                                                        |
-| `ADMIN_PASSWORD`         | ✅        | Password del usuario admin inicial. Usado por `prisma db seed`.                                                        |
+| `TMDB_API_KEY`           | Sí        | API key de TMDB (JWT Bearer token). Obtener en [themoviedb.org/settings/api](https://www.themoviedb.org/settings/api). |
+| `ADMIN_USERNAME`         | Sí        | Username del usuario admin inicial. Usado por `prisma db seed`.                                                        |
+| `ADMIN_PASSWORD`         | Sí        | Password del usuario admin inicial. Usado por `prisma db seed`.                                                        |
 
 ### Cómo obtener las URLs de Supabase
 
@@ -58,4 +58,4 @@ pnpm prisma migrate deploy
 pnpm prisma db seed
 ```
 
-Ver [prisma.md](./prisma.md) para más detalle sobre los comandos.
+Ver [prisma.md](../api/prisma.md) para más detalle sobre los comandos.

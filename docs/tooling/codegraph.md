@@ -2,7 +2,7 @@
 
 [Indexa el monorepo](https://github.com/codegraph-ai/CodeGraph) en SQLite local y expone un **MCP** para consultar símbolos, callers y contexto sin encadenar `grep`/`read`.
 
-Complementa [AGENTS.md](../AGENTS.md) y [architecture.md](./architecture.md). No define requisitos de producto.
+Complementa [AGENTS.md](../../AGENTS.md) y [architecture.md](../architecture.md). No define requisitos de producto.
 
 ---
 

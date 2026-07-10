@@ -7,7 +7,7 @@ body:
     attributes:
       value: |
         Completá el relevamiento antes de marcar la tarjeta como **Listo** en Omni Roadmap.
-        Ver [docs/project-management.md](../docs/project-management.md).
+        Ver [docs/product/project-management.md](../docs/product/project-management.md).
 
   - type: textarea
     id: historia

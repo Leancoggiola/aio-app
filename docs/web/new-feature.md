@@ -8,9 +8,7 @@ Checklist para agregar un dominio de producto (ej. Gimnasio, Gastos).
 pnpm web:new-feature gym --path /gym --register-route --register-nav
 ```
 
-Ver [web-tooling.md](./web-tooling.md) para flags y detalles.
-
-**Prompts para Cursor:** [web-agent-prompt-template.md](./web-agent-prompt-template.md)
+Ver [tooling.md](./tooling.md). Prompts: [agent-prompts.md](./agent-prompts.md).
 
 ## 2. Estructura mínima
 
@@ -28,7 +26,7 @@ features/<name>/
 
 ## 3. Registrar ruta
 
-En [`apps/web/src/app/routes.ts`](../apps/web/src/app/routes.ts):
+En [`apps/web/src/app/routes.ts`](../../apps/web/src/app/routes.ts):
 
 ```ts
 import { gymRoute } from '@/features/gym';
@@ -39,11 +37,11 @@ export const protectedRoutes = [homeRoute, mediaRoute, profileRoute, gymRoute];
 ## 4. Registrar navbar
 
 1. Exportar ítem en `features/gym/gym.nav.tsx`
-2. Agregar clave en `MAIN_NAV_ORDER` y mapeo en [`nav-registry.tsx`](../apps/web/src/app/navigation/nav-registry.tsx)
+2. Agregar clave en `MAIN_NAV_ORDER` y mapeo en [`nav-registry.tsx`](../../apps/web/src/app/navigation/nav-registry.tsx)
 
 ## 5. Datos (SWR)
 
-- Keys en [`shared/api/keys.ts`](../apps/web/src/shared/api/keys.ts)
+- Keys en [`shared/api/keys.ts`](../../apps/web/src/shared/api/keys.ts)
 - Hooks en `features/<name>/modules/<module>/hooks/`
 - Import: `import { api, SWR_KEYS } from '@/shared/api'`
 
@@ -55,8 +53,9 @@ Si un componente lo usan 2+ features → `shared/ui/`, no copiar desde otro feat
 
 ```bash
 pnpm --filter web check-types
-pnpm --filter web test
 pnpm --filter web lint
+pnpm --filter web check-api-paths
+pnpm --filter web test
 ```
 
 ## Referencia
@@ -66,9 +65,3 @@ pnpm --filter web lint
 | `home`    | Feature simple, un módulo, sin SWR                                   |
 | `media`   | Multi-módulo (`search`, `library`, `_shared`), hooks SWR + mutations |
 | `profile` | Forms Mantine, PATCH utils, `useProfile`, security actions           |
-
-## Verificación adicional
-
-```bash
-pnpm --filter web check-api-paths
-```

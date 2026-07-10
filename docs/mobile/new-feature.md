@@ -1,6 +1,6 @@
 # Nuevo feature mobile
 
-Checklist paralelo a [web-new-feature.md](./web-new-feature.md).
+Checklist paralelo a [web/new-feature.md](../web/new-feature.md).
 
 1. ¿Contrato nuevo? → `packages/shared` primero, luego API si hace falta.
 2. `API_KEYS` en `apps/mobile/src/shared/api/keys.ts`.

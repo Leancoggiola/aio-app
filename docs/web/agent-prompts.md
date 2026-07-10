@@ -2,10 +2,10 @@
 
 Plantillas listas para copiar y pegar al implementar un feature en `apps/web`. Están alineadas con:
 
-- [AGENTS.md](../AGENTS.md) — índice y reglas de oro
-- [architecture.md](./architecture.md) — mapa del monorepo
-- [web-new-feature.md](./web-new-feature.md) — checklist operativo
-- [web-tooling.md](./web-tooling.md) — scripts y testing
+- [AGENTS.md](../../AGENTS.md) — índice y reglas de oro
+- [architecture.md](../architecture.md) — mapa del monorepo
+- [new-feature.md](./new-feature.md) — checklist operativo
+- [tooling.md](./tooling.md) — scripts y testing
 - Cursor rules: `web-structure`, `web-api-paths`, `web-swr-hooks`, `web-forms-feedback`, `web-style-props`
 - Skills: `.cursor/skills/web-structure/`, `.cursor/skills/swr-hooks/`
 
@@ -295,10 +295,10 @@ Ejecutar: `pnpm --filter web test:coverage`
 
 ## Enlaces rápidos
 
-| Recurso           | Ruta                                       |
-| ----------------- | ------------------------------------------ |
-| Checklist feature | [web-new-feature.md](./web-new-feature.md) |
-| Scripts y testing | [web-tooling.md](./web-tooling.md)         |
-| Arquitectura web  | [architecture.md](./architecture.md)       |
-| SWR keys          | `apps/web/src/shared/api/keys.ts`          |
-| Notify helpers    | `apps/web/src/shared/ui/notify.ts`         |
+| Recurso           | Ruta                                  |
+| ----------------- | ------------------------------------- |
+| Checklist feature | [new-feature.md](./new-feature.md)    |
+| Scripts y testing | [tooling.md](./tooling.md)            |
+| Arquitectura web  | [architecture.md](../architecture.md) |
+| SWR keys          | `apps/web/src/shared/api/keys.ts`     |
+| Notify helpers    | `apps/web/src/shared/ui/notify.ts`    |

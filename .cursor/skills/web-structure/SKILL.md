@@ -42,5 +42,5 @@ features/<name>/
 
 ## Docs
 
-- `docs/web-new-feature.md` — checklist
-- `docs/web-tooling.md` — rule + script
+- `docs/web/new-feature.md` — checklist
+- `docs/web/tooling.md` — rule + script

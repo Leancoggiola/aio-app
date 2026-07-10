@@ -4,7 +4,7 @@
 
 ```
 Implementá el feature <nombre> en apps/mobile con paridad a web si existe.
-Seguí AGENTS.md, docs/mobile-tooling.md y skills mobile-structure + mobile-data-hooks.
+Seguí AGENTS.md, docs/mobile/tooling.md y skills mobile-structure + mobile-data-hooks.
 Contratos solo en @omni/shared. Paths solo en API_KEYS. Auth Bearer + SecureStore.
 ```
 
