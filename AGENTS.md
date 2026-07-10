@@ -61,6 +61,8 @@ Detalle: [docs/web-tooling.md](docs/web-tooling.md) · [docs/mobile-tooling.md](
 | Forms Mantine    | `mantine-form`                                 |
 | Supabase         | `supabase`, `supabase-postgres-best-practices` |
 
+Web usa **Mantine 9.4.1** con `deduplicateInlineStyles`. Skills `mantinedev/skills` se actualizan con CLI, no a mano. React Compiler: backlog documentado en [docs/web-tooling.md](docs/web-tooling.md) (no activar sin spike).
+
 ---
 
 ## CodeGraph

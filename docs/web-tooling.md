@@ -37,6 +37,24 @@ Se aplican automáticamente al editar archivos bajo `apps/web/**` (salvo `always
 | `api-structure`    | Rutas, services, Prisma en `apps/api`      |
 | `shared-contracts` | Schemas/tipos en `packages/shared`         |
 
+## Mantine (web)
+
+- Paquetes `@mantine/*` en **9.4.1** (`apps/web`).
+- `MantineProvider` usa `deduplicateInlineStyles` (React 19 style-tag dedupe para style props responsive; no cubre `SimpleGrid`/`Grid`).
+- Defaults de inputs vía `Input.extend` en `theme/components.tsx` (cascada a TextInput, Select, DatePickerInput, etc.).
+- Skills oficiales (`mantine-form`, `mantine-combobox`, `mantine-custom-components`): refrescar solo con CLI (`npx skills add mantinedev/skills --skill …` / update). No editar `.agents/skills/mantine-*` a mano.
+
+### Backlog — React Compiler (historia de tablero)
+
+**No activado** en Omni. Historia propuesta:
+
+1. **Qué:** compilador de React que memoiza automáticamente en build (menos `useMemo`/`useCallback` manuales).
+2. **Por qué ahora es viable:** Mantine 9.4.1 incluye fixes de `@mantine/form` y hooks compatibles con React Compiler.
+3. **Scope del spike:** plugin Vite (`babel-plugin-react-compiler`), smoke de forms + Combobox TMDB + listas media, escape hatch `"use no memo"` si hace falta.
+4. **Criterio de done:** build verde, sin regresiones en login/profile/AddMediaModal; documentar componentes excluidos si los hay.
+
+Issue de tablero: [#29](https://github.com/Leancoggiola/omni/issues/29).
+
 ## Skills de terceros (`.agents/skills/`)
 
 Instalados con `npx skills add`. No mover a `.cursor/skills/` (el CLI reinstala en `.agents/`).
