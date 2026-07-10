@@ -95,14 +95,16 @@ Los releases son **100% automáticos** al hacer push a `main`.
 ## Flujo de trabajo recomendado
 
 ```bash
-# Trabajar en develop o en una branch de feature
-git checkout -b feat/my-feature
+# Partir siempre de develop (no de main)
+git checkout develop
+git pull
+git checkout -b feat/#N-my-feature
 
 # Commitear con el formato correcto
 git commit -m "feat(api): add user avatar endpoint"
 
-# PR hacia main → CI corre tests, lint, type-check
-# Al mergear a main → semantic-release crea el release automáticamente
+# PR hacia develop → CI corre tests, lint, type-check
+# main solo para releases a producción o hotfix
 ```
 
 ---

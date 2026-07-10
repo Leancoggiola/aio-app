@@ -3,10 +3,12 @@ import { Alert, FlatList, Pressable } from 'react-native';
 import { Button, Input, Paragraph, Spinner, XStack, YStack } from 'tamagui';
 import { mutate as globalMutate } from 'swr';
 
-import { API_KEYS } from '@/shared/api';
+import { ApiError, API_KEYS } from '@/shared/api';
 import { MEDIA_STATUS_LABELS, MEDIA_STATUSES, MEDIA_TYPE_LABELS } from '@omni/shared/media';
 
+import { MediaCard } from './components/MediaCard';
 import { useMediaMutations, useMediaSearch, useMyMediaList } from './hooks';
+import { buildMediaTmdbKey, getTmdbResultKey, getTmdbResultTitle, resolveMediaType } from './utils/tmdb';
 
 import type { MediaItem, MediaStatus, MediaType } from '@omni/shared/media';
 
@@ -15,6 +17,7 @@ export function MediaScreen() {
   const [statusFilter, setStatusFilter] = useState<MediaStatus | 'all'>('all');
   const [typeFilter, setTypeFilter] = useState<MediaType | 'all'>('all');
   const [addQuery, setAddQuery] = useState('');
+  const [addStatus, setAddStatus] = useState<MediaStatus>('to_watch');
   const [adding, setAdding] = useState(false);
 
   const filters = useMemo(
@@ -35,6 +38,12 @@ export function MediaScreen() {
     return (data ?? []).filter(item => item.title.toLowerCase().includes(q));
   }, [data, searchText]);
 
+  const existingTmdbIds = useMemo(() => {
+    const set = new Set<string>();
+    data?.forEach(item => set.add(buildMediaTmdbKey(item.mediaType, item.tmdbId)));
+    return set;
+  }, [data]);
+
   const refreshList = useCallback(async () => {
     await mutate();
     await globalMutate(key => typeof key === 'string' && key.startsWith(API_KEYS.media.list));
@@ -44,17 +53,21 @@ export function MediaScreen() {
     async (tmdbId: number, mediaType: MediaType) => {
       setAdding(true);
       try {
-        await addToList(tmdbId, mediaType, 'to_watch');
+        await addToList(tmdbId, mediaType, addStatus);
         setAddQuery('');
         await refreshList();
         Alert.alert('Listo', 'Agregado a tu lista');
       } catch (err) {
-        Alert.alert('Error', err instanceof Error ? err.message : 'No se pudo agregar');
+        if (err instanceof ApiError && err.status === 409) {
+          Alert.alert('Ya en tu lista', err.message);
+        } else {
+          Alert.alert('Error', err instanceof Error ? err.message : 'No se pudo agregar');
+        }
       } finally {
         setAdding(false);
       }
     },
-    [addToList, refreshList]
+    [addStatus, addToList, refreshList]
   );
 
   const handleStatus = useCallback(
@@ -136,23 +149,42 @@ export function MediaScreen() {
       <YStack gap="$2">
         <Paragraph fontWeight="600">Agregar desde TMDB</Paragraph>
         <Input placeholder="Buscar película o serie…" value={addQuery} onChangeText={setAddQuery} />
+        <XStack gap="$2" flexWrap="wrap" alignItems="center">
+          <Paragraph size="$2" theme="alt2">
+            Estado:
+          </Paragraph>
+          {MEDIA_STATUSES.map(status => (
+            <Button key={status} size="$2" chromeless={addStatus !== status} onPress={() => setAddStatus(status)}>
+              {MEDIA_STATUS_LABELS[status]}
+            </Button>
+          ))}
+        </XStack>
         {searching ? <Spinner /> : null}
-        {results.slice(0, 5).map(result => (
-          <Pressable
-            key={`${result.media_type}-${result.id}`}
-            disabled={adding}
-            onPress={() => void handleAdd(result.id, result.media_type as MediaType)}
-          >
-            <XStack gap="$2" paddingVertical="$2" alignItems="center">
-              <Paragraph flex={1}>
-                {result.title ?? result.name} ({MEDIA_TYPE_LABELS[result.media_type as MediaType] ?? result.media_type})
-              </Paragraph>
-              <Button size="$2" disabled={adding}>
-                +
-              </Button>
-            </XStack>
-          </Pressable>
-        ))}
+        {results.slice(0, 5).map(result => {
+          const mediaType = resolveMediaType(result);
+          const key = getTmdbResultKey(result);
+          const alreadyAdded = existingTmdbIds.has(key);
+          const disabled = adding || alreadyAdded;
+
+          return (
+            <Pressable
+              key={key}
+              disabled={disabled}
+              onPress={() => {
+                if (!alreadyAdded) void handleAdd(result.id, mediaType);
+              }}
+            >
+              <XStack gap="$2" paddingVertical="$2" alignItems="center" opacity={alreadyAdded ? 0.55 : 1}>
+                <Paragraph flex={1}>
+                  {getTmdbResultTitle(result)} ({MEDIA_TYPE_LABELS[mediaType]}){alreadyAdded ? ' · Ya en tu lista' : ''}
+                </Paragraph>
+                <Button size="$2" disabled={disabled}>
+                  +
+                </Button>
+              </XStack>
+            </Pressable>
+          );
+        })}
       </YStack>
 
       {isLoading ? (
@@ -163,29 +195,7 @@ export function MediaScreen() {
           keyExtractor={item => item.id}
           contentContainerStyle={{ gap: 12, paddingBottom: 40 }}
           ListEmptyComponent={<Paragraph theme="alt2">No hay items en tu lista</Paragraph>}
-          renderItem={({ item }) => (
-            <YStack
-              borderWidth={1}
-              borderColor="$borderColor"
-              borderRadius="$4"
-              padding="$3"
-              gap="$2"
-              backgroundColor="$color2"
-            >
-              <Paragraph fontWeight="700">{item.title}</Paragraph>
-              <Paragraph theme="alt2" size="$2">
-                {MEDIA_TYPE_LABELS[item.mediaType]} · {MEDIA_STATUS_LABELS[item.status]}
-              </Paragraph>
-              <XStack gap="$2">
-                <Button size="$3" flex={1} onPress={() => handleStatus(item)}>
-                  Estado
-                </Button>
-                <Button size="$3" theme="red" flex={1} onPress={() => handleDelete(item)}>
-                  Eliminar
-                </Button>
-              </XStack>
-            </YStack>
-          )}
+          renderItem={({ item }) => <MediaCard item={item} onStatusPress={handleStatus} onDeletePress={handleDelete} />}
         />
       )}
     </YStack>

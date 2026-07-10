@@ -14,16 +14,14 @@ import {
   TextInput,
   useCombobox,
 } from '@mantine/core';
-import { DatePickerInput } from '@mantine/dates';
 import { schemaResolver, useForm } from '@mantine/form';
 import { useDebouncedValue } from '@mantine/hooks';
 
-import { DISPLAY_DATE_FORMAT } from '@/shared/dates';
 import { getErrorMessage, notifySuccess } from '@/shared/ui';
 
 import { getTmdbResultKey, getTmdbResultTitle, resolveMediaType } from '../../../_shared/utils/tmdb';
 import { useMediaSearch } from '../../../search/hooks/useMediaSearch';
-import { INITIAL_ADD_MEDIA_FORM_VALUES, toStreamingReleaseDateString } from '../../utils/addMediaForm';
+import { INITIAL_ADD_MEDIA_FORM_VALUES } from '../../utils/addMediaForm';
 import { TmdbSearchOption } from './TmdbSearchOption';
 
 import type { MediaStatus, MediaType } from '../../../_shared/types';
@@ -40,12 +38,7 @@ import {
 interface AddMediaModalProps {
   opened: boolean;
   onClose: () => void;
-  onSubmit: (
-    tmdbId: number,
-    mediaType: MediaType,
-    status: MediaStatus,
-    streamingReleaseDate?: string | null
-  ) => Promise<void>;
+  onSubmit: (tmdbId: number, mediaType: MediaType, status: MediaStatus) => Promise<void>;
   existingTmdbIds: Set<string>;
 }
 
@@ -127,8 +120,7 @@ export const AddMediaModal: FC<AddMediaModalProps> = ({ opened, onClose, onSubmi
     setSubmitError(null);
     setLoading(true);
     try {
-      const streamingReleaseDate = toStreamingReleaseDateString(values.streamingReleaseDate);
-      await onSubmit(values.tmdbId, values.mediaType, values.status, streamingReleaseDate);
+      await onSubmit(values.tmdbId, values.mediaType, values.status);
       notifySuccess('Agregado a tu lista');
       onClose();
     } catch (err) {
@@ -220,14 +212,6 @@ export const AddMediaModal: FC<AddMediaModalProps> = ({ opened, onClose, onSubmi
               </Box>
             </Stack>
           )}
-
-          <DatePickerInput
-            label="Fecha de estreno en plataformas"
-            placeholder="Seleccionar fecha"
-            valueFormat={DISPLAY_DATE_FORMAT}
-            clearable
-            {...form.getInputProps('streamingReleaseDate')}
-          />
 
           <Group justify="flex-end" gap="sm" mt="sm">
             <Button variant="default" type="button" onClick={handleModalClose} disabled={loading}>

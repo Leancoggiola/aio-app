@@ -1,7 +1,5 @@
 import { memo } from 'react';
-import { ActionIcon, Badge, Box, Card, Group, Image, Select, Stack, Text } from '@mantine/core';
-
-import { formatIsoDateStringForDisplay } from '@/shared/dates';
+import { ActionIcon, Badge, Box, Card, Image, Select, Stack, Text } from '@mantine/core';
 
 import type { MediaItem, MediaStatus } from '../../../_shared/types';
 
@@ -58,14 +56,6 @@ export const MediaCard = memo(function MediaCard({ item, onStatusChange, onDelet
         <Text fw={600} size="sm" lineClamp={2}>
           {item.title}
         </Text>
-
-        {item.streamingReleaseDate && (
-          <Group gap="0.25rem">
-            <Text size="xs" c="dimmed">
-              {formatIsoDateStringForDisplay(item.streamingReleaseDate)}
-            </Text>
-          </Group>
-        )}
 
         <Box mt="auto">
           <Select

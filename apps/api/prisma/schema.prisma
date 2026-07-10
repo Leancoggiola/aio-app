@@ -59,7 +59,6 @@ model MediaItem {
   mediaType            String // 'movie' | 'tv'
   title                String
   posterPath           String?
-  streamingReleaseDate String?
   status               String   @default("to_watch") // 'to_watch' | 'watching' | 'watched'
   createdAt            DateTime @default(now())
   updatedAt            DateTime @updatedAt

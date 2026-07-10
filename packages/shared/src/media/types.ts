@@ -11,7 +11,6 @@ export interface MediaItem {
   mediaType: MediaType;
   title: string;
   posterPath: string | null;
-  streamingReleaseDate: string | null;
   status: MediaStatus;
   createdAt: string;
   updatedAt: string;
@@ -28,7 +27,6 @@ export interface AddMediaFormValues {
   tmdbId: number | null;
   mediaType: MediaType;
   status: MediaStatus;
-  streamingReleaseDate: Date | null;
 }
 
 // ── TMDB API response shapes ─────────────────────────────────
