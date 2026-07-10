@@ -24,6 +24,17 @@ Monorepo de **media tracking** (películas/series vía TMDB). Clientes: **web** 
 
 ---
 
+## Ramas
+
+| Rama      | Uso                                                                                    |
+| --------- | -------------------------------------------------------------------------------------- |
+| `develop` | **Base de desarrollo.** Toda feature/chore parte de acá y abre PR **hacia `develop`**. |
+| `main`    | Solo producción (releases) o **hotfix** urgente. No abrir PRs de feature a `main`.     |
+
+Flujo: `develop` → branch `feat/#N-…` / `fix/#N-…` → PR a `develop` → (release) → `main`.
+
+---
+
 ## Reglas de oro
 
 1. **Un feature no importa otro** del mismo cliente — UI compartida en `shared/ui` (web) o componentes locales (mobile).

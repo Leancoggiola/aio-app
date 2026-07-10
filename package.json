@@ -6,6 +6,8 @@
     "dev:api": "turbo run dev --filter=api",
     "dev:web": "turbo run dev --filter=web",
     "dev:mobile": "turbo run dev --filter=mobile",
+    "dev:api-web": "turbo run dev --filter=api --filter=web",
+    "dev:api-mobile": "turbo run dev --filter=api --filter=mobile",
     "web:new-feature": "node apps/web/scripts/new-feature.mjs",
     "web:new-hook": "node apps/web/scripts/new-hook.mjs",
     "web:new-component": "node apps/web/scripts/new-component.mjs",
