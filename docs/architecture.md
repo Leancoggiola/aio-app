@@ -2,7 +2,7 @@
 
 Monorepo con **pnpm workspaces** y **Turborepo**. Ambas apps siguen la misma convención de estructura de carpetas para facilitar el onboarding.
 
-**Agentes:** [AGENTS.md](../AGENTS.md) · [web-tooling.md](./web-tooling.md) · [codegraph.md](./codegraph.md).
+**Agentes:** [AGENTS.md](../AGENTS.md) · [web/tooling.md](./web/tooling.md) · [tooling/codegraph.md](./tooling/codegraph.md).
 
 ---
 
@@ -107,7 +107,7 @@ src/
   main.tsx
 ```
 
-Cada feature usa `modules/<nombre>/` (sub-dominios), carpetas por componente/hook y barrels `index.ts`. Ver [web-new-feature.md](./web-new-feature.md).
+Cada feature usa `modules/<nombre>/` (sub-dominios), carpetas por componente/hook y barrels `index.ts`. Ver [web/new-feature.md](./web/new-feature.md).
 
 ### Convenciones Web
 
@@ -121,16 +121,7 @@ Cada feature usa `modules/<nombre>/` (sub-dominios), carpetas por componente/hoo
 
 ### Path aliases
 
-| Alias          | Apunta a         |
-| -------------- | ---------------- |
-| `@/*`          | `src/*`          |
-| `@/app/*`      | `src/app/*`      |
-| `@/features/*` | `src/features/*` |
-| `@/shared/*`   | `src/shared/*`   |
-| `@/core/*`     | `src/core/*`     |
-| `@/layouts/*`  | `src/layouts/*`  |
-| `@/theme/*`    | `src/theme/*`    |
-| `@/assets/*`   | `src/assets/*`   |
+`@/*` → `src/*` (y subpaths `@/features`, `@/shared`, `@/core`, `@/layouts`, `@/theme`, `@/assets`).
 
 > `@/shared` (frontend) ≠ `@omni/shared` (paquete monorepo de tipos/schemas).
 
@@ -163,27 +154,15 @@ Web ignora los tokens del body. Mobile los guarda (SecureStore) y no depende de 
 
 ## Agregar una nueva feature
 
-### En API
-
-1. Crear `src/<feature>/`
-2. Agregar `<feature>.routes.ts` y `<feature>.service.ts`
-3. Registrar el router en `src/router.ts`
-
-### En Web
-
-1. `pnpm web:new-feature <name>` o seguir [web-new-feature.md](./web-new-feature.md)
-2. Registrar route en `app/routes.ts` y nav en `app/navigation/nav-registry.tsx`
-3. Keys SWR en `shared/api/keys.ts` si aplica
-
-Tooling: [web-tooling.md](./web-tooling.md) (Cursor rule + script).
+- **API:** carpeta `src/<feature>/` con routes + service; registrar en `router.ts`.
+- **Web:** [web/new-feature.md](./web/new-feature.md) · tooling [web/tooling.md](./web/tooling.md).
+- **Mobile:** [mobile/new-feature.md](./mobile/new-feature.md).
 
 ---
 
 ## Shared UI (Web)
 
 Componentes usados en 2+ features → `shared/ui/<Component>/`.
-
-Hooks cross-feature (si aparecen) → `shared/hooks/` (crear cuando haga falta).
 
 ---
 

@@ -1,5 +1,5 @@
 import { FC } from 'react';
-import { Button, Center, Paper, Stack, Text } from '@mantine/core';
+import { Button, EmptyState, Paper } from '@mantine/core';
 
 import { FilmSlateIcon, PlusIcon } from '@phosphor-icons/react';
 
@@ -11,19 +11,15 @@ interface MediaEmptyStateProps {
 export const MediaEmptyState: FC<MediaEmptyStateProps> = ({ message = 'No hay resultados', onAdd }) => {
   return (
     <Paper p="xl" radius="md" withBorder>
-      <Center>
-        <Stack align="center" gap="md">
-          <FilmSlateIcon size="3rem" color="var(--mantine-color-dimmed)" />
-          <Text c="dimmed" size="sm">
-            {message}
-          </Text>
-          {onAdd && (
+      <EmptyState icon={<FilmSlateIcon />} title={message} withIndicatorBackground size="md" align="center">
+        {onAdd && (
+          <EmptyState.Actions>
             <Button variant="light" leftSection={<PlusIcon size="1rem" />} onClick={onAdd}>
               Agregar
             </Button>
-          )}
-        </Stack>
-      </Center>
+          </EmptyState.Actions>
+        )}
+      </EmptyState>
     </Paper>
   );
 };

@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Alert, Button, PasswordInput, Stack } from '@mantine/core';
 import { useForm } from '@mantine/form';
 
@@ -20,6 +20,7 @@ interface PasswordFormProps {
 export const PasswordForm: FC<PasswordFormProps> = ({ onSubmit }) => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [successMessage, setSuccessMessage] = useState<string | null>(null);
 
   const form = useForm<PasswordFormValues>({
     mode: 'uncontrolled',
@@ -47,12 +48,20 @@ export const PasswordForm: FC<PasswordFormProps> = ({ onSubmit }) => {
     },
   });
 
+  useEffect(() => {
+    if (!successMessage) return;
+    const timeout = window.setTimeout(() => setSuccessMessage(null), 3000);
+    return () => window.clearTimeout(timeout);
+  }, [successMessage]);
+
   const handleSubmit = async (values: PasswordFormValues) => {
     setLoading(true);
     setError(null);
+    setSuccessMessage(null);
     try {
       await onSubmit(values.newPassword);
       form.reset();
+      setSuccessMessage('Contraseña actualizada correctamente');
       notifySuccess('Contraseña actualizada correctamente');
     } catch (err) {
       setError(getErrorMessage(err, 'No se pudo cambiar la contraseña'));
@@ -74,6 +83,7 @@ export const PasswordForm: FC<PasswordFormProps> = ({ onSubmit }) => {
           label="Confirmar contraseña"
           key={form.key('confirmPassword')}
           {...form.getInputProps('confirmPassword')}
+          success={successMessage ?? undefined}
         />
         <Button type="submit" loading={loading}>
           Cambiar contraseña

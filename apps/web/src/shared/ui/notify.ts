@@ -5,6 +5,7 @@ export function notifySuccess(message: string) {
     title: 'Listo',
     message,
     color: 'green',
+    priority: 0,
   });
 }
 
@@ -13,6 +14,7 @@ export function notifyError(message: string) {
     title: 'Error',
     message,
     color: 'red',
+    priority: 10,
   });
 }
 

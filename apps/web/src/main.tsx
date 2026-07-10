@@ -20,7 +20,7 @@ import '@mantine/notifications/styles.layer.css';
 
 createRoot(document.getElementById('app')!).render(
   <StrictMode>
-    <MantineProvider theme={THEME} cssVariablesResolver={cssVariablesResolver}>
+    <MantineProvider theme={THEME} cssVariablesResolver={cssVariablesResolver} deduplicateInlineStyles>
       <DatesProvider settings={{ locale: 'es', firstDayOfWeek: 1 }}>
         <Notifications />
         <ConfirmProvider>

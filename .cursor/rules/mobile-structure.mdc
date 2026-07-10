@@ -26,4 +26,4 @@ alwaysApply: false
 
 Tamagui (`tamagui`). No Mantine. No inventar paths `/api/` fuera de `API_KEYS`.
 
-Referencia: [docs/mobile-tooling.md](../../docs/mobile-tooling.md) · skill `mobile-structure`.
+Referencia: [docs/mobile/tooling.md](../../docs/mobile/tooling.md) · skill `mobile-structure`.

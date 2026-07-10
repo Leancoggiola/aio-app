@@ -1,4 +1,4 @@
-import { AppShell, Button, Card, Modal, NavLink, Paper, PasswordInput, TextInput } from '@mantine/core';
+import { AppShell, Button, Card, Input, Modal, NavLink, Paper } from '@mantine/core';
 
 import { componentOverrides } from './components.overrides';
 
@@ -36,8 +36,9 @@ export const ComponentsOverride = {
     defaultProps: { radius: 'md' },
   }),
 
-  PasswordInput: PasswordInput.extend({ defaultProps: { size: 'md', radius: 'sm' } }),
-  TextInput: TextInput.extend({ defaultProps: { size: 'md', radius: 'sm' } }),
+  Input: Input.extend({
+    defaultProps: { size: 'md', radius: 'sm' },
+  }),
 
   NavLink: NavLink.extend({
     defaultProps: {

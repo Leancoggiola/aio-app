@@ -14,7 +14,7 @@ export function renderWithProviders(ui: ReactElement, options?: RenderOptions & 
 
   function Wrapper({ children }: { children: ReactNode }) {
     const content = withSwr ? <SWRConfig value={{ provider: () => new Map() }}>{children}</SWRConfig> : children;
-    return <MantineProvider>{content}</MantineProvider>;
+    return <MantineProvider deduplicateInlineStyles>{content}</MantineProvider>;
   }
 
   return render(ui, { wrapper: Wrapper, ...renderOptions });

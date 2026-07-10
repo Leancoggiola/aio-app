@@ -44,7 +44,7 @@ features/<name>/
 pnpm web:new-feature <name> --register-route --register-nav
 ```
 
-Ver `docs/web-new-feature.md` y `docs/web-tooling.md`.
+Ver `docs/web/new-feature.md` y `docs/web/tooling.md`.
 
 ## Features de referencia
 

@@ -37,7 +37,7 @@ Features actuales: `auth`, `media`, `users`, `admin`.
 
 Schema: `apps/api/prisma/schema.prisma`. Cliente: `import { prisma } from '../common/db'`. No editar `src/generated/`.
 
-Migraciones desde `apps/api/`: `pnpm db:migrate`. Ver `docs/prisma.md`.
+Migraciones desde `apps/api/`: `pnpm db:migrate`. Ver `docs/api/prisma.md`.
 
 ## Auth (web + mobile)
 

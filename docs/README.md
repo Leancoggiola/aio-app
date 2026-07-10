@@ -2,21 +2,65 @@
 
 **Agentes:** empezar en [AGENTS.md](../AGENTS.md).
 
-| Doc                                                                  | Contenido                                |
-| -------------------------------------------------------------------- | ---------------------------------------- |
-| [architecture.md](./architecture.md)                                 | Monorepo, API/Web/Mobile, auth dual      |
-| [codegraph.md](./codegraph.md)                                       | CodeGraph MCP                            |
-| [web-new-feature.md](./web-new-feature.md)                           | Checklist feature web                    |
-| [web-tooling.md](./web-tooling.md)                                   | Rules/skills/scripts web                 |
-| [web-agent-prompt-template.md](./web-agent-prompt-template.md)       | Prompts web                              |
-| [mobile-new-feature.md](./mobile-new-feature.md)                     | Checklist feature mobile                 |
-| [mobile-tooling.md](./mobile-tooling.md)                             | Rules/skills/scripts mobile              |
-| [mobile-agent-prompt-template.md](./mobile-agent-prompt-template.md) | Prompts mobile                           |
-| [env-setup.md](./env-setup.md)                                       | Env API                                  |
-| [prisma.md](./prisma.md)                                             | Migraciones                              |
-| [deployment.md](./deployment.md)                                     | Deploy                                   |
-| [commits-and-releases.md](./commits-and-releases.md)                 | Commits/releases                         |
-| [playwright-testing.md](./playwright-testing.md)                     | E2E                                      |
-| [rename-omni-externals.md](./rename-omni-externals.md)               | Rename externos (completado; referencia) |
+## Índice
 
-Convenciones: [AGENTS.md](../AGENTS.md) · [web-tooling.md](./web-tooling.md) · [mobile-tooling.md](./mobile-tooling.md).
+| Carpeta / doc                          | Contenido                           |
+| -------------------------------------- | ----------------------------------- |
+| [architecture.md](./architecture.md)   | Monorepo, API/Web/Mobile, auth dual |
+| [getting-started/](./getting-started/) | Setup local                         |
+| [product/](./product/)                 | Project management / Roadmap        |
+| [web/](./web/)                         | Tooling, features y prompts web     |
+| [mobile/](./mobile/)                   | Tooling, features y prompts mobile  |
+| [api/](./api/)                         | Prisma / migraciones                |
+| [ops/](./ops/)                         | Deploy y releases                   |
+| [tooling/](./tooling/)                 | CodeGraph, Playwright               |
+
+### Getting started
+
+| Doc                                            | Contenido                |
+| ---------------------------------------------- | ------------------------ |
+| [env-setup.md](./getting-started/env-setup.md) | Variables de entorno API |
+
+### Product
+
+| Doc                                                      | Contenido                               |
+| -------------------------------------------------------- | --------------------------------------- |
+| [project-management.md](./product/project-management.md) | Tablero Omni Roadmap, issues, branch/PR |
+
+### Web
+
+| Doc                                        | Contenido                   |
+| ------------------------------------------ | --------------------------- |
+| [tooling.md](./web/tooling.md)             | Rules/skills/scripts web    |
+| [new-feature.md](./web/new-feature.md)     | Checklist feature web       |
+| [agent-prompts.md](./web/agent-prompts.md) | Plantillas de prompt Cursor |
+
+### Mobile
+
+| Doc                                           | Contenido                   |
+| --------------------------------------------- | --------------------------- |
+| [tooling.md](./mobile/tooling.md)             | Rules/skills/scripts mobile |
+| [new-feature.md](./mobile/new-feature.md)     | Checklist feature mobile    |
+| [agent-prompts.md](./mobile/agent-prompts.md) | Plantillas de prompt Cursor |
+
+### API
+
+| Doc                          | Contenido          |
+| ---------------------------- | ------------------ |
+| [prisma.md](./api/prisma.md) | Migraciones Prisma |
+
+### Ops
+
+| Doc                                                      | Contenido                               |
+| -------------------------------------------------------- | --------------------------------------- |
+| [deployment.md](./ops/deployment.md)                     | Deploy Render/Vercel                    |
+| [commits-and-releases.md](./ops/commits-and-releases.md) | Conventional commits / semantic-release |
+
+### Tooling
+
+| Doc                                      | Contenido                        |
+| ---------------------------------------- | -------------------------------- |
+| [codegraph.md](./tooling/codegraph.md)   | CodeGraph MCP                    |
+| [playwright.md](./tooling/playwright.md) | Playwright MCP (salidas limpias) |
+
+Convenciones: [AGENTS.md](../AGENTS.md) · [web/tooling.md](./web/tooling.md) · [mobile/tooling.md](./mobile/tooling.md).

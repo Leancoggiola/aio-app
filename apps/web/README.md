@@ -22,9 +22,9 @@ La web hace proxy de `/api` → `http://localhost:3000`.
 
 Ver [docs/architecture.md](../../docs/architecture.md) (sección `apps/web`).
 
-- **Nuevo feature:** [docs/web-new-feature.md](../../docs/web-new-feature.md)
-- **Rule + script:** [docs/web-tooling.md](../../docs/web-tooling.md)
-- **Prompts agente (Cursor):** [docs/web-agent-prompt-template.md](../../docs/web-agent-prompt-template.md)
+- **Nuevo feature:** [docs/web/new-feature.md](../../docs/web/new-feature.md)
+- **Rule + script:** [docs/web/tooling.md](../../docs/web/tooling.md)
+- **Prompts agente (Cursor):** [docs/web/agent-prompts.md](../../docs/web/agent-prompts.md)
 
 ```bash
 pnpm web:new-feature gym --register-route
