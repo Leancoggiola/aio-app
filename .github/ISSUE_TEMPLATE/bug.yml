@@ -1,7 +1,7 @@
 name: Bug
 description: Error o comportamiento inesperado
-title: "[Bug] "
-labels: ["tipo:bug"]
+title: '[Bug] '
+labels: ['tipo:bug']
 body:
   - type: textarea
     id: resumen

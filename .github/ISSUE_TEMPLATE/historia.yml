@@ -1,7 +1,7 @@
 name: Historia de usuario
 description: Nueva funcionalidad con criterios de aceptación
-title: "[US] "
-labels: ["tipo:historia"]
+title: '[US] '
+labels: ['tipo:historia']
 body:
   - type: markdown
     attributes:

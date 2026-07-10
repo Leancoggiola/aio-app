@@ -1,7 +1,7 @@
 name: Epic
 description: Agrupa varias historias bajo un objetivo de producto
-title: "[Epic] "
-labels: ["tipo:epic"]
+title: '[Epic] '
+labels: ['tipo:epic']
 body:
   - type: textarea
     id: objetivo

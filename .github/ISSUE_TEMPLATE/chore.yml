@@ -1,7 +1,7 @@
 name: Chore
 description: Infra, deuda técnica, tooling o mantenimiento
-title: "[Chore] "
-labels: ["tipo:chore"]
+title: '[Chore] '
+labels: ['tipo:chore']
 body:
   - type: textarea
     id: objetivo
