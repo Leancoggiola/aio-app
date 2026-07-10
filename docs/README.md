@@ -4,6 +4,7 @@
 
 | Doc                                                                  | Contenido                                |
 | -------------------------------------------------------------------- | ---------------------------------------- |
+| [project-management.md](./project-management.md)                     | Tablero Omni Roadmap, issues, branch/PR  |
 | [architecture.md](./architecture.md)                                 | Monorepo, API/Web/Mobile, auth dual      |
 | [codegraph.md](./codegraph.md)                                       | CodeGraph MCP                            |
 | [web-new-feature.md](./web-new-feature.md)                           | Checklist feature web                    |
