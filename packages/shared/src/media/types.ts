@@ -22,6 +22,15 @@ export interface MediaFilters {
   mediaType?: MediaType;
 }
 
+/** Client form state for adding media from TMDB search */
+export interface AddMediaFormValues {
+  titleQuery: string;
+  tmdbId: number | null;
+  mediaType: MediaType;
+  status: MediaStatus;
+  streamingReleaseDate: Date | null;
+}
+
 // ── TMDB API response shapes ─────────────────────────────────
 
 export interface TmdbMediaResult {

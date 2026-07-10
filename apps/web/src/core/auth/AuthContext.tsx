@@ -3,8 +3,8 @@ import useSWRImmutable from 'swr/immutable';
 
 import { api, ApiError, SWR_KEYS } from '@/shared/api';
 
-import type { SessionUser } from '@aio-app/shared/auth';
-import type { ProfileResponse } from '@aio-app/shared/auth';
+import type { SessionUser } from '@omni/shared/auth';
+import type { ProfileResponse } from '@omni/shared/auth';
 
 export type { SessionUser };
 

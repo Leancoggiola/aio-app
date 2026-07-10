@@ -38,7 +38,11 @@ cp apps/api/.env.example apps/api/.env
 
 El frontend no tiene `.env` propio en desarrollo. Vite usa el proxy configurado en `vite.config.ts` para redirigir `/api/*` al backend en `localhost:3000`.
 
-En producción se configura `VITE_API_URL` si es necesario.
+En producción (Vercel: `omni-nest`), si el cliente llama a la API en otro origen, configurar `VITE_API_URL` (ej. `https://omni-api-gwer.onrender.com`) y asegurar `CORS_ORIGIN` en Render.
+
+## `apps/mobile`
+
+Copiar `apps/mobile/.env.example` → `.env` y setear `EXPO_PUBLIC_API_URL` (sin slash final), apuntando a la API local o a Render.
 
 ---
 

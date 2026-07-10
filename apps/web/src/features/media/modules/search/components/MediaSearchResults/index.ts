@@ -1,1 +1,0 @@
-export { MediaSearchResults } from './MediaSearchResults';

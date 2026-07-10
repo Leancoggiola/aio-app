@@ -13,7 +13,10 @@ passport.use(
   'jwt',
   new JwtStrategy(
     {
-      jwtFromRequest: ExtractJwt.fromExtractors([(req: Request) => req?.cookies?.access_token ?? null]),
+      jwtFromRequest: ExtractJwt.fromExtractors([
+        ExtractJwt.fromAuthHeaderAsBearerToken(),
+        (req: Request) => req?.cookies?.access_token ?? null,
+      ]),
       ignoreExpiration: false,
       secretOrKey: config.jwt.accessSecret,
     },

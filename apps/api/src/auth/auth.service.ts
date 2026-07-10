@@ -5,7 +5,7 @@ import { Response } from 'express';
 import { config } from '../config';
 import * as usersService from '../users/users.service';
 import { prisma } from '../common/db';
-import type { Role } from '@aio-app/shared/auth';
+import type { AuthTokensResponse, Role } from '@omni/shared/auth';
 import { toSessionUser } from './auth.mappers';
 
 const BCRYPT_ROUNDS = 12;
@@ -34,14 +34,14 @@ export async function login(
     avatarUrl: string | null;
   },
   res: Response
-) {
-  await issueTokens({ sub: user.id, username: user.username, role: user.role }, res);
-  return { user: toSessionUser(user) };
+): Promise<AuthTokensResponse> {
+  const tokens = await issueTokens({ sub: user.id, username: user.username, role: user.role }, res);
+  return { user: toSessionUser(user), ...tokens };
 }
 
 // ─── Refresh ───────────────────────────────────────────────
 
-export async function refresh(userId: string, rawRefreshToken: string, res: Response) {
+export async function refresh(userId: string, rawRefreshToken: string, res: Response): Promise<AuthTokensResponse> {
   // Clean up expired tokens for this user
   await prisma.refreshToken.deleteMany({
     where: { userId, expiresAt: { lt: new Date() } },
@@ -76,9 +76,9 @@ export async function refresh(userId: string, rawRefreshToken: string, res: Resp
     throw { status: 401, message: 'Usuario no encontrado' };
   }
 
-  await issueTokens({ sub: userId, username: user.username, role: user.role }, res);
+  const tokens = await issueTokens({ sub: userId, username: user.username, role: user.role }, res);
 
-  return { user: toSessionUser(user) };
+  return { user: toSessionUser(user), ...tokens };
 }
 
 // ─── Logout ────────────────────────────────────────────────
@@ -117,7 +117,10 @@ export async function getProfile(userId: string) {
 
 // ─── Private helpers ──────────────────────────────────────
 
-async function issueTokens(payload: { sub: string; username: string; role: string }, res: Response) {
+async function issueTokens(
+  payload: { sub: string; username: string; role: string },
+  res: Response
+): Promise<{ accessToken: string; refreshToken: string }> {
   const accessToken = jwt.sign(payload, config.jwt.accessSecret, {
     expiresIn: config.jwt.accessExpiresIn as string & jwt.SignOptions['expiresIn'],
   });
@@ -134,6 +137,8 @@ async function issueTokens(payload: { sub: string; username: string; role: strin
 
   setAccessCookie(res, accessToken);
   setRefreshCookie(res, refreshToken);
+
+  return { accessToken, refreshToken };
 }
 
 function setAccessCookie(res: Response, token: string) {

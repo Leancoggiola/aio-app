@@ -1,87 +1,58 @@
-import { FC } from 'react';
-import { Center, Group, Loader, Select, SimpleGrid, Stack, Tabs, Text } from '@mantine/core';
+import { FC, useMemo } from 'react';
+import { Center, Loader, SimpleGrid, Stack } from '@mantine/core';
 
 import { MediaCard } from '../MediaCard';
+import { MediaEmptyState } from '../MediaEmptyState';
 
-import type { MediaFilters, MediaItem, MediaStatus, MediaType } from '../../../_shared/types';
-
-import { MEDIA_STATUS_LABELS, MEDIA_TYPE_LABELS } from '@aio-app/shared/media';
+import type { MediaItem, MediaStatus } from '../../../_shared/types';
 
 interface MyMediaListProps {
   items: MediaItem[] | undefined;
   isLoading: boolean;
-  filters: MediaFilters;
-  onFiltersChange: (filters: MediaFilters) => void;
+  searchText: string;
+  onAdd: () => void;
   onStatusChange: (id: string, status: MediaStatus) => void;
-  onRemove: (id: string) => void;
+  onDelete: (item: MediaItem) => void | Promise<void>;
 }
 
 export const MyMediaList: FC<MyMediaListProps> = ({
   items,
   isLoading,
-  filters,
-  onFiltersChange,
+  searchText,
+  onAdd,
   onStatusChange,
-  onRemove,
+  onDelete,
 }) => {
-  const tabValue = filters.status || 'all';
+  const filteredItems = useMemo(() => {
+    if (!items) return [];
+    const q = searchText.trim().toLowerCase();
+    if (!q) return items;
+    return items.filter(item => item.title.toLowerCase().includes(q));
+  }, [items, searchText]);
+
+  if (isLoading) {
+    return (
+      <Center py="xl">
+        <Loader />
+      </Center>
+    );
+  }
+
+  if (!items || items.length === 0) {
+    return <MediaEmptyState message="Tu lista está vacía" onAdd={onAdd} />;
+  }
+
+  if (filteredItems.length === 0) {
+    return <MediaEmptyState message="No hay resultados" />;
+  }
 
   return (
     <Stack gap="md">
-      <Tabs
-        value={tabValue}
-        onChange={val =>
-          onFiltersChange({
-            ...filters,
-            status: val === 'all' ? undefined : (val as MediaStatus),
-          })
-        }
-      >
-        <Tabs.List>
-          <Tabs.Tab value="all">Todos</Tabs.Tab>
-          {(Object.entries(MEDIA_STATUS_LABELS) as [MediaStatus, string][]).map(([status, label]) => (
-            <Tabs.Tab key={status} value={status}>
-              {label}
-            </Tabs.Tab>
-          ))}
-        </Tabs.List>
-      </Tabs>
-
-      <Group gap="md">
-        <Select
-          placeholder="Tipo"
-          clearable
-          value={filters.mediaType || null}
-          onChange={val =>
-            onFiltersChange({
-              ...filters,
-              mediaType: (val as MediaType) || undefined,
-            })
-          }
-          data={Object.entries(MEDIA_TYPE_LABELS).map(([value, label]) => ({
-            value,
-            label,
-          }))}
-          size="sm"
-          w={150}
-        />
-      </Group>
-
-      {isLoading ? (
-        <Center py="xl">
-          <Loader />
-        </Center>
-      ) : !items || items.length === 0 ? (
-        <Text c="dimmed" ta="center" py="xl">
-          No tenés elementos en esta lista todavía.
-        </Text>
-      ) : (
-        <SimpleGrid cols={{ base: 2, sm: 3, md: 4, lg: 5 }} spacing="md">
-          {items.map(item => (
-            <MediaCard key={item.id} item={item} onStatusChange={onStatusChange} onRemove={onRemove} />
-          ))}
-        </SimpleGrid>
-      )}
+      <SimpleGrid cols={{ base: 1, sm: 2, lg: 3, xl: 4 }} spacing="md">
+        {filteredItems.map(item => (
+          <MediaCard key={item.id} item={item} onStatusChange={onStatusChange} onDelete={onDelete} />
+        ))}
+      </SimpleGrid>
     </Stack>
   );
 };

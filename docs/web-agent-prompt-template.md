@@ -2,10 +2,12 @@
 
 Plantillas listas para copiar y pegar al implementar un feature en `apps/web`. Están alineadas con:
 
+- [AGENTS.md](../AGENTS.md) — índice y reglas de oro
+- [architecture.md](./architecture.md) — mapa del monorepo
 - [web-new-feature.md](./web-new-feature.md) — checklist operativo
 - [web-tooling.md](./web-tooling.md) — scripts y testing
-- Cursor rules: `web-structure`, `web-api-paths`, `web-swr-hooks`, `web-forms-feedback`
-- Skills: `.agents/skills/web-structure/`, `.agents/skills/swr-hooks/`
+- Cursor rules: `web-structure`, `web-api-paths`, `web-swr-hooks`, `web-forms-feedback`, `web-style-props`
+- Skills: `.cursor/skills/web-structure/`, `.cursor/skills/swr-hooks/`
 
 **Antes de pegar un prompt:** reemplazá los placeholders `{{...}}`.
 
@@ -22,18 +24,13 @@ Plantillas listas para copiar y pegar al implementar un feature en `apps/web`. E
 
 ## Reglas que el agente debe respetar
 
-Incluí este bloque al inicio de cualquier prompt largo (o confiá en las Cursor rules bajo `apps/web/**/*`):
+Incluí al inicio de prompts largos:
 
 ```markdown
-Contexto obligatorio para apps/web:
-
-1. URLs API solo en `apps/web/src/shared/api/keys.ts` (`SWR_KEYS`). Prohibido `/api/` inline.
-2. Hooks en `features/{{featureKebab}}/modules/<module>/hooks/useX/useX.ts`.
-3. Un feature NO importa otro feature. UI compartida → `shared/ui/`.
-4. Mutaciones en hooks, no en `*.page.tsx`.
-5. Formularios: Zod de `@aio-app/shared` si existe; errores → `Alert`; éxito mutation → `notifySuccess` de `@/shared/ui`.
-6. Verificar al final: `pnpm --filter web check-types`, `lint`, `check-api-paths`, `test:coverage`.
-7. Features de referencia: `home` (simple), `media` (SWR + mutations), `profile` (forms + hooks).
+Seguí AGENTS.md y docs/architecture.md.
+Para exploración transversal, usá CodeGraph MCP antes de leer muchos archivos.
+Las rules web/\*\* aplican automáticamente. Feature: {{featureKebab}}.
+Verificar: check-types, lint, check-api-paths, test (ver AGENTS.md).
 ```
 
 ---
@@ -190,7 +187,7 @@ En `apps/web`, agregá el hook `use{{HookName}}` en:
 
 Requisitos:
 - Keys solo desde `SWR_KEYS` + `buildQueryString` para query params
-- Seguir `.agents/skills/swr-hooks/SKILL.md` (useSWR vs useSWRImmutable vs useSWRMutation)
+- Seguir `.cursor/skills/swr-hooks/SKILL.md` (useSWR vs useSWRImmutable vs useSWRMutation)
 - Exportar en barrels `index.ts`
 - No hardcodear `/api/`
 - Patrón de referencia: `useMyMediaList` o `useMediaMutations` según read/write
@@ -215,7 +212,7 @@ En `apps/web/features/{{featureKebab}}/`, creá el formulario `{{ComponentName}}
 
 Requisitos:
 
-- `@mantine/form`; schema de `@aio-app/shared` si existe (`schemaResolver` o `safeParse`)
+- `@mantine/form`; schema de `@omni/shared` si existe (`schemaResolver` o `safeParse`)
 - PATCH parcial: extraer `build{{Domain}}Updates` a `modules/.../utils/` con tests (`pnpm web:new-test <path>`)
 - Errores submit → `Alert color="red" variant="light"`
 - Éxito → `notifySuccess` (mutation la hace el padre/hook)

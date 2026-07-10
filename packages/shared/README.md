@@ -1,4 +1,4 @@
-# @aio-app/shared
+# @omni/shared
 
 Tipos TypeScript, schemas Zod y constantes compartidas entre la API y el frontend.
 
@@ -6,30 +6,30 @@ Es un **Just-in-Time Package** — exporta TypeScript directo sin paso de build.
 
 ## Exports
 
-| Path                    | Contenido                                                                                                                                                                                |
-| ----------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `@aio-app/shared`       | Re-export de todo                                                                                                                                                                        |
-| `@aio-app/shared/auth`  | `loginSchema`, `registerSchema` + tipos `LoginPayload`, `RegisterPayload`                                                                                                                |
-| `@aio-app/shared/media` | Schemas de media (add, update, search, filter) + tipos (`MediaType`, `MediaStatus`, `MediaItem`, `TmdbMediaResult`, etc.) + constantes (`MEDIA_TYPES`, `MEDIA_STATUSES`, `SEARCH_TYPES`) |
+| Path                 | Contenido                                                                                                                                                                                |
+| -------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `@omni/shared`       | Re-export de todo                                                                                                                                                                        |
+| `@omni/shared/auth`  | `loginSchema`, `registerSchema` + tipos `LoginPayload`, `RegisterPayload`                                                                                                                |
+| `@omni/shared/media` | Schemas de media (add, update, search, filter) + tipos (`MediaType`, `MediaStatus`, `MediaItem`, `TmdbMediaResult`, etc.) + constantes (`MEDIA_TYPES`, `MEDIA_STATUSES`, `SEARCH_TYPES`) |
 
 ## Uso
 
 ```typescript
 // Schemas Zod (para validación en API y forms en Web)
-import { loginSchema, registerSchema } from '@aio-app/shared/auth';
-import { addMediaItemSchema, searchMediaSchema } from '@aio-app/shared/media';
+import { loginSchema, registerSchema } from '@omni/shared/auth';
+import { addMediaItemSchema, searchMediaSchema } from '@omni/shared/media';
 
 // Tipos TypeScript
-import type { LoginPayload, RegisterPayload } from '@aio-app/shared/auth';
-import type { MediaItem, MediaType, MediaStatus } from '@aio-app/shared/media';
+import type { LoginPayload, RegisterPayload } from '@omni/shared/auth';
+import type { MediaItem, MediaType, MediaStatus } from '@omni/shared/media';
 
 // Constantes
-import { MEDIA_TYPES, MEDIA_STATUSES } from '@aio-app/shared/media';
+import { MEDIA_TYPES, MEDIA_STATUSES } from '@omni/shared/media';
 ```
 
 ## Scripts
 
 ```bash
-yarn workspace @aio-app/shared check-types   # Type checking
-yarn workspace @aio-app/shared lint           # Linting
+yarn workspace @omni/shared check-types   # Type checking
+yarn workspace @omni/shared lint           # Linting
 ```

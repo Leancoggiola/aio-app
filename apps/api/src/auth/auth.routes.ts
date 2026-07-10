@@ -3,7 +3,7 @@ import type { Request, Response, NextFunction } from 'express';
 import rateLimit from 'express-rate-limit';
 import * as authService from './auth.service';
 import { validate } from '../common/utils';
-import { loginSchema } from '@aio-app/shared/auth';
+import { loginSchema, refreshTokenBodySchema } from '@omni/shared/auth';
 import { authenticateLocal, authenticateJwt, authenticateJwtRefresh } from './middleware/auth.middleware';
 
 const authLimiter = rateLimit({
@@ -44,10 +44,11 @@ router.post(
 router.post(
   '/refresh',
   refreshLimiter,
+  validate(refreshTokenBodySchema),
   authenticateJwtRefresh,
   async (req: Request, res: Response, next: NextFunction) => {
     try {
-      const { userId, refreshToken } = req.user as any;
+      const { userId, refreshToken } = req.user as { userId: string; refreshToken: string };
       const result = await authService.refresh(userId, refreshToken, res);
       res.json(result);
     } catch (err) {
@@ -56,20 +57,26 @@ router.post(
   }
 );
 
-router.post('/logout', authenticateJwt, async (req: Request, res: Response, next: NextFunction) => {
-  try {
-    const { userId } = req.user as any;
-    const refreshToken = req.cookies?.refresh_token;
-    const result = await authService.logout(userId, refreshToken, res);
-    res.json(result);
-  } catch (err) {
-    next(err);
+router.post(
+  '/logout',
+  validate(refreshTokenBodySchema),
+  authenticateJwt,
+  async (req: Request, res: Response, next: NextFunction) => {
+    try {
+      const { userId } = req.user as { userId: string };
+      const refreshToken =
+        (typeof req.body?.refreshToken === 'string' ? req.body.refreshToken : undefined) ?? req.cookies?.refresh_token;
+      const result = await authService.logout(userId, refreshToken, res);
+      res.json(result);
+    } catch (err) {
+      next(err);
+    }
   }
-});
+);
 
 router.get('/profile', authenticateJwt, async (req: Request, res: Response, next: NextFunction) => {
   try {
-    const { userId } = req.user as any;
+    const { userId } = req.user as { userId: string };
     const result = await authService.getProfile(userId);
     res.json(result);
   } catch (err) {

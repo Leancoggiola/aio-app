@@ -23,3 +23,11 @@ export const createUserSchema = z.object({
   role: z.enum(['ADMIN', 'USER']).default('USER').optional(),
 });
 export type CreateUserPayload = z.infer<typeof createUserSchema>;
+
+/** Body opcional para refresh/logout desde clientes mobile (Bearer). */
+export const refreshTokenBodySchema = z
+  .object({
+    refreshToken: z.string().min(1).optional(),
+  })
+  .default({});
+export type RefreshTokenBody = z.infer<typeof refreshTokenBodySchema>;

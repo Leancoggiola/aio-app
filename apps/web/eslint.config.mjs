@@ -1,39 +1,38 @@
-import { baseConfig } from "@aio-app/eslint-config";
-import react from "eslint-plugin-react";
-import reactHooks from "eslint-plugin-react-hooks";
-import simpleImportSort from "eslint-plugin-simple-import-sort";
+import { baseConfig } from '@omni/eslint-config';
+import react from 'eslint-plugin-react';
+import reactHooks from 'eslint-plugin-react-hooks';
+import simpleImportSort from 'eslint-plugin-simple-import-sort';
 
 export default [
   ...baseConfig,
 
   // ── React & Hooks ──────────────────────────────────────────
   {
-    files: ["**/*.tsx"],
+    files: ['**/*.tsx'],
     plugins: {
       react,
-      "react-hooks": reactHooks,
+      'react-hooks': reactHooks,
     },
     settings: {
-      react: { version: "detect" },
+      react: { version: 'detect' },
     },
     rules: {
       // React 19+: no need to import React
-      "react/react-in-jsx-scope": "off",
-      "react/jsx-uses-react": "off",
-      "react/prop-types": "off",
-      "react/self-closing-comp": "error",
+      'react/react-in-jsx-scope': 'off',
+      'react/jsx-uses-react': 'off',
+      'react/prop-types': 'off',
+      'react/self-closing-comp': 'error',
 
       // Hooks
-      "react-hooks/rules-of-hooks": "error",
-      "react-hooks/exhaustive-deps": "warn",
+      'react-hooks/rules-of-hooks': 'error',
+      'react-hooks/exhaustive-deps': 'warn',
 
       // No default exports in components
-      "no-restricted-syntax": [
-        "error",
+      'no-restricted-syntax': [
+        'error',
         {
-          selector: "ExportDefaultDeclaration",
-          message:
-            "Use named exports instead of default exports in components.",
+          selector: 'ExportDefaultDeclaration',
+          message: 'Use named exports instead of default exports in components.',
         },
       ],
     },
@@ -41,49 +40,49 @@ export default [
 
   // ── Import sort ────────────────────────────────────────────
   {
-    files: ["**/*.ts", "**/*.tsx"],
-    plugins: { "simple-import-sort": simpleImportSort },
+    files: ['**/*.ts', '**/*.tsx'],
+    plugins: { 'simple-import-sort': simpleImportSort },
     rules: {
-      "simple-import-sort/imports": [
-        "error",
+      'simple-import-sort/imports': [
+        'error',
         {
           groups: [
             // 1. Externals (react, react-dom, mantine, etc.)
-            ["^react", "^@mantine", "^[a-z]"],
+            ['^react', '^@mantine', '^[a-z]'],
             // 2. Internal aliases (@/...)
-            ["^@/"],
+            ['^@/'],
             // 3. Relative imports
-            ["^\.\./", "^\./"],
+            ['^\.\./', '^\./'],
             // 4. Type imports
-            ["^.*\\u0000$"],
+            ['^.*\\u0000$'],
             // 5. CSS / SCSS
-            ["^.+\\.s?css$"],
+            ['^.+\\.s?css$'],
           ],
         },
       ],
-      "simple-import-sort/exports": "error",
+      'simple-import-sort/exports': 'error',
     },
   },
 
   // ── TypeScript rules ───────────────────────────────────────
   {
-    files: ["**/*.ts", "**/*.tsx"],
+    files: ['**/*.ts', '**/*.tsx'],
     rules: {
-      "@typescript-eslint/no-explicit-any": "error",
-      "@typescript-eslint/no-unused-vars": [
-        "error",
+      '@typescript-eslint/no-explicit-any': 'error',
+      '@typescript-eslint/no-unused-vars': [
+        'error',
         {
-          argsIgnorePattern: "^_",
-          destructuredArrayIgnorePattern: "^_",
+          argsIgnorePattern: '^_',
+          destructuredArrayIgnorePattern: '^_',
           ignoreRestSiblings: true,
         },
       ],
-      "no-console": "error",
+      'no-console': 'error',
     },
   },
 
   // ── Ignores ────────────────────────────────────────────────
   {
-    ignores: ["node_modules/", "dist/", "coverage/", ".vite/"],
+    ignores: ['node_modules/', 'dist/', 'coverage/', '.vite/'],
   },
 ];

@@ -1,7 +1,7 @@
 import { Router } from 'express';
 import type { Request, Response, NextFunction } from 'express';
 import rateLimit from 'express-rate-limit';
-import { updateProfileSchema, changePasswordSchema, updatePreferencesSchema } from '@aio-app/shared/users';
+import { updateProfileSchema, changePasswordSchema, updatePreferencesSchema } from '@omni/shared/users';
 import { authenticateJwt } from '../auth/middleware/auth.middleware';
 import { validate } from '../common/utils';
 import * as usersService from './users.service';

@@ -9,3 +9,4 @@ export type {
   TmdbSearchResponse,
   TmdbTvDetail,
 } from './types';
+export { buildMediaTmdbKey, getTmdbResultKey, getTmdbResultTitle, resolveMediaType } from './utils';

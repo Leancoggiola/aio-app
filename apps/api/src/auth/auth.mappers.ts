@@ -1,1 +1,1 @@
-export { toSessionUser } from '@aio-app/shared/auth';
+export { toSessionUser } from '@omni/shared/auth';

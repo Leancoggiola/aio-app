@@ -1,4 +1,4 @@
-import type { MediaType, AddMediaItemPayload, FilterMediaParams, UpdateMediaItemPayload } from '@aio-app/shared/media';
+import type { MediaType, AddMediaItemPayload, FilterMediaParams, UpdateMediaItemPayload } from '@omni/shared/media';
 
 import { prisma } from '../common/db';
 import * as tmdbService from './tmdb.service';
@@ -58,6 +58,7 @@ export async function addToList(userId: string, dto: AddMediaItemPayload) {
       title,
       posterPath,
       status: dto.status || 'to_watch',
+      streamingReleaseDate: dto.streamingReleaseDate ?? null,
     },
   });
 

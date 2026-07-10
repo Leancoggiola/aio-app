@@ -1,4 +1,6 @@
-import type { ProfileTheme, UpdatePreferencesPayload, UpdateProfilePayload, UserProfile } from '@aio-app/shared/users';
+import { extractIsoDateKey, formatDateToIsoDateTime, parseIsoDateStringToDate } from '@/shared/dates';
+
+import type { ProfileTheme, UpdatePreferencesPayload, UpdateProfilePayload, UserProfile } from '@omni/shared/users';
 
 export interface ProfileFormValues {
   phone: string;
@@ -7,13 +9,6 @@ export interface ProfileFormValues {
   theme: ProfileTheme;
 }
 
-const toDateKey = (value: string | Date | null): string | null => {
-  if (!value) return null;
-  const date = value instanceof Date ? value : new Date(value);
-  if (Number.isNaN(date.getTime())) return null;
-  return date.toISOString().slice(0, 10);
-};
-
 const normalizeOptional = (value: string): string | null => {
   const trimmed = value.trim();
   return trimmed === '' ? null : trimmed;
@@ -21,7 +16,7 @@ const normalizeOptional = (value: string): string | null => {
 
 export const toProfileFormValues = (profile: UserProfile): ProfileFormValues => ({
   phone: profile.phone ?? '',
-  birthDate: profile.birthDate ? new Date(profile.birthDate) : null,
+  birthDate: profile.birthDate ? parseIsoDateStringToDate(profile.birthDate) : null,
   notifications: profile.preferences?.notifications ?? false,
   theme: profile.preferences?.theme ?? 'light',
 });
@@ -29,11 +24,11 @@ export const toProfileFormValues = (profile: UserProfile): ProfileFormValues => 
 export const buildProfileUpdates = (profile: UserProfile, values: ProfileFormValues): UpdateProfilePayload => {
   const updates: UpdateProfilePayload = {};
   const phone = normalizeOptional(values.phone);
-  const birthDate = values.birthDate ? values.birthDate.toISOString() : null;
+  const birthDate = values.birthDate ? formatDateToIsoDateTime(values.birthDate) : null;
 
   if (phone !== profile.phone) updates.phone = phone;
 
-  if (toDateKey(birthDate) !== toDateKey(profile.birthDate)) {
+  if (extractIsoDateKey(values.birthDate) !== extractIsoDateKey(profile.birthDate)) {
     updates.birthDate = birthDate;
   }
 

@@ -1,22 +1,22 @@
-import { baseConfig } from "@aio-app/eslint-config";
+import { baseConfig } from '@omni/eslint-config';
 
 /** @type {import("eslint").Linter.Config} */
 export default [
   ...baseConfig,
   {
     rules: {
-      "@typescript-eslint/no-explicit-any": "warn",
-      "@typescript-eslint/no-unused-vars": [
-        "error",
+      '@typescript-eslint/no-explicit-any': 'warn',
+      '@typescript-eslint/no-unused-vars': [
+        'error',
         {
-          argsIgnorePattern: "^_",
-          destructuredArrayIgnorePattern: "^_",
+          argsIgnorePattern: '^_',
+          destructuredArrayIgnorePattern: '^_',
           ignoreRestSiblings: true,
         },
       ],
     },
   },
   {
-    ignores: [".prettierrc.mjs", "eslint.config.mjs"],
+    ignores: ['.prettierrc.mjs', 'eslint.config.mjs'],
   },
 ];

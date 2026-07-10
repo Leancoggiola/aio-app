@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
 
-import { updateProfileSchema } from '@aio-app/shared/users';
+import { updateProfileSchema } from '@omni/shared/users';
 
 describe('updateProfileSchema', () => {
   it('accepts editable profile fields', () => {

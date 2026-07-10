@@ -1,5 +1,5 @@
 {
-  "name": "@aio-app/eslint-config",
+  "name": "@omni/eslint-config",
   "version": "0.0.0",
   "main": "index.mjs",
   "license": "MIT",

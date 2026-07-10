@@ -12,7 +12,7 @@ alwaysApply: false
 |------|-----|
 | `app/` | Router, routes, navigation registry |
 | `features/` | Dominio de producto (1 ítem navbar = 1 feature) |
-| `shared/` | API client, UI reutilizable (`@/shared` ≠ `@aio-app/shared`) |
+| `shared/` | API client, UI reutilizable (`@/shared` ≠ `@omni/shared`) |
 | `core/` | Auth, guards, providers globales |
 | `layouts/` | Shell (RootLayout, Navbar, Header) |
 | `theme/` | Mantine theme |

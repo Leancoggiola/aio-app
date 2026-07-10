@@ -1,6 +1,6 @@
 import type { User } from '../generated/prisma/client';
-import type { CreateUserPayload } from '@aio-app/shared/auth';
-import type { UpdateProfilePayload, UpdatePreferencesPayload } from '@aio-app/shared/users';
+import type { CreateUserPayload } from '@omni/shared/auth';
+import type { UpdateProfilePayload, UpdatePreferencesPayload } from '@omni/shared/users';
 import * as bcrypt from 'bcrypt';
 import { prisma } from '../common/db';
 

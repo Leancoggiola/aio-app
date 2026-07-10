@@ -1,6 +1,6 @@
 import * as bcrypt from 'bcrypt';
 import * as usersService from '../users/users.service';
-import type { CreateUserPayload } from '@aio-app/shared/auth';
+import type { CreateUserPayload } from '@omni/shared/auth';
 
 const BCRYPT_ROUNDS = 12;
 

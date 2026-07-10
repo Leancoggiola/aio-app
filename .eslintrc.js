@@ -1,4 +1,4 @@
-import { libraryConfig } from "@aio-app/eslint-config/library";
+import { libraryConfig } from "@omni/eslint-config/library";
 import tsParser from "@typescript-eslint/parser";
 
 export default [

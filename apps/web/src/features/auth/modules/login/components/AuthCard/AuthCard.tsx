@@ -1,6 +1,6 @@
 import { Avatar, Center, Paper, Stack, Title } from '@mantine/core';
 
-import Logo from '@/assets/logo.svg?react';
+import logoUrl from '@/assets/logo.png';
 
 import type { FC, ReactNode } from 'react';
 
@@ -15,14 +15,15 @@ export const AuthCard: FC<AuthCardProps> = ({ title, children }) => {
       <Stack gap="xl" justify="center">
         <Center>
           <Avatar
+            src={logoUrl}
+            alt="Omni"
             size="xl"
             variant="filled"
             color="brand.2"
             radius="md"
+            imageProps={{ style: { objectFit: 'contain', padding: '15%' } }}
             style={{ boxShadow: 'var(--mantine-shadow-md)' }}
-          >
-            <Logo style={{ padding: '0.5rem' }} />
-          </Avatar>
+          />
         </Center>
         <Title order={2} fw={700} ta="center">
           {title}

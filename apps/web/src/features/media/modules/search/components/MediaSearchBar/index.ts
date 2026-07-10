@@ -1,1 +1,0 @@
-export { MediaSearchBar } from './MediaSearchBar';

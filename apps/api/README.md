@@ -1,21 +1,21 @@
-# API — AIO App
+# API — Omni
 
 API REST para la aplicación de media tracking. Gestiona autenticación de usuarios y CRUD de items de media con integración a TMDB.
 
 ## Stack
 
-| Tecnología             | Uso                                                                  |
-| ---------------------- | -------------------------------------------------------------------- |
-| **Express 5**          | HTTP framework                                                       |
-| **Prisma**             | ORM, migraciones y type-safe queries                                 |
-| **PostgreSQL**         | Base de datos (Supabase)                                             |
-| **Passport.js**        | Autenticación con 3 strategies (local, jwt, jwt-refresh)             |
-| **Zod**                | Validación de payloads (schemas compartidos desde `@aio-app/shared`) |
-| **bcrypt**             | Hash de passwords                                                    |
-| **Helmet**             | Headers de seguridad HTTP                                            |
-| **express-rate-limit** | Rate limiting en rutas de auth                                       |
-| **tsup**               | Bundler para producción                                              |
-| **tsx**                | Runner con hot reload para desarrollo                                |
+| Tecnología             | Uso                                                               |
+| ---------------------- | ----------------------------------------------------------------- |
+| **Express 5**          | HTTP framework                                                    |
+| **Prisma**             | ORM, migraciones y type-safe queries                              |
+| **PostgreSQL**         | Base de datos (Supabase)                                          |
+| **Passport.js**        | Autenticación con 3 strategies (local, jwt, jwt-refresh)          |
+| **Zod**                | Validación de payloads (schemas compartidos desde `@omni/shared`) |
+| **bcrypt**             | Hash de passwords                                                 |
+| **Helmet**             | Headers de seguridad HTTP                                         |
+| **express-rate-limit** | Rate limiting en rutas de auth                                    |
+| **tsup**               | Bundler para producción                                           |
+| **tsx**                | Runner con hot reload para desarrollo                             |
 
 ## Estructura de carpetas
 

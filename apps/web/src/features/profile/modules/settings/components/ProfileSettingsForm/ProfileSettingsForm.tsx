@@ -14,6 +14,7 @@ import {
 import { DatePickerInput } from '@mantine/dates';
 import { useForm } from '@mantine/form';
 
+import { DISPLAY_DATE_FORMAT } from '@/shared/dates';
 import { getErrorMessage, notifySuccess } from '@/shared/ui';
 
 import { ProfileSectionCard } from '../../../_shared/components/ProfileSectionCard';
@@ -24,7 +25,7 @@ import {
   toProfileFormValues,
 } from '../../../_shared/utils';
 
-import type { ProfileTheme, UpdatePreferencesPayload, UpdateProfilePayload, UserProfile } from '@aio-app/shared/users';
+import type { ProfileTheme, UpdatePreferencesPayload, UpdateProfilePayload, UserProfile } from '@omni/shared/users';
 import type { FC } from 'react';
 
 import { CalendarBlankIcon, EnvelopeSimpleIcon, FloppyDiskIcon, PhoneIcon, UserIcon } from '@phosphor-icons/react';
@@ -106,7 +107,7 @@ export const ProfileSettingsForm: FC<ProfileSettingsFormProps> = ({ profile, isS
             <DatePickerInput
               label="Fecha de Nacimiento"
               placeholder="dd/mm/aaaa"
-              valueFormat="DD/MM/YYYY"
+              valueFormat={DISPLAY_DATE_FORMAT}
               leftSection={<CalendarBlankIcon {...inputIconProps} />}
               {...form.getInputProps('birthDate')}
             />

@@ -1,4 +1,4 @@
-import type { SessionUser } from '@aio-app/shared/auth';
+import type { SessionUser } from '@omni/shared/auth';
 
 export function createMockSessionUser(overrides: Partial<SessionUser> = {}): SessionUser {
   return {

@@ -1,8 +1,8 @@
 import { Router } from 'express';
 import type { Request, Response, NextFunction } from 'express';
 import rateLimit from 'express-rate-limit';
-import type { MediaType } from '@aio-app/shared/media';
-import { searchMediaSchema, addMediaItemSchema, updateMediaItemSchema, filterMediaSchema } from '@aio-app/shared/media';
+import type { MediaType } from '@omni/shared/media';
+import { searchMediaSchema, addMediaItemSchema, updateMediaItemSchema, filterMediaSchema } from '@omni/shared/media';
 import { authenticateJwt } from '../auth/middleware/auth.middleware';
 import { validate } from '../common/utils';
 import * as mediaService from './media.service';

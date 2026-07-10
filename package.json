@@ -5,10 +5,14 @@
     "dev": "turbo run dev",
     "dev:api": "turbo run dev --filter=api",
     "dev:web": "turbo run dev --filter=web",
+    "dev:mobile": "turbo run dev --filter=mobile",
     "web:new-feature": "node apps/web/scripts/new-feature.mjs",
     "web:new-hook": "node apps/web/scripts/new-hook.mjs",
     "web:new-component": "node apps/web/scripts/new-component.mjs",
     "web:new-test": "node apps/web/scripts/new-test.mjs",
+    "codegraph:init": "npx @colbymchenry/codegraph init",
+    "codegraph:status": "npx @colbymchenry/codegraph status",
+    "codegraph:sync": "npx @colbymchenry/codegraph sync",
     "lint": "turbo run lint",
     "test": "turbo run test",
     "test:coverage": "turbo run test:coverage",
@@ -30,7 +34,14 @@
     "turbo": "2.9.14",
     "vitest": "^4.1.6"
   },
-  "name": "all-in-one-app",
+  "name": "omni",
   "packageManager": "pnpm@10.11.0",
-  "version": "1.0.2"
+  "version": "1.0.2",
+  "pnpm": {
+    "overrides": {
+      "hono": ">=4.12.25",
+      "undici": ">=7.28.0",
+      "ws@>=8": ">=8.21.0"
+    }
+  }
 }
