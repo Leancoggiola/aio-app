@@ -52,7 +52,7 @@ export function LoginScreen() {
       />
 
       {error ? (
-        <Paragraph color="$red10" onPress={() => Alert.alert('Error', error)}>
+        <Paragraph color="$destructive" onPress={() => Alert.alert('Error', error)}>
           {error}
         </Paragraph>
       ) : null}
