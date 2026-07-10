@@ -21,17 +21,11 @@ export function useMyMediaList(filters: MediaFilters = {}) {
 }
 
 export function useMediaMutations() {
-  const addToList = async (
-    tmdbId: number,
-    mediaType: MediaType,
-    status: MediaStatus,
-    streamingReleaseDate?: string | null
-  ) => {
+  const addToList = async (tmdbId: number, mediaType: MediaType, status: MediaStatus) => {
     return api.post<MediaItem>(API_KEYS.media.list, {
       tmdbId,
       mediaType,
       status,
-      ...(streamingReleaseDate != null && { streamingReleaseDate }),
     });
   };
 

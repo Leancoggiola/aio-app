@@ -39,8 +39,8 @@ export const MediaPage: FC = () => {
   }, [listData]);
 
   const handleAdd = useCallback(
-    async (tmdbId: number, mediaType: MediaType, status: MediaStatus, streamingReleaseDate?: string | null) => {
-      await addToList(tmdbId, mediaType, status, streamingReleaseDate);
+    async (tmdbId: number, mediaType: MediaType, status: MediaStatus) => {
+      await addToList(tmdbId, mediaType, status);
     },
     [addToList]
   );

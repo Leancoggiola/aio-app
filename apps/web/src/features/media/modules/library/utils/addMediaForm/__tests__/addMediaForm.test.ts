@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
 
-import { INITIAL_ADD_MEDIA_FORM_VALUES, toStreamingReleaseDateString } from '../addMediaForm';
+import { INITIAL_ADD_MEDIA_FORM_VALUES } from '../addMediaForm';
 
 describe('addMediaForm utils', () => {
   it('exposes empty initial form values', () => {
@@ -9,15 +9,6 @@ describe('addMediaForm utils', () => {
       tmdbId: null,
       mediaType: 'movie',
       status: 'to_watch',
-      streamingReleaseDate: null,
     });
-  });
-
-  it('returns null when streaming release date is missing', () => {
-    expect(toStreamingReleaseDateString(null)).toBeNull();
-  });
-
-  it('formats a Date to YYYY-MM-DD without UTC shift', () => {
-    expect(toStreamingReleaseDateString(new Date(2026, 6, 9))).toBe('2026-07-09');
   });
 });
