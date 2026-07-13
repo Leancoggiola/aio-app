@@ -57,8 +57,8 @@ export const MediaSearchResults: FC<MediaSearchResultsProps> = ({ results, isLoa
                 </Text>
                 <Badge
                   size="xs"
-                  variant="light"
-                  color={mediaType === 'movie' ? 'blue' : 'violet'}
+                  variant="outline"
+                  color={mediaType === 'movie' ? 'brand' : 'gray'}
                   style={{ flexShrink: 0 }}
                 >
                   {MEDIA_TYPE_LABELS[mediaType]}
@@ -67,7 +67,7 @@ export const MediaSearchResults: FC<MediaSearchResultsProps> = ({ results, isLoa
             </Stack>
 
             {alreadyAdded ? (
-              <Button fullWidth mt="sm" size="xs" variant="light" color="teal" disabled>
+              <Button fullWidth mt="sm" size="xs" variant="light" color="gray" disabled>
                 Ya en tu lista
               </Button>
             ) : (

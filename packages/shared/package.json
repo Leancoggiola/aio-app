@@ -8,7 +8,8 @@
     ".": "./src/index.ts",
     "./auth": "./src/auth/index.ts",
     "./media": "./src/media/index.ts",
-    "./users": "./src/users/index.ts"
+    "./users": "./src/users/index.ts",
+    "./theme": "./src/theme/index.ts"
   },
   "typesVersions": {
     "*": {
@@ -20,6 +21,9 @@
       ],
       "users": [
         "src/users/index.ts"
+      ],
+      "theme": [
+        "src/theme/index.ts"
       ]
     }
   },

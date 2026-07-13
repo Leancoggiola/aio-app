@@ -1,6 +1,6 @@
-import { BRAND } from './tokens';
-
 import type { MantineGradient } from '@mantine/core';
+
+import { BRAND } from '@omni/shared/theme';
 
 export const GRADIENTS = {
   brand: {

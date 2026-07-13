@@ -1,6 +1,8 @@
 import { memo } from 'react';
 import { ActionIcon, Badge, Box, Card, Image, Select, Stack, Text } from '@mantine/core';
 
+import { OVERLAY } from '@/theme/tokens';
+
 import type { MediaItem, MediaStatus } from '../../../_shared/types';
 
 import { MEDIA_STATUS_LABELS, MEDIA_STATUSES, MEDIA_TYPE_LABELS, TMDB_POSTER_W300 } from '@omni/shared/media';
@@ -33,8 +35,8 @@ export const MediaCard = memo(function MediaCard({ item, onStatusChange, onDelet
           left="0.5rem"
           size="sm"
           variant="filled"
-          color="dark"
-          style={{ backgroundColor: 'rgb(0 0 0 / 0.65)' }}
+          color="brand"
+          style={{ backgroundColor: OVERLAY.poster }}
         >
           {MEDIA_TYPE_LABELS[item.mediaType]}
         </Badge>
@@ -46,7 +48,7 @@ export const MediaCard = memo(function MediaCard({ item, onStatusChange, onDelet
           color="dark"
           aria-label="Eliminar"
           onClick={() => void onDelete(item)}
-          style={{ backgroundColor: 'rgb(0 0 0 / 0.65)' }}
+          style={{ backgroundColor: OVERLAY.poster }}
         >
           <TrashIcon size="1rem" />
         </ActionIcon>

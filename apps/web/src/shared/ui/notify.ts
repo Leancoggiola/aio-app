@@ -4,7 +4,7 @@ export function notifySuccess(message: string) {
   notifications.show({
     title: 'Listo',
     message,
-    color: 'green',
+    color: 'success',
     priority: 0,
   });
 }
