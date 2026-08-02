@@ -9,7 +9,13 @@
     "./auth": "./src/auth/index.ts",
     "./media": "./src/media/index.ts",
     "./users": "./src/users/index.ts",
-    "./theme": "./src/theme/index.ts"
+    "./theme": "./src/theme/index.ts",
+    "./gym": "./src/gym/index.ts",
+    "./expenses": "./src/expenses/index.ts",
+    "./split-expenses": "./src/split-expenses/index.ts",
+    "./pantry": "./src/pantry/index.ts",
+    "./notifications": "./src/notifications/index.ts",
+    "./common": "./src/common/index.ts"
   },
   "typesVersions": {
     "*": {
@@ -24,6 +30,24 @@
       ],
       "theme": [
         "src/theme/index.ts"
+      ],
+      "gym": [
+        "src/gym/index.ts"
+      ],
+      "expenses": [
+        "src/expenses/index.ts"
+      ],
+      "split-expenses": [
+        "src/split-expenses/index.ts"
+      ],
+      "pantry": [
+        "src/pantry/index.ts"
+      ],
+      "notifications": [
+        "src/notifications/index.ts"
+      ],
+      "common": [
+        "src/common/index.ts"
       ]
     }
   },
