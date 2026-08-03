@@ -19,14 +19,24 @@ apps/api/src/
   router.ts
 ```
 
-Features actuales: `auth`, `media`, `users`, `admin`.
+Features actuales: `auth`, `media`, `users`, `admin`, `gym`, `pantry`, `expenses`, `split-expenses`, `notifications`.
 
 ## Nuevo feature
 
 1. Crear `src/<feature>/<feature>.routes.ts` y `<feature>.service.ts`
 2. `router.use('/<feature>', featureRoutes)` en `router.ts`
 3. Schemas en `packages/shared/src/<domain>/` si el contrato es compartido con web
-4. Tests en `src/__tests__/` si hay lógica en utils o schemas críticos
+4. Tests de rutas en `src/__tests__/routes/<feature>.routes.test.ts` (ver `docs/api/route-testing.md`)
+5. Tests unitarios en `src/__tests__/` si hay lógica en utils o schemas críticos
+
+## Tests (resumen)
+
+| Capa       | Archivo                             | Mock service | BD  |
+| ---------- | ----------------------------------- | ------------ | --- |
+| Rutas HTTP | `__tests__/routes/*.routes.test.ts` | Sí           | No  |
+| Unitarios  | `__tests__/*.test.ts`               | No           | No  |
+
+Patrón completo: [docs/api/route-testing.md](../../docs/api/route-testing.md).
 
 ## Service vs routes
 
@@ -53,4 +63,5 @@ Patrón existente en `auth.routes.ts`, `media.routes.ts`, `users.routes.ts` — 
 ## Docs
 
 - `docs/architecture.md` — paralelo Web ↔ API
+- `docs/api/route-testing.md` — tests HTTP de rutas (Supertest)
 - `.cursor/rules/api-conventions.mdc`

@@ -50,6 +50,12 @@ Delegar a `next(err)`; el handler global está en `common/utils/error-handler.ts
 
 Si el contrato cambia: actualizar `packages/shared` primero, luego routes/service, luego web (`SWR_KEYS` + hooks). Skill: `.cursor/skills/shared-contracts/`.
 
+## Tests
+
+- **Rutas:** `src/__tests__/routes/<feature>.routes.test.ts` — Supertest + mock del service. Ver [docs/api/route-testing.md](../../docs/api/route-testing.md).
+- **Unitarios:** schemas, utils, reglas puras en `src/__tests__/`.
+- Correr: `pnpm --filter api test`.
+
 ## Referencia
 
-`docs/architecture.md` · skill `.cursor/skills/api-structure/`
+`docs/architecture.md` · `docs/api/route-testing.md` · skill `.cursor/skills/api-structure/`
