@@ -1,7 +1,7 @@
 import { useCallback } from 'react';
 import { useSWRConfig } from 'swr';
 
-import { api, API_KEYS } from '@/shared/api';
+import { api, API_KEYS, invalidateNotificationDigest } from '@/shared/api';
 
 import type {
   AddGatheringExpensePayload,
@@ -27,16 +27,22 @@ export function useSplitExpensesMutations() {
   }, [mutate]);
 
   const invalidateGatherings = useCallback(async () => {
-    await mutate(
-      (key: unknown) => typeof key === 'string' && key.startsWith(API_KEYS.splitExpenses.gatherings),
-      undefined,
-      { revalidate: true }
-    );
+    await Promise.all([
+      mutate(
+        (key: unknown) => typeof key === 'string' && key.startsWith(API_KEYS.splitExpenses.gatherings),
+        undefined,
+        { revalidate: true }
+      ),
+      invalidateNotificationDigest(mutate),
+    ]);
   }, [mutate]);
 
   const invalidateGathering = useCallback(
     async (gatheringId: string) => {
-      await mutate(API_KEYS.splitExpenses.gathering(gatheringId), undefined, { revalidate: true });
+      await Promise.all([
+        mutate(API_KEYS.splitExpenses.gathering(gatheringId), undefined, { revalidate: true }),
+        invalidateNotificationDigest(mutate),
+      ]);
     },
     [mutate]
   );

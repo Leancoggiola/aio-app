@@ -1,7 +1,7 @@
 import { useCallback } from 'react';
 import { useSWRConfig } from 'swr';
 
-import { api, API_KEYS } from '@/shared/api';
+import { api, API_KEYS, invalidateNotificationDigest } from '@/shared/api';
 
 import type {
   AddShoppingListItemPayload,
@@ -30,8 +30,13 @@ export function usePantryMutations() {
   }, [mutate]);
 
   const invalidatePantry = useCallback(async () => {
-    await Promise.all([invalidateSummary(), invalidateProducts(), invalidateShoppingList()]);
-  }, [invalidateProducts, invalidateShoppingList, invalidateSummary]);
+    await Promise.all([
+      invalidateSummary(),
+      invalidateProducts(),
+      invalidateShoppingList(),
+      invalidateNotificationDigest(mutate),
+    ]);
+  }, [invalidateProducts, invalidateShoppingList, invalidateSummary, mutate]);
 
   const createProduct = useCallback(
     async (payload: CreatePantryProductPayload) => {
@@ -68,10 +73,10 @@ export function usePantryMutations() {
   const addShoppingListItem = useCallback(
     async (payload: AddShoppingListItemPayload) => {
       const item = await api.post<PantryShoppingListItem>(API_KEYS.pantry.shoppingListItems, payload);
-      await invalidateShoppingList();
+      await Promise.all([invalidateShoppingList(), invalidateSummary()]);
       return item;
     },
-    [invalidateShoppingList]
+    [invalidateShoppingList, invalidateSummary]
   );
 
   const completeShoppingListItem = useCallback(
@@ -89,15 +94,15 @@ export function usePantryMutations() {
   const deleteShoppingListItem = useCallback(
     async (itemId: string) => {
       await api.delete(API_KEYS.pantry.shoppingListItem(itemId));
-      await invalidateShoppingList();
+      await Promise.all([invalidateShoppingList(), invalidateSummary()]);
     },
-    [invalidateShoppingList]
+    [invalidateShoppingList, invalidateSummary]
   );
 
   const clearCheckedShoppingList = useCallback(async () => {
     await api.delete(API_KEYS.pantry.shoppingListChecked);
-    await invalidateShoppingList();
-  }, [invalidateShoppingList]);
+    await Promise.all([invalidateShoppingList(), invalidateSummary()]);
+  }, [invalidateShoppingList, invalidateSummary]);
 
   return {
     createProduct,

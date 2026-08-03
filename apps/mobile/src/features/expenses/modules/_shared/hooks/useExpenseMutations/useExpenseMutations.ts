@@ -1,7 +1,7 @@
 import { useCallback } from 'react';
 import { useSWRConfig } from 'swr';
 
-import { api, API_KEYS } from '@/shared/api';
+import { api, API_KEYS, invalidateNotificationDigest } from '@/shared/api';
 
 import type {
   CompleteExpenseReminderPayload,
@@ -28,9 +28,12 @@ export function useExpenseMutations() {
   }, [mutate]);
 
   const invalidateReminders = useCallback(async () => {
-    await mutate((key: unknown) => typeof key === 'string' && key.startsWith(API_KEYS.expenses.reminders), undefined, {
-      revalidate: true,
-    });
+    await Promise.all([
+      mutate((key: unknown) => typeof key === 'string' && key.startsWith(API_KEYS.expenses.reminders), undefined, {
+        revalidate: true,
+      }),
+      invalidateNotificationDigest(mutate),
+    ]);
   }, [mutate]);
 
   const invalidateAll = useCallback(async () => {
