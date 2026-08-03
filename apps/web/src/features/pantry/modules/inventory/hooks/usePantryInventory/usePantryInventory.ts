@@ -3,7 +3,7 @@ import useSWR from 'swr';
 import { buildQueryString, SWR_KEYS } from '@/shared/api';
 
 import type { PaginatedResponse } from '@omni/shared/common';
-import type { PantryProduct, PantrySummary, ListPantryProductsParams } from '@omni/shared/pantry';
+import type { ListPantryProductsParams, PantryProduct, PantrySummary } from '@omni/shared/pantry';
 
 const DEFAULT_PRODUCT_PARAMS: ListPantryProductsParams = { page: 1, limit: 50 };
 

@@ -1,3 +1,4 @@
+export { usePantryMutations } from './modules/_shared';
 export {
   usePantryProduct,
   usePantryProducts,
@@ -5,4 +6,3 @@ export {
   usePantrySummary,
 } from './modules/inventory/hooks/usePantryInventory';
 export { usePantryShoppingList } from './modules/shopping-list/hooks/usePantryShoppingList';
-export { usePantryMutations } from './modules/_shared';
