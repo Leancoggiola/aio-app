@@ -23,11 +23,11 @@
       "outputs": []
     },
     "test": {
-      "dependsOn": ["transit"],
+      "dependsOn": ["transit", "db:generate"],
       "outputs": []
     },
     "test:coverage": {
-      "dependsOn": ["transit"],
+      "dependsOn": ["transit", "db:generate"],
       "outputs": ["coverage/**"]
     },
     "dev": {

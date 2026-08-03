@@ -11,7 +11,7 @@
 | [product/](./product/)                 | Project management / Roadmap        |
 | [web/](./web/)                         | Tooling, features y prompts web     |
 | [mobile/](./mobile/)                   | Tooling, features y prompts mobile  |
-| [api/](./api/)                         | Prisma / migraciones                |
+| [api/](./api/)                         | Prisma, tests de rutas              |
 | [ops/](./ops/)                         | Deploy y releases                   |
 | [tooling/](./tooling/)                 | CodeGraph, Playwright               |
 
@@ -45,9 +45,10 @@
 
 ### API
 
-| Doc                          | Contenido          |
-| ---------------------------- | ------------------ |
-| [prisma.md](./api/prisma.md) | Migraciones Prisma |
+| Doc                                        | Contenido                           |
+| ------------------------------------------ | ----------------------------------- |
+| [prisma.md](./api/prisma.md)               | Migraciones Prisma                  |
+| [route-testing.md](./api/route-testing.md) | Tests HTTP de endpoints (Supertest) |
 
 ### Ops
 

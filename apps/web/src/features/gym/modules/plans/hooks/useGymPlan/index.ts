@@ -1,0 +1,1 @@
+export { useGymPlan } from './useGymPlan';
