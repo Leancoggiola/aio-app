@@ -7,6 +7,14 @@ describe('SWR_KEYS', () => {
     const id = 'abc';
     expect(SWR_KEYS.media.listItem(id)).toBe(`${SWR_KEYS.media.list}/${id}`);
   });
+
+  it('exposes lifestyle path helpers', () => {
+    expect(SWR_KEYS.gym.plan('p1')).toBe('/api/gym/plans/p1');
+    expect(SWR_KEYS.pantry.product('prod1')).toBe('/api/pantry/products/prod1');
+    expect(SWR_KEYS.expenses.reminderComplete('r1')).toBe('/api/expenses/reminders/r1/complete');
+    expect(SWR_KEYS.splitExpenses.gatheringExpense('g1', 'e1')).toBe('/api/split-expenses/gatherings/g1/expenses/e1');
+    expect(SWR_KEYS.notifications.device('d1')).toBe('/api/notifications/devices/d1');
+  });
 });
 
 describe('buildQueryString', () => {

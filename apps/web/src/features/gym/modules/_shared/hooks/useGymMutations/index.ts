@@ -1,0 +1,1 @@
+export { useGymMutations } from './useGymMutations';
