@@ -4,7 +4,7 @@ import { registerNotificationDeviceSchema } from '@omni/shared/notifications';
 import { authenticateJwt } from '../auth/middleware/auth.middleware';
 import { validate } from '../common/utils';
 import { authenticateNotifications } from './notifications.middleware';
-import { getDigestForUser, registerDevice, deleteDevice } from './notifications.service';
+import { getDigestForUser, listDevices, registerDevice, deleteDevice } from './notifications.service';
 
 const router = Router();
 
@@ -12,6 +12,15 @@ router.get('/digest', authenticateNotifications, async (req: Request, res: Respo
   try {
     const { userId } = req.user as { userId: string };
     res.json(await getDigestForUser(userId));
+  } catch (err) {
+    next(err);
+  }
+});
+
+router.get('/devices', authenticateJwt, async (req: Request, res: Response, next: NextFunction) => {
+  try {
+    const { userId } = req.user as { userId: string };
+    res.json(await listDevices(userId));
   } catch (err) {
     next(err);
   }

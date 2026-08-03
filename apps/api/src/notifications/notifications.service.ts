@@ -1,7 +1,10 @@
 import { createHash, randomBytes } from 'node:crypto';
 import { isExpiringSoon, isLowStock } from '@omni/shared/pantry';
-import type { NotificationDigest } from '@omni/shared/notifications';
-import type { RegisterNotificationDevicePayload } from '@omni/shared/notifications';
+import type {
+  NotificationDigest,
+  NotificationDevice,
+  RegisterNotificationDevicePayload,
+} from '@omni/shared/notifications';
 import { summarizeGatheringPayments } from '@omni/shared/split-expenses';
 import { startOfTodayInAppTz } from '@omni/shared/common';
 
@@ -99,6 +102,30 @@ export async function getDigest(userId: string): Promise<NotificationDigest> {
       items: splitItems.slice(0, 20).map(({ id, name, totalAmount }) => ({ id, name, totalAmount })),
     },
   };
+}
+
+export async function listDevices(userId: string): Promise<NotificationDevice[]> {
+  const rows = await prisma.notificationDevice.findMany({
+    where: { userId },
+    orderBy: [{ isActive: 'desc' }, { createdAt: 'desc' }],
+    select: {
+      id: true,
+      platform: true,
+      label: true,
+      isActive: true,
+      lastSeenAt: true,
+      createdAt: true,
+    },
+  });
+
+  return rows.map(row => ({
+    id: row.id,
+    platform: row.platform,
+    label: row.label,
+    isActive: row.isActive,
+    lastSeenAt: row.lastSeenAt ? toIsoDateTimeString(row.lastSeenAt) : null,
+    createdAt: toIsoDateTimeString(row.createdAt),
+  }));
 }
 
 export async function registerDevice(userId: string, dto: RegisterNotificationDevicePayload) {

@@ -7,6 +7,7 @@ Arquitectura para push/email (fase 2) e integración Raspberry Pi.
 | Endpoint                                | Auth                     | Descripción                      |
 | --------------------------------------- | ------------------------ | -------------------------------- |
 | `GET /api/notifications/digest`         | JWT o `Bearer omni_pi_…` | Resumen gastos + alacena + split |
+| `GET /api/notifications/devices`        | JWT                      | Listar dispositivos del usuario  |
 | `POST /api/notifications/devices`       | JWT                      | Registrar dispositivo            |
 | `DELETE /api/notifications/devices/:id` | JWT                      | Revocar dispositivo              |
 

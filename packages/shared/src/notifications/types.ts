@@ -26,3 +26,13 @@ export interface NotificationDeviceSummary {
   label: string | null;
   apiKey?: string;
 }
+
+/** Listed device — never includes token or apiKey. */
+export interface NotificationDevice {
+  id: string;
+  platform: 'WEB' | 'MOBILE' | 'RASPBERRY_PI';
+  label: string | null;
+  isActive: boolean;
+  lastSeenAt: string | null;
+  createdAt: string;
+}
