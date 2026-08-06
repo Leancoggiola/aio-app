@@ -25,8 +25,10 @@ Nunca hardcodear URLs. Usar `buildQueryString` para query params (ordena keys).
 | Caso | Hook |
 |------|------|
 | Read, rara revalidación (perfil, sesión) | `useSWRImmutable` |
-| Read, datos que cambian (listas, búsqueda) | `useSWR` |
+| Read, lista propia + filtros UI (media) | `useSWRImmutable` + filter client-side |
+| Read, datos que cambian (búsqueda) | `useSWR` |
 | Write, actualizar misma key | `useSWRMutation` + `populateCache: true, revalidate: false` |
+| Write, update optimista de lista | `useSWRConfig().mutate` + `optimisticData`, `revalidate: false` |
 | Write, invalidar varias keys | `useSWRConfig().mutate` + `startsWith` |
 
 ## Return shape

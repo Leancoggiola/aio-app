@@ -1,12 +1,12 @@
+import type { TmdbMediaResult, TmdbMovieDetail, TmdbSearchResponse, TmdbTvDetail } from '@omni/shared/media';
 import { config } from '../config';
-import type { TmdbSearchResponse, TmdbMediaResult, TmdbMovieDetail, TmdbTvDetail } from '@omni/shared/media';
 
-export type { TmdbSearchResponse, TmdbMediaResult, TmdbMovieDetail, TmdbTvDetail };
+export type { TmdbMediaResult, TmdbMovieDetail, TmdbSearchResponse, TmdbTvDetail };
 
 async function get<T>(path: string, params: Record<string, string | number> = {}): Promise<T> {
   const url = new URL(`${config.tmdb.baseUrl}${path}`);
   url.searchParams.set('api_key', config.tmdb.apiKey);
-  url.searchParams.set('language', 'es-ES');
+  url.searchParams.set('language', 'en-US');
   for (const [key, value] of Object.entries(params)) {
     url.searchParams.set(key, String(value));
   }

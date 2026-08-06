@@ -5,7 +5,7 @@ import { getTmdbResultKey, getTmdbResultTitle, resolveMediaType } from '../../..
 
 import type { MediaStatus, MediaType, TmdbMediaResult } from '../../../_shared/types';
 
-import { MEDIA_STATUS_LABELS, MEDIA_TYPE_LABELS, TMDB_POSTER_W300 } from '@omni/shared/media';
+import { MEDIA_STATUS_LABELS, MEDIA_TYPE_LABELS, TMDB_POSTER_W500 } from '@omni/shared/media';
 
 interface MediaSearchResultsProps {
   results: TmdbMediaResult[];
@@ -43,7 +43,7 @@ export const MediaSearchResults: FC<MediaSearchResultsProps> = ({ results, isLoa
           <Card key={key} shadow="sm" padding="sm" radius="md" withBorder>
             <Card.Section>
               <Image
-                src={item.poster_path ? `${TMDB_POSTER_W300}${item.poster_path}` : undefined}
+                src={item.poster_path ? `${TMDB_POSTER_W500}${item.poster_path}` : undefined}
                 h="13.75rem"
                 alt={title}
                 fallbackSrc="https://placehold.co/300x450?text=Sin+imagen"

@@ -1,11 +1,22 @@
-import useSWR from 'swr';
+import { useMemo } from 'react';
+import useSWRImmutable from 'swr/immutable';
 
-import { buildQueryString, SWR_KEYS } from '@/shared/api';
+import { SWR_KEYS } from '@/shared/api';
 
 import type { MediaFilters, MediaItem } from '../../../_shared/types';
 
 export function useMyMediaList(filters: MediaFilters = {}) {
-  const key = `${SWR_KEYS.media.list}${buildQueryString({ mediaType: filters.mediaType, status: filters.status })}`;
+  const { data, isLoading, error } = useSWRImmutable<MediaItem[]>(SWR_KEYS.media.list);
 
-  return useSWR<MediaItem[]>(key);
+  const filtered = useMemo(() => {
+    if (!data) return data;
+
+    return data.filter(item => {
+      if (filters.status && item.status !== filters.status) return false;
+      if (filters.mediaType && item.mediaType !== filters.mediaType) return false;
+      return true;
+    });
+  }, [data, filters.mediaType, filters.status]);
+
+  return { data: filtered, allItems: data, isLoading, error };
 }

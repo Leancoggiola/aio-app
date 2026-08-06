@@ -27,13 +27,17 @@ New hook needed?
 ├── Read-only, data rarely/never changes server-side (auth session, user profile page)?
 │   └── useSWRImmutable  ← no revalidation on focus/reconnect
 │
-├── Read-only, data changes server-side (lists, search results)?
+├── Read — client-owned collection, filter in UI (media library)?
+│   └── useSWRImmutable on bare list key + client filter
+│       └── Writes → useSWRConfig mutate with optimisticData, revalidate: false
+│
+├── Read-only, data changes server-side (search results, shared feeds)?
 │   └── useSWR  ← default revalidation behavior
 │
 └── Write operation (PATCH, POST, DELETE)?
-    └── useSWRMutation  ← isMutating state + populateCache
-        ├── Single cache key to update → populateCache: true, revalidate: false
-        └── Invalidate multiple keys (e.g. list + filters) → useSWRConfig mutate with startsWith filter
+    ├── Same key as read + response is the new value → useSWRMutation (populateCache, revalidate: false)
+    ├── Optimistic update of a list cache → useSWRConfig mutate + optimisticData
+    └── Invalidate multiple keys → useSWRConfig mutate with startsWith filter
 ```
 
 ---
@@ -58,11 +62,38 @@ export function useProfile() {
 import useSWR from 'swr';
 import { buildQueryString, SWR_KEYS } from '@/shared/api';
 
-export function useMyMediaList(filters: MediaFilters = {}) {
-  const key = `${SWR_KEYS.media.list}${buildQueryString({ mediaType: filters.mediaType, status: filters.status })}`;
-  return useSWR<MediaItem[]>(key);
+export function useMediaSearch(query: string) {
+  const key = query ? `${SWR_KEYS.media.search}${buildQueryString({ q: query })}` : null;
+  return useSWR<TmdbSearchResponse>(key);
 }
 ```
+
+### Read — client-owned list (`useSWRImmutable` + filter)
+
+When the user owns the data and filters are cheap client-side (personal media list, etc.), fetch **once** without query params and filter in the hook. Avoids a network call per tab/filter and keeps a single cache key for optimistic writes.
+
+```ts
+import { useMemo } from 'react';
+import useSWRImmutable from 'swr/immutable';
+import { SWR_KEYS } from '@/shared/api';
+
+export function useMyMediaList(filters: MediaFilters = {}) {
+  const { data, isLoading, error } = useSWRImmutable<MediaItem[]>(SWR_KEYS.media.list);
+
+  const filtered = useMemo(() => {
+    if (!data) return data;
+    return data.filter(item => {
+      if (filters.status && item.status !== filters.status) return false;
+      if (filters.mediaType && item.mediaType !== filters.mediaType) return false;
+      return true;
+    });
+  }, [data, filters.mediaType, filters.status]);
+
+  return { data: filtered, allItems: data, isLoading, error };
+}
+```
+
+> Expose `allItems` when UI needs the unfiltered set (e.g. “already in list” checks) while the grid shows `data`.
 
 ### Write — single key update (`useSWRMutation`)
 
@@ -88,23 +119,58 @@ export function useProfile() {
 > `populateCache: true` writes the mutation response directly into the read cache (same key).
 > `revalidate: false` skips the redundant GET — we already have the fresh data.
 
+### Write — optimistic list update (`useSWRConfig`)
+
+Prefer this for client-owned lists (single cache key). Update the cache immediately; skip revalidation so the UI does not flash.
+
+```ts
+import { useCallback } from 'react';
+import { useSWRConfig } from 'swr';
+import { api, SWR_KEYS } from '@/shared/api';
+
+export function useMediaMutations() {
+  const { mutate } = useSWRConfig();
+  const listKey = SWR_KEYS.media.list;
+
+  const updateStatus = useCallback(
+    async (itemId: string, status: MediaStatus) => {
+      let updated: MediaItem | undefined;
+
+      await mutate(
+        listKey,
+        async (current: MediaItem[] | undefined) => {
+          updated = await api.patch<MediaItem>(SWR_KEYS.media.listItem(itemId), { status });
+          return current?.map(item => (item.id === itemId ? updated! : item)) ?? [updated!];
+        },
+        {
+          optimisticData: (current: MediaItem[] | undefined) =>
+            current?.map(item => (item.id === itemId ? { ...item, status } : item)) ?? [],
+          rollbackOnError: true,
+          populateCache: true,
+          revalidate: false,
+        }
+      );
+
+      return updated!;
+    },
+    [mutate, listKey]
+  );
+}
+```
+
 ### Write — invalidate multiple keys (`useSWRConfig`)
 
-Use when a write should bust multiple cached entries (e.g. list with/without filters):
+Use only when a write must bust several distinct cache keys (not the preferred path for media list):
 
 ```ts
 import { useSWRConfig } from 'swr';
 import { SWR_KEYS } from '@/shared/api';
 
-export function useMediaMutations() {
-  const { mutate } = useSWRConfig();
+const { mutate } = useSWRConfig();
 
-  const invalidateList = useCallback(() => {
-    mutate((key: unknown) => typeof key === 'string' && key.startsWith(SWR_KEYS.media.list), undefined, {
-      revalidate: true,
-    });
-  }, [mutate]);
-}
+mutate((key: unknown) => typeof key === 'string' && key.startsWith(SWR_KEYS.media.list), undefined, {
+  revalidate: true,
+});
 ```
 
 ### Auth — login / logout

@@ -1,7 +1,7 @@
 import { Image } from 'expo-image';
 import { Button, Paragraph, XStack, YStack } from 'tamagui';
 
-import { MEDIA_STATUS_LABELS, MEDIA_TYPE_LABELS, TMDB_POSTER_W300 } from '@omni/shared/media';
+import { MEDIA_STATUS_LABELS, MEDIA_TYPE_LABELS, TMDB_POSTER_W500 } from '@omni/shared/media';
 
 import type { MediaItem } from '@omni/shared/media';
 
@@ -12,7 +12,7 @@ type MediaCardProps = {
 };
 
 export function MediaCard({ item, onStatusPress, onDeletePress }: MediaCardProps) {
-  const posterUri = item.posterPath ? `${TMDB_POSTER_W300}${item.posterPath}` : null;
+  const posterUri = item.posterPath ? `${TMDB_POSTER_W500}${item.posterPath}` : null;
 
   return (
     <XStack

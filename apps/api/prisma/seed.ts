@@ -110,53 +110,54 @@ async function main() {
   // SECTION 3: SAMPLE MEDIA ITEMS (Development only)
   // ============================================
   if (isDevelopment) {
+    // posterPath values change when TMDB rotates assets — refresh via API if images 404.
     const sampleMedia = [
       {
         tmdbId: 550,
         mediaType: 'movie',
         title: 'Fight Club',
-        posterPath: '/pB8BM7pdSp6B6Ih7QZ7XjsKwYP2.jpg',
+        posterPath: '/jSziioSwPVrOy9Yow3XhWIBDjq1.jpg',
         status: 'watched',
       },
       {
         tmdbId: 278,
         mediaType: 'movie',
         title: 'The Shawshank Redemption',
-        posterPath: '/q6y0aVAvFx3bnlsHX4mOnMZo6v.jpg',
+        posterPath: '/9cqNxx0GxF0bflZmeSMuL5tnGzr.jpg',
         status: 'watched',
       },
       {
         tmdbId: 155,
         mediaType: 'movie',
         title: 'The Dark Knight',
-        posterPath: '/1hRoyzDtpgMU7Dz4IEIqq2kTrCl.jpg',
+        posterPath: '/qJ2tW6WMUDux911r6m7haRef0WH.jpg',
         status: 'watching',
       },
       {
         tmdbId: 27205,
         mediaType: 'movie',
         title: 'Inception',
-        posterPath: '/pg8JQWLFKtaueRXSBjM0cAawykL.jpg',
+        posterPath: '/xlaY2zyzMfkhk0HSC5VUwzoZPU1.jpg',
         status: 'to_watch',
       },
       {
         tmdbId: 1399,
         mediaType: 'tv',
         title: 'Game of Thrones',
-        posterPath: '/u3bZgnrm2E0BlzYrNeEc53OVVmU.jpg',
+        posterPath: '/1XS1oqL89opfnbLl8WnZY1O1uJx.jpg',
         status: 'watched',
       },
       {
         tmdbId: 1396,
         mediaType: 'tv',
         title: 'Breaking Bad',
-        posterPath: '/ggJZtGnWZHkSvJyEKHLl2PwLcgw.jpg',
+        posterPath: '/anFx9aTOOYqgS3v7x3R84Kz67ly.jpg',
         status: 'watched',
       },
     ];
 
     for (const media of sampleMedia) {
-      const existing = await prisma.mediaItem.findUnique({
+      await prisma.mediaItem.upsert({
         where: {
           userId_tmdbId_mediaType: {
             userId: adminUser.id,
@@ -164,16 +165,15 @@ async function main() {
             mediaType: media.mediaType,
           },
         },
+        create: {
+          userId: adminUser.id,
+          ...media,
+        },
+        update: {
+          posterPath: media.posterPath,
+          title: media.title,
+        },
       });
-
-      if (!existing) {
-        await prisma.mediaItem.create({
-          data: {
-            userId: adminUser.id,
-            ...media,
-          },
-        });
-      }
     }
     console.log('✅ Sample media items created/verified.');
   } else {
