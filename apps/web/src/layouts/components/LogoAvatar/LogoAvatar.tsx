@@ -12,12 +12,10 @@ interface LogoAvatarProps {
 export const LogoAvatar: FC<LogoAvatarProps> = ({ size = 'md' }) => (
   <Avatar
     src={logoUrl}
-    alt="Omni"
+    alt="Omni-logo"
     size={size}
-    variant="filled"
-    color="brand.2"
     radius="md"
-    imageProps={{ style: { objectFit: 'contain', padding: '15%' } }}
-    style={{ boxShadow: 'var(--mantine-shadow-brand)' }}
+    bg="brand.2"
+    styles={{ image: { objectFit: 'contain', padding: '10%' }, root: { boxShadow: 'var(--mantine-shadow-md)' } }}
   />
 );
