@@ -1,4 +1,4 @@
-export { BRAND, DESTRUCTIVE, GRAY, OVERLAY, SEMANTIC, SUCCESS } from '@omni/shared/theme';
+export { BRAND, GRAY, SEMANTIC } from '@omni/shared/theme';
 
 export const SHADOWS = {
   xs: '0 1px 2px rgb(0 0 0 / 0.05)',

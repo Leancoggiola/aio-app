@@ -16,7 +16,7 @@ export {
   MEDIA_TYPE_LABELS,
   MEDIA_STATUS_LABELS,
   TMDB_IMAGE_BASE,
-  TMDB_POSTER_W300,
+  TMDB_POSTER_W500,
 } from './constants';
 export {
   addMediaItemSchema,

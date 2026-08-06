@@ -13,7 +13,7 @@ export function notifyError(message: string) {
   notifications.show({
     title: 'Error',
     message,
-    color: 'red',
+    color: 'destructive',
     priority: 10,
   });
 }

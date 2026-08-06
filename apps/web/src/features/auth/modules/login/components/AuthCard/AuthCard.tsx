@@ -5,7 +5,7 @@ import logoUrl from '@/assets/logo.png';
 import type { FC, ReactNode } from 'react';
 
 interface AuthCardProps {
-  title: ReactNode;
+  title: string;
   children: ReactNode;
 }
 
@@ -16,13 +16,10 @@ export const AuthCard: FC<AuthCardProps> = ({ title, children }) => {
         <Center>
           <Avatar
             src={logoUrl}
-            alt="Omni"
+            alt="Omni-logo"
             size="xl"
-            variant="filled"
-            color="brand.2"
             radius="md"
-            imageProps={{ style: { objectFit: 'contain', padding: '15%' } }}
-            style={{ boxShadow: 'var(--mantine-shadow-md)' }}
+            styles={{ image: { objectFit: 'contain', padding: '5%' }, root: { boxShadow: 'var(--mantine-shadow-md)' } }}
           />
         </Center>
         <Title order={2} fw={700} ta="center">

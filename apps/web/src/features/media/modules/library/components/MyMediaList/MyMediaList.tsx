@@ -3,6 +3,7 @@ import { Center, Loader, SimpleGrid, Stack } from '@mantine/core';
 
 import { MediaCard } from '../MediaCard';
 import { MediaEmptyState } from '../MediaEmptyState';
+import { MediaListItem } from '../MediaListItem';
 
 import type { MediaItem, MediaStatus } from '../../../_shared/types';
 
@@ -10,6 +11,7 @@ interface MyMediaListProps {
   items: MediaItem[] | undefined;
   isLoading: boolean;
   searchText: string;
+  displayMode: string;
   onAdd: () => void;
   onStatusChange: (id: string, status: MediaStatus) => void;
   onDelete: (item: MediaItem) => void | Promise<void>;
@@ -19,6 +21,7 @@ export const MyMediaList: FC<MyMediaListProps> = ({
   items,
   isLoading,
   searchText,
+  displayMode,
   onAdd,
   onStatusChange,
   onDelete,
@@ -48,11 +51,17 @@ export const MyMediaList: FC<MyMediaListProps> = ({
 
   return (
     <Stack gap="md">
-      <SimpleGrid cols={{ base: 1, sm: 2, lg: 3, xl: 4 }} spacing="md">
-        {filteredItems.map(item => (
-          <MediaCard key={item.id} item={item} onStatusChange={onStatusChange} onDelete={onDelete} />
-        ))}
-      </SimpleGrid>
+      {displayMode === 'grid' ? (
+        <SimpleGrid cols={{ base: 2, sm: 3, lg: 4 }} spacing="md">
+          {filteredItems.map(item => (
+            <MediaCard key={item.id} item={item} onStatusChange={onStatusChange} onDelete={onDelete} />
+          ))}
+        </SimpleGrid>
+      ) : (
+        filteredItems.map(item => (
+          <MediaListItem key={item.id} item={item} onStatusChange={onStatusChange} onDelete={onDelete} />
+        ))
+      )}
     </Stack>
   );
 };

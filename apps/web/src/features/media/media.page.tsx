@@ -19,6 +19,7 @@ export const MediaPage: FC = () => {
   const [searchText, setSearchText] = useState('');
   const [statusFilter, setStatusFilter] = useState<MediaStatus | 'all'>('all');
   const [typeFilter, setTypeFilter] = useState<MediaType | 'all'>('all');
+  const [displayMode, onDisplayChange] = useState<string>('grid');
   const [addOpened, setAddOpened] = useState(false);
 
   const filters = useMemo<MediaFilters>(
@@ -29,14 +30,14 @@ export const MediaPage: FC = () => {
     [statusFilter, typeFilter]
   );
 
-  const { data: listData, isLoading: listLoading } = useMyMediaList(filters);
+  const { data: listData, allItems, isLoading: listLoading } = useMyMediaList(filters);
   const { addToList, updateStatus, removeFromList } = useMediaMutations();
 
   const existingTmdbIds = useMemo(() => {
     const set = new Set<string>();
-    listData?.forEach(item => set.add(buildMediaTmdbKey(item.mediaType, item.tmdbId)));
+    allItems?.forEach(item => set.add(buildMediaTmdbKey(item.mediaType, item.tmdbId)));
     return set;
-  }, [listData]);
+  }, [allItems]);
 
   const handleAdd = useCallback(
     async (tmdbId: number, mediaType: MediaType, status: MediaStatus) => {
@@ -79,7 +80,7 @@ export const MediaPage: FC = () => {
 
   return (
     <Stack gap="lg">
-      <MediaPageHeader onAdd={() => setAddOpened(true)} />
+      <MediaPageHeader onAdd={() => setAddOpened(true)} displayMode={displayMode} onDisplayChange={onDisplayChange} />
 
       <MediaListToolbar
         searchText={searchText}
@@ -94,6 +95,7 @@ export const MediaPage: FC = () => {
         items={listData}
         isLoading={listLoading}
         searchText={searchText}
+        displayMode={displayMode}
         onAdd={() => setAddOpened(true)}
         onStatusChange={handleStatusChange}
         onDelete={handleDelete}

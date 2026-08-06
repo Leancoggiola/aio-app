@@ -32,7 +32,7 @@ import {
   MEDIA_STATUS_LABELS,
   MEDIA_STATUSES,
   MEDIA_TYPE_LABELS,
-  TMDB_POSTER_W300,
+  TMDB_POSTER_W500,
 } from '@omni/shared/media';
 
 interface AddMediaModalProps {
@@ -73,9 +73,8 @@ export const AddMediaModal: FC<AddMediaModalProps> = ({ opened, onClose, onSubmi
     }
   }, [opened]);
 
-  const hasSelection = form.values.tmdbId != null;
   const searchResults = searchData?.results ?? [];
-  const posterPreviewUrl = selectedPosterPath ? `${TMDB_POSTER_W300}${selectedPosterPath}` : null;
+  const posterPreviewUrl = selectedPosterPath ? `${TMDB_POSTER_W500}${selectedPosterPath}` : null;
 
   const applyTmdbSelection = useCallback(
     (tmdbId: number, mediaType: MediaType, title: string, posterPath: string | null) => {
@@ -138,14 +137,13 @@ export const AddMediaModal: FC<AddMediaModalProps> = ({ opened, onClose, onSubmi
       onClose={handleModalClose}
       title="Agregar película / serie"
       centered
-      size="md"
       closeOnClickOutside={!loading}
       closeOnEscape={!loading}
     >
       <form onSubmit={form.onSubmit(handleSubmit)}>
         <Stack gap="md">
           {submitError && (
-            <Alert color="red" variant="light">
+            <Alert color="destructive" variant="light">
               {submitError}
             </Alert>
           )}
@@ -189,7 +187,7 @@ export const AddMediaModal: FC<AddMediaModalProps> = ({ opened, onClose, onSubmi
             <Select
               label="Tipo"
               data={Object.entries(MEDIA_TYPE_LABELS).map(([value, label]) => ({ value, label }))}
-              disabled={hasSelection}
+              disabled
               {...form.getInputProps('mediaType')}
             />
             <Select

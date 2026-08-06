@@ -1,4 +1,4 @@
-import { AppShell, Button, Card, Input, Modal, NavLink, Paper } from '@mantine/core';
+import { ActionIcon, AppShell, Card, Combobox, Input, Modal, NavLink, Paper, Select, Tabs } from '@mantine/core';
 
 import { componentOverrides } from './components.overrides';
 
@@ -7,17 +7,13 @@ import { CaretRightIcon } from '@phosphor-icons/react';
 const surfaceBg = 'var(--mantine-color-default)';
 
 export const ComponentsOverride = {
+  ActionIcon: ActionIcon.extend({
+    classNames: componentOverrides.actionIcon,
+  }),
   AppShell: AppShell.extend({
     styles: {
       navbar: { backgroundColor: surfaceBg },
       header: { backgroundColor: surfaceBg },
-    },
-  }),
-
-  Paper: Paper.extend({
-    defaultProps: { p: 'lg', shadow: 'sm', withBorder: false },
-    styles: {
-      root: { backgroundColor: surfaceBg },
     },
   }),
 
@@ -28,16 +24,16 @@ export const ComponentsOverride = {
     },
   }),
 
-  Button: Button.extend({
-    defaultProps: { radius: 'md' },
-  }),
-
-  Modal: Modal.extend({
-    defaultProps: { radius: 'md' },
+  Combobox: Combobox.extend({
+    classNames: componentOverrides.combobox,
   }),
 
   Input: Input.extend({
-    defaultProps: { size: 'md', radius: 'sm' },
+    defaultProps: { size: 'md' },
+  }),
+
+  Modal: Modal.extend({
+    classNames: componentOverrides.modal,
   }),
 
   NavLink: NavLink.extend({
@@ -47,5 +43,20 @@ export const ComponentsOverride = {
       rightSection: <CaretRightIcon size="1rem" />,
     },
     classNames: componentOverrides.navlink,
+  }),
+
+  Paper: Paper.extend({
+    defaultProps: { p: 'lg', shadow: 'sm', withBorder: false },
+    styles: {
+      root: { backgroundColor: surfaceBg },
+    },
+  }),
+
+  Select: Select.extend({
+    classNames: componentOverrides.combobox,
+  }),
+
+  Tabs: Tabs.extend({
+    classNames: componentOverrides.tabs,
   }),
 };

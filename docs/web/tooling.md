@@ -18,7 +18,9 @@ Se aplican al editar bajo `apps/web/**` (salvo `alwaysApply`).
 
 También: [project-agents.mdc](../../.cursor/rules/project-agents.mdc) (`alwaysApply`).
 
-## Skills del proyecto (`.cursor/skills/`)
+## Skills del proyecto (`.cursor/skills/`, espejo en `.github/skills/`)
+
+Mismo contenido en ambas carpetas: `.cursor/skills/` lo lee Cursor, `.github/skills/` lo lee VS Code Copilot. Al editar una skill, actualizar las dos.
 
 | Skill              | Cuándo usarla                              |
 | ------------------ | ------------------------------------------ |

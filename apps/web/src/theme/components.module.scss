@@ -1,3 +1,47 @@
+.action_icon_root {
+  &[data-variant='subtle']:hover {
+    background: transparent;
+    border-color: 1px solid var(--ai-color);
+  }
+}
+
+.combobox_root {
+  &[data-to_watch] input {
+    background: var(--mantine-color-surfaces-dimmed-subtle);
+    border-color: var(--mantine-color-border-dimmed);
+  }
+  &[data-watching] input {
+    background: var(--mantine-color-surfaces-success-light);
+    border-color: var(--mantine-color-border-success);
+  }
+  &[data-watched] input {
+    background: var(--mantine-color-surfaces-info-light);
+    border-color: var(--mantine-color-border-info);
+  }
+}
+
+.combobox_option {
+  &[data-combobox-selected],
+  &[data-combobox-active] {
+    color: var(--mantine-color-white);
+    background-color: var(--mantine-color-brand-6) !important;
+    svg {
+      opacity: 1;
+    }
+  }
+
+  &:hover:where(:not([data-combobox-disabled])) {
+    background-color: var(--mantine-color-brand-0);
+  }
+}
+
+.modal_content {
+  padding: var(--mantine-spacing-none) !important;
+}
+.modal_header {
+  background: transparent;
+}
+
 .navlink_root {
   padding: var(--mantine-spacing-sm) var(--mantine-spacing-md);
 
@@ -14,6 +58,13 @@
 }
 
 .navlink_label {
-  font-size: 1rem;
+  font-size: var(--mantine-font-size-md);
   font-weight: 600;
+}
+
+.tabs_tab {
+  &[data-active] {
+    background: var(--mantine-color-white);
+    font-weight: 700;
+  }
 }

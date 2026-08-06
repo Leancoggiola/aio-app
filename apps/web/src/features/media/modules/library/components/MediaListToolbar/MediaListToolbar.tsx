@@ -33,22 +33,17 @@ export const MediaListToolbar: FC<MediaListToolbarProps> = ({
 }) => {
   return (
     <Stack gap="md">
-      <Paper p="md" radius="md" shadow="xs" withBorder>
+      <Paper p="md" shadow="xs">
         <Group gap="md" align="flex-end" wrap="wrap">
           <TextInput
             placeholder="Buscar..."
             value={searchText}
             onChange={e => onSearchTextChange(e.currentTarget.value)}
             leftSection={<MagnifyingGlassIcon size="1rem" />}
-            style={{ flex: 1, minWidth: '12rem' }}
+            flex={1}
             size="md"
           />
           <Select
-            label="Tipo"
-            labelProps={{
-              style: { position: 'absolute', width: '0.0625rem', height: '0.0625rem', overflow: 'hidden' },
-            }}
-            aria-label="Filtrar por tipo"
             data={TYPE_FILTER_OPTIONS}
             value={typeFilter}
             onChange={val => onTypeFilterChange((val as MediaType | 'all') || 'all')}
@@ -58,10 +53,14 @@ export const MediaListToolbar: FC<MediaListToolbarProps> = ({
         </Group>
       </Paper>
 
-      <Tabs value={statusFilter} onChange={val => onStatusFilterChange((val as MediaStatus | 'all') || 'all')}>
+      <Tabs
+        value={statusFilter}
+        onChange={val => onStatusFilterChange((val as MediaStatus | 'all') || 'all')}
+        color="brand"
+      >
         <Tabs.List>
           <Tabs.Tab value="all">Todos</Tabs.Tab>
-          {(Object.entries(MEDIA_STATUS_LABELS) as [MediaStatus, string][]).map(([status, label]) => (
+          {Object.entries(MEDIA_STATUS_LABELS).map(([status, label]) => (
             <Tabs.Tab key={status} value={status}>
               {label}
             </Tabs.Tab>

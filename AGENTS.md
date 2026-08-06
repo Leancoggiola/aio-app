@@ -16,7 +16,8 @@ Monorepo de **media tracking** (películas/series vía TMDB). Clientes: **web** 
 | `packages/shared/` | Zod + tipos (`@omni/shared`)                           |
 | `docs/`            | Índice en `docs/README.md`                             |
 | `.cursor/rules/`   | Laws por glob (`web-*`, `mobile-*`, `api-conventions`) |
-| `.cursor/skills/`  | Skills proyecto (web, mobile, api, shared)             |
+| `.cursor/skills/`  | Skills proyecto — fuente (Cursor)                      |
+| `.github/skills/`  | Skills proyecto — espejo idéntico para VS Code Copilot |
 | `.agents/skills/`  | Skills terceros (Mantine, Supabase)                    |
 | `.cursor/mcp.json` | MCP CodeGraph                                          |
 
@@ -37,6 +38,7 @@ Flujo: `develop` → branch `feat/#N-…` / `fix/#N-…` → PR a `develop` → 
 
 ## Reglas de oro
 
+0. **Skills de proyecto duplicadas** — `.cursor/skills/<name>/SKILL.md` (Cursor) y `.github/skills/<name>/SKILL.md` (VS Code) deben ser idénticas. Al editar una, actualizar la otra en el mismo cambio.
 1. **Un feature no importa otro** del mismo cliente — UI compartida en `shared/ui` (web) o componentes locales (mobile).
 2. **URLs HTTP centralizadas** — web: `SWR_KEYS`; mobile: `API_KEYS`. Nunca literales `/api/` en features.
 3. **Contrato compartido** — `packages/shared`; API `validate()`; clientes mismos Zod/tipos.

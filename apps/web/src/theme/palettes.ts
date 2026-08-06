@@ -1,55 +1,48 @@
-import type { MantineColorsTuple } from '@mantine/core';
+import { colorsTuple, type MantineColorsTuple } from '@mantine/core';
 
-import { BRAND, DESTRUCTIVE, GRAY, SUCCESS } from '@omni/shared/theme';
+import { BLUE, BRAND, DARK, GRAY, GREEN, INDIGO, LIME, ORANGE, PINK, RED, YELLOW } from '@omni/shared/theme';
 
-export const brandPalette: MantineColorsTuple = [
-  BRAND[0],
-  BRAND[1],
-  BRAND[2],
-  BRAND[3],
-  BRAND[4],
-  BRAND[5],
-  BRAND[6],
-  BRAND[7],
-  BRAND[8],
-  BRAND[9],
-];
+type ColorScale10 = {
+  readonly 0: string;
+  readonly 1: string;
+  readonly 2: string;
+  readonly 3: string;
+  readonly 4: string;
+  readonly 5: string;
+  readonly 6: string;
+  readonly 7: string;
+  readonly 8: string;
+  readonly 9: string;
+};
 
-export const grayPalette: MantineColorsTuple = [
-  GRAY[0],
-  GRAY[1],
-  GRAY[2],
-  GRAY[3],
-  GRAY[4],
-  GRAY[5],
-  GRAY[6],
-  GRAY[7],
-  GRAY[8],
-  GRAY[9],
-];
+/** Shared scales are keyed objects; Mantine theme.colors needs a 10-shade tuple. */
+function toTuple(scale: ColorScale10): MantineColorsTuple {
+  return [scale[0], scale[1], scale[2], scale[3], scale[4], scale[5], scale[6], scale[7], scale[8], scale[9]];
+}
 
-export const redPalette: MantineColorsTuple = [
-  DESTRUCTIVE[0],
-  DESTRUCTIVE[1],
-  DESTRUCTIVE[2],
-  DESTRUCTIVE[3],
-  DESTRUCTIVE[4],
-  DESTRUCTIVE[5],
-  DESTRUCTIVE[6],
-  DESTRUCTIVE[7],
-  DESTRUCTIVE[8],
-  DESTRUCTIVE[9],
-];
+export const COLOR_PALETTE = {
+  brand: toTuple(BRAND),
 
-export const successPalette: MantineColorsTuple = [
-  SUCCESS[0],
-  SUCCESS[1],
-  SUCCESS[2],
-  SUCCESS[3],
-  SUCCESS[4],
-  SUCCESS[5],
-  SUCCESS[6],
-  SUCCESS[7],
-  SUCCESS[8],
-  SUCCESS[9],
-];
+  // Neutral
+  dark: toTuple(DARK),
+  gray: toTuple(GRAY),
+
+  // Semantic
+  blue: toTuple(BLUE),
+  green: toTuple(GREEN),
+  red: toTuple(RED),
+  orange: toTuple(ORANGE),
+
+  // Extended
+  indigo: toTuple(INDIGO),
+  lime: toTuple(LIME),
+  yellow: toTuple(YELLOW),
+  pink: toTuple(PINK),
+
+  // Aliases (single-shade virtual palettes)
+  success: colorsTuple(GREEN[5]),
+  info: colorsTuple(BLUE[6]),
+  warning: colorsTuple(ORANGE[8]),
+  error: colorsTuple(RED[7]),
+  destructive: colorsTuple(RED[7]),
+};

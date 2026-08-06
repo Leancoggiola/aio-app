@@ -43,15 +43,9 @@ export const LoginPage: FC = () => {
   };
 
   return (
-    <AuthCard
-      title={
-        <>
-          ¡Te damos la bienvenida a<br /> Omni!
-        </>
-      }
-    >
+    <AuthCard title="¡Te damos la bienvenida a Omni!">
       {error && (
-        <Alert color="red" variant="light">
+        <Alert color="destructive" variant="light">
           {error}
         </Alert>
       )}

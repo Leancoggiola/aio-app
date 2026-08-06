@@ -5,7 +5,7 @@ import { getTmdbResultKey, getTmdbResultTitle, resolveMediaType } from '../../..
 
 import type { TmdbMediaResult } from '../../../_shared/types';
 
-import { MEDIA_TYPE_LABELS, TMDB_POSTER_W300 } from '@omni/shared/media';
+import { MEDIA_TYPE_LABELS, TMDB_POSTER_W500 } from '@omni/shared/media';
 
 interface TmdbSearchOptionProps {
   item: TmdbMediaResult;
@@ -22,7 +22,7 @@ export const TmdbSearchOption = memo(function TmdbSearchOption({ item, alreadyAd
     <Combobox.Option value={key} disabled={alreadyAdded}>
       <Group gap="sm" wrap="nowrap">
         <Image
-          src={item.poster_path ? `${TMDB_POSTER_W300}${item.poster_path}` : undefined}
+          src={item.poster_path ? `${TMDB_POSTER_W500}${item.poster_path}` : undefined}
           w="2.25rem"
           h="3.375rem"
           radius="sm"

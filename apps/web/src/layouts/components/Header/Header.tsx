@@ -17,7 +17,7 @@ export const Header: FC<HeaderProps> = ({ opened, onToggle }) => {
   const { user } = useAuth();
 
   return (
-    <AppShell.Header hiddenFrom="md" px="md" py="sm">
+    <AppShell.Header hiddenFrom="md" px="md" py="sm" style={{ borderBottom: '1px solid var(--mantine-color-brand-4)' }}>
       <Group align="center" justify="space-between">
         <Burger opened={opened} onClick={onToggle} size="md" />
         <Group gap="xs">

@@ -28,14 +28,14 @@ export const ConfirmProvider: FC<{ children: ReactNode }> = ({ children }) => {
     <>
       {children}
       <Modal opened={request !== null} onClose={() => close(false)} title={request?.title} centered>
-        <Text c="dimmed" size="sm" mb="lg">
+        <Text size="md" mb="lg">
           {request?.description}
         </Text>
         <Group justify="flex-end" gap="sm">
           <Button variant="default" onClick={() => close(false)}>
             {request?.cancelLabel}
           </Button>
-          <Button color="red" onClick={() => close(true)}>
+          <Button color="destructive" onClick={() => close(true)}>
             {request?.confirmLabel}
           </Button>
         </Group>

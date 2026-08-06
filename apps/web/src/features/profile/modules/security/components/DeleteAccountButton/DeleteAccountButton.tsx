@@ -29,7 +29,7 @@ export const DeleteAccountButton: FC<DeleteAccountButtonProps> = ({ onDelete }) 
   };
 
   return (
-    <Button color="red" variant="outline" loading={loading} onClick={handleClick}>
+    <Button color="destructive" variant="outline" loading={loading} onClick={handleClick}>
       Eliminar cuenta
     </Button>
   );
