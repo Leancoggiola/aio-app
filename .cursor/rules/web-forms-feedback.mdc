@@ -42,7 +42,7 @@ Referencia: `features/profile/modules/_shared/utils/profileForm/`
 
 | Situación | Patrón |
 |-----------|--------|
-| Error de validación o submit en formulario | `Alert color="red" variant="light"` inline |
+| Error de validación o submit en formulario | `Alert color="destructive" variant="light"` inline |
 | Éxito post-mutation | `notifySuccess()` de `@/shared/ui` |
 | Error de mutation fuera de form (ej. acciones en page) | `notifyError(getErrorMessage(err, fallback))` |
 

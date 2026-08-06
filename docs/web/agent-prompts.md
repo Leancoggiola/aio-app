@@ -214,7 +214,7 @@ Requisitos:
 
 - `@mantine/form`; schema de `@omni/shared` si existe (`schemaResolver` o `safeParse`)
 - PATCH parcial: extraer `build{{Domain}}Updates` a `modules/.../utils/` con tests (`pnpm web:new-test <path>`)
-- Errores submit → `Alert color="red" variant="light"`
+- Errores submit → `Alert color="destructive" variant="light"`
 - Éxito → `notifySuccess` (mutation la hace el padre/hook)
 - Español, Phosphor icons en inputs si aplica
 

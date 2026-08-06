@@ -1,31 +1,52 @@
-import type { CSSVariablesResolver } from '@mantine/core';
+import { defaultVariantColorsResolver, type CSSVariablesResolver, type VariantColorsResolver } from '@mantine/core';
 
-import { SEMANTIC } from '@omni/shared/theme';
+import { semanticDark, semanticLight } from '@omni/shared/theme';
+
+/** Core Mantine vars mapped from the full semantic token set. */
+const mantineCoreLight = {
+  '--mantine-color-body': semanticLight['--mantine-color-surfaces-device-bg'],
+  '--mantine-color-text': semanticLight['--mantine-color-text-default'],
+  '--mantine-color-bright': semanticLight['--mantine-color-text-title'],
+  '--mantine-color-default': semanticLight['--mantine-color-surfaces-white'],
+  '--mantine-color-default-hover': semanticLight['--mantine-color-surfaces-hover'],
+  '--mantine-color-default-border': semanticLight['--mantine-color-border-dimmed-light'],
+  '--mantine-color-error': semanticLight['--mantine-color-text-error'],
+  '--mantine-color-dimmed': semanticLight['--mantine-color-text-dimmed'],
+  '--mantine-color-placeholder': semanticLight['--mantine-color-text-placeholder'],
+  '--mantine-color-anchor': semanticLight['--mantine-color-text-link-default'],
+} as const;
+
+const mantineCoreDark = {
+  '--mantine-color-body': semanticDark['--mantine-color-surfaces-device-bg'],
+  '--mantine-color-text': semanticDark['--mantine-color-text-default'],
+  '--mantine-color-bright': semanticDark['--mantine-color-text-title'],
+  '--mantine-color-default': semanticDark['--mantine-color-surfaces-dimmed-subtle'],
+  '--mantine-color-default-hover': semanticDark['--mantine-color-surfaces-hover'],
+  '--mantine-color-default-border': semanticDark['--mantine-color-border-dimmed'],
+  '--mantine-color-error': semanticDark['--mantine-color-text-error'],
+  '--mantine-color-dimmed': semanticDark['--mantine-color-text-dimmed'],
+  '--mantine-color-placeholder': semanticDark['--mantine-color-text-placeholder'],
+  '--mantine-color-anchor': semanticDark['--mantine-color-text-link-default'],
+} as const;
 
 export const cssVariablesResolver: CSSVariablesResolver = () => ({
   variables: {},
   light: {
-    '--mantine-color-body': SEMANTIC.light.body,
-    '--mantine-color-text': SEMANTIC.light.text,
-    '--mantine-color-bright': SEMANTIC.light.text,
-    '--mantine-color-default': SEMANTIC.light.card,
-    '--mantine-color-default-hover': SEMANTIC.light.secondary,
-    '--mantine-color-default-border': SEMANTIC.light.border,
-    '--mantine-color-error': SEMANTIC.light.destructive,
-    '--mantine-color-dimmed': SEMANTIC.light.dimmed,
-    '--mantine-color-placeholder': SEMANTIC.light.placeholder,
-    '--mantine-color-anchor': SEMANTIC.light.anchor,
+    ...semanticLight,
+    ...mantineCoreLight,
   },
   dark: {
-    '--mantine-color-body': SEMANTIC.dark.body,
-    '--mantine-color-text': SEMANTIC.dark.text,
-    '--mantine-color-bright': SEMANTIC.dark.text,
-    '--mantine-color-default': SEMANTIC.dark.card,
-    '--mantine-color-default-hover': SEMANTIC.dark.secondary,
-    '--mantine-color-default-border': SEMANTIC.dark.border,
-    '--mantine-color-error': SEMANTIC.dark.destructive,
-    '--mantine-color-dimmed': SEMANTIC.dark.dimmed,
-    '--mantine-color-placeholder': SEMANTIC.dark.placeholder,
-    '--mantine-color-anchor': SEMANTIC.dark.anchor,
+    ...semanticDark,
+    ...mantineCoreDark,
   },
 });
+
+export const variantResolver: VariantColorsResolver = input => {
+  const defaultResolvedColors = defaultVariantColorsResolver(input);
+  // const parsedColor = parseThemeColor({
+  //   color: input.color || input.theme.primaryColor,
+  //   theme: input.theme
+  // })
+
+  return defaultResolvedColors;
+};

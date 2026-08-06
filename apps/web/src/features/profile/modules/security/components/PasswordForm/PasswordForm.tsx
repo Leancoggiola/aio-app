@@ -74,7 +74,7 @@ export const PasswordForm: FC<PasswordFormProps> = ({ onSubmit }) => {
     <form onSubmit={form.onSubmit(handleSubmit)}>
       <Stack gap="sm">
         {error && (
-          <Alert color="red" variant="light">
+          <Alert color="destructive" variant="light">
             {error}
           </Alert>
         )}

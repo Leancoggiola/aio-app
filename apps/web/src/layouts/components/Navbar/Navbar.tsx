@@ -61,7 +61,7 @@ export const Navbar: FC<NavbarProps> = ({ onClose, toggle }) => {
     <AppShell.Navbar px="md" py="xl">
       <AppShell.Section my="sm">
         <Group>
-          <LogoAvatar />
+          <LogoAvatar size="lg" />
           <Stack gap="none">
             <Text c="brand.7" size="lg" fw={600}>
               Omni

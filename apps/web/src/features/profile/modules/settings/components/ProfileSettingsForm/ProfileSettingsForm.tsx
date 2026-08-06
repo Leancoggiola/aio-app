@@ -136,7 +136,7 @@ export const ProfileSettingsForm: FC<ProfileSettingsFormProps> = ({ profile, isS
         </ProfileSectionCard>
 
         {error && (
-          <Alert color="red" variant="light">
+          <Alert color="destructive" variant="light">
             {error}
           </Alert>
         )}
