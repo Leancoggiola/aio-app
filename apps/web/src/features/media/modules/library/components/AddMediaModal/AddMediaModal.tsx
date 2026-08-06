@@ -1,3 +1,4 @@
+import { FC, useCallback, useEffect, useState } from 'react';
 import {
   Alert,
   Box,
@@ -15,7 +16,6 @@ import {
 } from '@mantine/core';
 import { schemaResolver, useForm } from '@mantine/form';
 import { useDebouncedValue } from '@mantine/hooks';
-import { FC, useCallback, useEffect, useState } from 'react';
 
 import { getErrorMessage, notifySuccess } from '@/shared/ui';
 
@@ -24,8 +24,8 @@ import { useMediaSearch } from '../../../search/hooks/useMediaSearch';
 import { INITIAL_ADD_MEDIA_FORM_VALUES } from '../../utils/addMediaForm';
 import { TmdbSearchOption } from './TmdbSearchOption';
 
-import type { AddMediaFormValues } from '@omni/shared/media';
 import type { MediaStatus, MediaType } from '../../../_shared/types';
+import type { AddMediaFormValues } from '@omni/shared/media';
 
 import {
   addMediaFormSchema,

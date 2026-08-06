@@ -1,11 +1,11 @@
-import { Center, Loader, SimpleGrid, Stack } from '@mantine/core';
 import { FC, useMemo } from 'react';
+import { Center, Loader, SimpleGrid, Stack } from '@mantine/core';
 
 import { MediaCard } from '../MediaCard';
 import { MediaEmptyState } from '../MediaEmptyState';
+import { MediaListItem } from '../MediaListItem';
 
 import type { MediaItem, MediaStatus } from '../../../_shared/types';
-import { MediaListItem } from '../MediaListItem';
 
 interface MyMediaListProps {
   items: MediaItem[] | undefined;

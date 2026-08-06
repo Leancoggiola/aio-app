@@ -1,5 +1,5 @@
-import { Stack } from '@mantine/core';
 import { FC, useCallback, useMemo, useState } from 'react';
+import { Stack } from '@mantine/core';
 
 import { confirm, getErrorMessage, notifyError, notifySuccess } from '@/shared/ui';
 

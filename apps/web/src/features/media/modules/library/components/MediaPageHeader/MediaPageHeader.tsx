@@ -1,5 +1,5 @@
-import { Button, Center, Group, SegmentedControl, Stack, Text, Title } from '@mantine/core';
 import { FC } from 'react';
+import { Button, Center, Group, SegmentedControl, Stack, Text, Title } from '@mantine/core';
 
 import { GridFourIcon, ListIcon, PlusIcon } from '@phosphor-icons/react';
 

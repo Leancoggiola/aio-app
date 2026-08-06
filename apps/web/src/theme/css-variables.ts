@@ -1,4 +1,4 @@
-import { defaultVariantColorsResolver, type CSSVariablesResolver, type VariantColorsResolver } from '@mantine/core';
+import { type CSSVariablesResolver, defaultVariantColorsResolver, type VariantColorsResolver } from '@mantine/core';
 
 import { semanticDark, semanticLight } from '@omni/shared/theme';
 

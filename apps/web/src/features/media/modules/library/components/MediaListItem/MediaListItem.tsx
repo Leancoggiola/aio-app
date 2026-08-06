@@ -1,5 +1,5 @@
-import { ActionIcon, Card, Flex, Group, Select, Text } from '@mantine/core';
 import { memo } from 'react';
+import { ActionIcon, Card, Flex, Group, Select, Text } from '@mantine/core';
 
 import type { MediaItem, MediaStatus } from '../../../_shared/types';
 

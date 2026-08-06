@@ -1,5 +1,5 @@
-import { Button, Group, Modal, Text } from '@mantine/core';
 import { FC, ReactNode, useCallback, useEffect, useState } from 'react';
+import { Button, Group, Modal, Text } from '@mantine/core';
 
 import { registerConfirmHandler } from './confirm';
 

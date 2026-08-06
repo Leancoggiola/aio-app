@@ -14,12 +14,13 @@
 
 ## Skills del proyecto
 
-| Skill               | Cuándo                                |
+Viven en `.cursor/skills/` (Cursor) con espejo idéntico en `.github/skills/` (VS Code Copilot). Al editar una skill, actualizar las dos.
+| Skill | Cuándo |
 | ------------------- | ------------------------------------- |
-| `mobile-structure`  | Carpetas / features mobile            |
-| `mobile-data-hooks` | Hooks SWR + Bearer                    |
-| `shared-contracts`  | Schemas `@omni/shared` (web + mobile) |
-| `api-structure`     | Cambios en API                        |
+| `mobile-structure` | Carpetas / features mobile |
+| `mobile-data-hooks` | Hooks SWR + Bearer |
+| `shared-contracts` | Schemas `@omni/shared` (web + mobile) |
+| `api-structure` | Cambios en API |
 
 ## Scripts
 
